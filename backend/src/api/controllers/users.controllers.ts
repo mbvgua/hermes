@@ -1,7 +1,7 @@
 import { Request,Response } from 'express'
 import { pool } from '../helpers/db.helpers'
 import bcrypt  from 'bcrypt'
-import { loginSchema, registerSchema } from '../validators/users.validators'
+import { getUserSchema, loginSchema, registerUserSchema, updateUserSchema } from '../validators/users.validators'
 import { UserRoles, Users } from '../models/users.models'
 
 
@@ -9,7 +9,7 @@ import { UserRoles, Users } from '../models/users.models'
 export async function registerUser(request:Request,response:Response){
     const { username,email,password} = request.body
     const role = UserRoles.Customer
-    const {error} = registerSchema.validate(request.body)
+    const {error} = registerUserSchema.validate(request.body)
     try{
         if(error){
             return response.status(401).json({error:error})
@@ -17,10 +17,10 @@ export async function registerUser(request:Request,response:Response){
             const hashedPassword = await bcrypt.hash(password,9)
             await pool.query(
                 `INSERT INTO users(username,email,password,role) VALUES (
-                '${username}',
-                '${email}',
-                '${hashedPassword}',
-                '${role}'
+                    '${username}',
+                    '${email}',
+                    '${hashedPassword}',
+                    '${role}'
                 );`
             )
             return response.status(200).json({success:`Congratulations! You have successfully created a new account.`})
@@ -68,8 +68,8 @@ export async function getUsers(request:Request,response:Response){
         const [rows,fields] = await pool.query(
             `SELECT * FROM users WHERE isDeleted=0;`
         )
-        const [users] = rows as Array<Users>
-        if(users){
+        const [users] = rows as Array<Users[]>
+        if(users.length != 0){
             return response.status(200).send(users)
         } else {
             return response.status(401).json({error:`There are currently no users in your database. Try again later?`})
@@ -80,9 +80,9 @@ export async function getUsers(request:Request,response:Response){
     }
 }
 
-// get user by id/username/email
+// get user by username/email
 export async function getUser(request:Request,response:Response){
-    const {id,username,email} = request.body
+    const {username,email} = request.body
     const {error} = getUserSchema.validate(request.body)
     try{
         if(error){
@@ -90,14 +90,13 @@ export async function getUser(request:Request,response:Response){
         } else {
             const [rows,fields] = await pool.query(
                 `SELECT * FROM users WHERE
-                id='${id}'
-                OR username='${username}'
+                username='${username}'
                 OR email='${email}'
                 AND isDeleted=0;`
             )
             const [user] = rows as Array<Users>
             if(user){
-                return response.status(200).json({success:user})
+                return response.status(200).send(user)
             } else {
                 return response.status(401).json({error:`Invalid input. The user does not exist. Try again?`})
             }
@@ -126,9 +125,9 @@ export async function updateUser(request:Request<{id:string}>,response:Response)
             if(user){
                 await pool.query(
                     `UPDATE users SET
-                    username='${username}'
-                    email='${email}'
-                    password='${password}'
+                    username='${username}',
+                    email='${email}',
+                    password='${password}',
                     WHERE id='${user.id}'
                     AND isDeleted=0;`
                 )
