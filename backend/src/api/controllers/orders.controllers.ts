@@ -96,8 +96,39 @@ export async function updateOrder(request:Request<{userId:string,orderId:string}
     }
 }
 
+// get orders by user id
+export async function getOrdersByUserId(request:Request<{id:string}>,response:Response){
+    const id = request.params.id
+    try {
+        const [rows,fields] = await pool.query(
+            `SELECT * FROM users
+            WHERE id='${id}'
+            AND isDeleted=0;`
+        )
+        const [user] = rows as Array<Users>
+        if(user){
+            const [rows,fields] = await pool.query(
+                `SELECT * FROM orders
+                WHERE userId='${id}'
+                AND isCancelled=0;`
+            )
+            const [orders] = rows as Array<Orders[]>
+            if(orders.length !== 0){
+                return response.status(200).send(orders)
+            }else {
+                return response.status(201).json({error:`User no.${user.id} has not made any orders yet. Try again later?`})
+            }
+        } else {
+            return response.status(401).json({error:`You do not have an account. Try creating on first?`})
+        }
+    } catch (error) {
+        console.error('An error occurred: ',error)
+        return response.status(500).json({error:error}) 
+    }
+}
+
 // get orders
-export async function getOrders(request:Request<{id:string}>,response:Response){
+export async function getAllOrders(request:Request<{id:string}>,response:Response){
     const id = request.params.id
     try{
         const [rows,fields] = await pool.query(
