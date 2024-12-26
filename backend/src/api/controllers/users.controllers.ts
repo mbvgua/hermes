@@ -1,7 +1,7 @@
 import { Request,Response } from 'express'
 import { pool } from '../helpers/db.helpers'
 import bcrypt  from 'bcrypt'
-import { getUserSchema, loginSchema, registerUserSchema, updateUserSchema } from '../validators/users.validators'
+import { getUserSchema, loginUserSchema, registerUserSchema, updateUserSchema } from '../validators/users.validators'
 import { UserRoles, Users } from '../models/users.models'
 
 
@@ -34,7 +34,7 @@ export async function registerUser(request:Request,response:Response){
 // login user
 export async function loginUser(request:Request,response:Response){
     const {username,password} = request.body
-    const {error} = loginSchema.validate(request.body)
+    const {error} = loginUserSchema.validate(request.body)
     try{
         if(error){
             return response.status(401).json({error:error})
@@ -125,9 +125,9 @@ export async function updateUser(request:Request<{id:string}>,response:Response)
             if(user){
                 await pool.query(
                     `UPDATE users SET
-                    username='${username}',
-                    email='${email}',
-                    password='${password}',
+                    username='${username} || '${user.username}',
+                    email='${email} || '${user.email}',
+                    password='${password} || '${user.password}',
                     WHERE id='${user.id}'
                     AND isDeleted=0;`
                 )

@@ -7,6 +7,7 @@ export interface Orders {
         itemQuantity:number,
         itemPrice:number
     },
-    totalPrice:number
+    totalPrice:number,
+    isCancelled:number
     // paymentMethod:string
 }
