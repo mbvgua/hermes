@@ -78,17 +78,25 @@ export async function updateProduct(request:Request<{id:string}>,response:Respon
             return response.status(401).json({error:error})
         } else {
             const [rows,fields] = await pool.query(
-                `UPDATE products SET
-                name='${name}',
-                description='${description}',
-                image='${image}',
-                price='${price}',
-                inStock='${inStock}'
-                WHERE id='${id}'
-                AND isDeleted=0;`
+                `SELECT * FROM products WHERE id='${id}';`
             )
             const [product] = rows as Array<Products>
-            return response.status(200).json({success:`You have succesfully updated the ${product.name}!`})
+            if(product){
+                const [rows,fields] = await pool.query(
+                    `UPDATE products SET
+                    name='${name}',
+                    description='${description}',
+                    image='${image}',
+                    price='${price}',
+                    inStock='${inStock}'
+                    WHERE id='${id}'
+                    AND isDeleted=0;`
+                )
+                const [product] = rows as Array<Products>
+                return response.status(200).json({success:`You have succesfully updated the ${product.name}!`})
+            } else {
+                return response.status(401).json({error:`The product does not seem to exist. Try again later?`})
+            }
         }
     } catch(error) {
         console.error('An error occurred: ',error)
