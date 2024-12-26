@@ -1,0 +1,39 @@
+###############
+# addProduct
+POST http://localhost:4000/products/add/
+Content-Type: application/json
+
+{
+    "name":"kabuti",
+    "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "image":"https://cdn.pixabay.com/photo/2017/08/05/15/04/leather-2584298_640.jpg",
+    "price":5000.00,
+    "inStock":17
+}
+
+###############
+# getProducts
+GET http://localhost:4000/products/get
+
+
+###############
+# getProductById
+GET http://localhost:4000/products/get-by/3
+
+
+###############
+# updateProduct
+PATCH http://localhost:4000/products/update/1
+Content-Type: application/json
+
+{
+    "name":"earphones",
+    "description":"Earphones, also known as in-ear headphones or earbuds, are small audio devices designed to fit directly into the ear canal.",
+    "image":"https://cdn.pixabay.com/photo/2014/04/05/11/41/earphone-316753_640.jpg",
+    "price":250.50,
+    "inStock":25
+}
+
+###############
+# deleteProduct
+PATCH http://localhost:4000/products/delete/160000

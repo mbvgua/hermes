@@ -1,0 +1,43 @@
+################
+# makeOrder
+POST http://localhost:4000/orders/make-order/5
+Content-Type: application/json
+
+{
+    "orderDetails":{
+        "itemId":20,
+        "itemQuantity":5,
+        "itemPrice":500.00
+    },
+    "totalPrice":2000.00
+}
+
+
+################
+# getAllOrders
+GET http://localhost:4000/orders/get
+
+
+################
+# getOrdersByUserId
+GET http://localhost:4000/orders/get-by/5
+
+
+################
+# updateOrder
+PATCH http://localhost:4000/orders/update/5/7
+Content-Type: application/json
+
+{
+    "orderDetails":{
+        "itemId":200,
+        "itemQuantity":5,
+        "itemPrice":500.00
+    },
+    "totalPrice":2000.00
+}
+
+
+################
+# cancellOrder
+PATCH http://localhost:4000/orders/cancell/5/79
