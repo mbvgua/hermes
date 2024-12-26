@@ -1,5 +1,6 @@
 
 export interface SqlConfig {
+    host:string,
     user?:string,
     database?:string,
     password?:string,

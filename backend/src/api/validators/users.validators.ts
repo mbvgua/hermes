@@ -65,13 +65,13 @@ export const getUserSchema = Joi.object({
 
 
 export const updateUserSchema = Joi.object({
-    username: Joi.string().optional().min(2).max(20).messages({
+    username: Joi.string().required().min(2).max(20).messages({
         'string.empty':'Username is required',
         'string.min':'Username should have a minimum length of {#length} characters',
         'string.max':'Username should have a maximum length of {#length} characters',
         'any.required':'Username is required',
     }),
-    email: Joi.string().optional().email({
+    email: Joi.string().required().email({
         minDomainSegments:2,
         tlds:{
             allow:['com','net']
@@ -81,7 +81,7 @@ export const updateUserSchema = Joi.object({
         'string.email':'Email can have two domains, e.g example.com whose tlds can either be ".com" or ".net"',
         'any.required':'Email is required'
     }),
-    password: Joi.string().optional().pattern(
+    password: Joi.string().required().pattern(
         new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,10}$')
     ).messages({
         'string.empty':'Password is required',

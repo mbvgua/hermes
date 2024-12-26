@@ -1,12 +1,12 @@
-import { Router } from 'express'
-import { cancelOrder, getAllOrders, getOrdersByUserId, makeOrder, updateOrder } from '../controllers/orders.controllers'
+import express from 'express'
+import { cancellOrder, getAllOrders, getOrdersByUserId, makeOrder, updateOrder } from '../controllers/orders.controllers'
 
-const orderRouter = Router()
+const orderRouter = express.Router()
 
-orderRouter.post('/make-order/',makeOrder)
-orderRouter.get('/get-orders/:id/',getOrdersByUserId)
-orderRouter.get('/get-orders/:id/',getAllOrders)
-orderRouter.patch('/update-order/',updateOrder)
-orderRouter.patch('/cancell-order/:userId/:orderId/',cancelOrder)
+orderRouter.post('/make-order/:id',makeOrder)
+orderRouter.get('/get/',getAllOrders)
+orderRouter.get('/get-by/:id/',getOrdersByUserId)
+orderRouter.patch('/update/:userId/:orderId',updateOrder)
+orderRouter.patch('/cancell/:userId/:orderId/',cancellOrder)
 
 export default orderRouter

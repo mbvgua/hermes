@@ -12,7 +12,7 @@ export async function registerUser(request:Request,response:Response){
     const {error} = registerUserSchema.validate(request.body)
     try{
         if(error){
-            return response.status(401).json({error:error})
+            return response.status(401).json({error:error.details[0].message})
         } else {
             const hashedPassword = await bcrypt.hash(password,9)
             await pool.query(
@@ -23,6 +23,7 @@ export async function registerUser(request:Request,response:Response){
                     '${role}'
                 );`
             )
+            console.log(role,password,hashedPassword)
             return response.status(200).json({success:`Congratulations! You have successfully created a new account.`})
         }
     } catch(error){
@@ -34,19 +35,22 @@ export async function registerUser(request:Request,response:Response){
 // login user
 export async function loginUser(request:Request,response:Response){
     const {username,password} = request.body
+    console.log(username,password)
     const {error} = loginUserSchema.validate(request.body)
     try{
         if(error){
-            return response.status(401).json({error:error})
+            return response.status(401).json({error:error.details[0].message})
         } else {
             const [rows,fields] = await pool.query(
                 `SELECT * FROM users
-                WHERE username='${username}
-                AND isDeleted=0';`
+                WHERE username='${username}'
+                AND isDeleted=0;`
             )
             const [user] = rows as Array<Users>
-            if(user.username === username){
-                const isValid = await bcrypt.compare(user.password,password)
+            if(!user){
+                return response.status(401).json({error:`You do not have an account. Try creating one instead?`})
+            } else if(user.username === username) {
+                const isValid = await bcrypt.compare(password,user.password)
                 if(isValid){
                     return response.status(200).json({success:`Congratulations ${user.username}! You have logged back in successfuly.`})
                 } else {
@@ -68,8 +72,8 @@ export async function getUsers(request:Request,response:Response){
         const [rows,fields] = await pool.query(
             `SELECT * FROM users WHERE isDeleted=0;`
         )
-        const [users] = rows as Array<Users[]>
-        if(users.length != 0){
+        const users = rows as Array<Users[]>
+        if(users){
             return response.status(200).send(users)
         } else {
             return response.status(401).json({error:`There are currently no users in your database. Try again later?`})
@@ -80,32 +84,6 @@ export async function getUsers(request:Request,response:Response){
     }
 }
 
-// get user by username/email
-export async function getUser(request:Request,response:Response){
-    const {username,email} = request.body
-    const {error} = getUserSchema.validate(request.body)
-    try{
-        if(error){
-            return response.status(401).json({error:error})
-        } else {
-            const [rows,fields] = await pool.query(
-                `SELECT * FROM users WHERE
-                username='${username}'
-                OR email='${email}'
-                AND isDeleted=0;`
-            )
-            const [user] = rows as Array<Users>
-            if(user){
-                return response.status(200).send(user)
-            } else {
-                return response.status(401).json({error:`Invalid input. The user does not exist. Try again?`})
-            }
-        }
-    } catch(error){
-        console.error('An error occurred: ',error)
-        return response.status(500).json({error:error})
-    }
-}
 
 // update user
 export async function updateUser(request:Request<{id:string}>,response:Response){
@@ -114,7 +92,7 @@ export async function updateUser(request:Request<{id:string}>,response:Response)
     const {error} = updateUserSchema.validate(request.body)
     try{
         if(error){
-            return response.status(401).json({error:error})
+            return response.status(401).json({error:error.details[0].message})
         } else {
             const [rows,fields] = await pool.query(
                 `SELECT * FROM users
@@ -123,11 +101,12 @@ export async function updateUser(request:Request<{id:string}>,response:Response)
             )
             const [user] = rows as Array<Users>
             if(user){
+                const hashedPassword = await bcrypt.hash(password,9)
                 await pool.query(
                     `UPDATE users SET
-                    username='${username} || '${user.username}',
-                    email='${email} || '${user.email}',
-                    password='${password} || '${user.password}',
+                        username='${username}',
+                        email='${email}',
+                        password='${hashedPassword}'
                     WHERE id='${user.id}'
                     AND isDeleted=0;`
                 )
@@ -154,12 +133,11 @@ export async function deleteUser(request:Request<{id:string}>,response:Response)
         const [user] = rows as Array<Users>
         if(user){
             const [rows,fields] = await pool.query(
-                `UPDATE users SET
-                isDeleted=1 WHERE id = '${id};`
+                `UPDATE users SET isDeleted=1 WHERE id = '${id}';`
             )
             return response.status(200).json({success:`Congratulations! You have successfully deleted you account.`})
         } else {
-            return response.status(401).json({error:`Youdo not have an account. Try again?`})
+            return response.status(401).json({error:`You do not have an account. Try again?`})
         }
     } catch(error){
         console.error('An error occurred: ',error)

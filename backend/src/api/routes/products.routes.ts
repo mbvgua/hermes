@@ -1,11 +1,12 @@
-import { Router } from 'express'
-import { addProduct, deleteProduct, getProductById, updateProduct } from '../controllers/products.controllers'
+import express from 'express'
+import { addProduct, deleteProduct, getProductById, getProducts, updateProduct } from '../controllers/products.controllers'
 
-const productRouter = Router()
+const productRouter = express.Router()
 
-productRouter.post('/add-product/',addProduct)
-productRouter.get('/get-product/:id/',getProductById)
-productRouter.patch('/update-product/',updateProduct)
-productRouter.patch('/delete-product/:id',deleteProduct)
+productRouter.post('/add/',addProduct)
+productRouter.get('/get/',getProducts)
+productRouter.get('/get-by/:id/',getProductById)
+productRouter.patch('/update/:id',updateProduct)
+productRouter.patch('/delete/:id',deleteProduct)
 
 export default productRouter

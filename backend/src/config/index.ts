@@ -4,8 +4,9 @@ import { SqlConfig } from '../api/models/db.models'
 dotenv.config()
 
 export const sqlConfig:SqlConfig = {
-    user:process.env.USER,
-    database:process.env.DB,
+    host:'localhost',
+    user:process.env.DB_USER,
+    database:process.env.DB_NAME,
     password:process.env.DB_PASSWORD,
     // from the docs
     waitForConnections: true,

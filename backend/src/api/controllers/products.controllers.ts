@@ -9,18 +9,19 @@ export async function addProduct(request:Request,response:Response){
     const { error } = addProductSchema.validate(request.body)
     try{
         if(error){
-            return response.status(401).json({error:error})
+            return response.status(401).json({error:error.details[0].message})
         } else {
+            console.log(name,description,image,price,inStock)
             await pool.query(
                 `INSERT INTO products(name,description,image,price,inStock) VALUES (
-                    name='${name}'
-                    description='${description}'
-                    image='${image}'
-                    price='${price}'
-                    inStock='${inStock}'
+                    '${name}',
+                    '${description}',
+                    '${image}',
+                    '${price}',
+                    '${inStock}'
                 );`
             )
-            return response.status(200).json({succes:`${name} has been added succesfully!`})
+            return response.status(200).json({success:`${name} has been added succesfully!`})
         }
     } catch(error) {
         console.error('An error occurred: ',error)
@@ -56,7 +57,7 @@ export async function getProducts(request:Request,response:Response){
             `SELECT * FROM products
             WHERE isDeleted=0;`
         )
-        const [products] = rows as Array<Products[]>
+        const products = rows as Array<Products[]>
         if(products.length != 0){
             return response.status(200).send(products)
         } else {
@@ -75,14 +76,14 @@ export async function updateProduct(request:Request<{id:string}>,response:Respon
     const {error} = updateProductSchema.validate(request.body)
     try{
         if(error){
-            return response.status(401).json({error:error})
+            return response.status(401).json({error:error.details[0].message})
         } else {
             const [rows,fields] = await pool.query(
                 `SELECT * FROM products WHERE id='${id}';`
             )
             const [product] = rows as Array<Products>
             if(product){
-                const [rows,fields] = await pool.query(
+                await pool.query(
                     `UPDATE products SET
                     name='${name}',
                     description='${description}',
@@ -92,7 +93,6 @@ export async function updateProduct(request:Request<{id:string}>,response:Respon
                     WHERE id='${id}'
                     AND isDeleted=0;`
                 )
-                const [product] = rows as Array<Products>
                 return response.status(200).json({success:`You have succesfully updated the ${product.name}!`})
             } else {
                 return response.status(401).json({error:`The product does not seem to exist. Try again later?`})
@@ -109,11 +109,15 @@ export async function deleteProduct(request:Request<{id:string}>,response:Respon
     const id = request.params.id
     try{
         const [rows,fields] = await pool.query(
-            `UPDATE products SET
-            isDeleted=1 WHERE id='${id}';`
+            `SELECT * FROM products
+            WHERE id='${id}'
+            AND isDeleted=0;`
         )
         const [product] = rows as Array<Products>
         if(product){
+            await pool.query(
+                `UPDATE products SET isDeleted=1 WHERE id='${id}';`
+            )
             return response.status(200).json({success:`You have successfuly deleted ${product.name} from the records!`})
         } else {
             return response.status(401).json({error:`It looks like the product does not exists. Try again?`})
