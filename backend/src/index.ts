@@ -1,6 +1,6 @@
 import express from 'express'
 import dotenv from 'dotenv'
-import userRouter from './api/routes/users.routes'
+import userRouter from './api/routes/auth.routes'
 import productRouter from './api/routes/products.routes'
 import orderRouter from './api/routes/orders.routes'
 
@@ -13,7 +13,7 @@ const port = process.env.PORT
 app.use(express.json())
 
 // application middleware
-app.use('/auth',userRouter)
+app.use('/v1/auth',userRouter)
 app.use('/products',productRouter)
 app.use('/orders',orderRouter)
 

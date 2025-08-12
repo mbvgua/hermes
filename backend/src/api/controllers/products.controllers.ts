@@ -1,5 +1,5 @@
 import { Request,Response } from 'express'
-import {pool} from '../helpers/db.helpers'
+import {pool} from '../../config/db.config'
 import { Products } from '../models/products.models'
 import { addProductSchema, updateProductSchema } from '../validators/products.validators'
 

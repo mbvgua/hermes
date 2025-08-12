@@ -1,6 +1,8 @@
+import mysql from "mysql2/promise";
 import dotenv from "dotenv";
-import { SqlConfig } from "../api/models/db.models";
 import path from "path";
+
+import { SqlConfig } from "../api/models/db.models";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
@@ -19,5 +21,4 @@ export const sqlConfig: SqlConfig = {
   keepAliveInitialDelay: 0,
 };
 
-console.log(process.env.DB_NAME);
-
+export const pool = mysql.createPool(sqlConfig);
