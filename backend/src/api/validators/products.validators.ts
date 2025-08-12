@@ -4,13 +4,13 @@ import Joi from 'joi'
 export const addProductSchema = Joi.object({
     name:Joi.string().required().min(2).max(20).messages({
         'string.empty':'A name is required',
-        'string.min':'A name should have a minimum length of {#length} characters',
-        'string.max':'A name should have a maximum length of {#length} characters',
+        'string.min':'A name should have a minimum length of {#limit} characters',
+        'string.max':'A name should have a maximum length of {#limit} characters',
         'any.required':'A name is required',
     }),
     description:Joi.string().required().max(500).messages({
         'string.empty':'A description is required',
-        'string.max':'A description should have a maximum length of {#length} characters',
+        'string.max':'A description should have a maximum length of {#limit} characters',
         'any.required':'A description is required'
     }),
     image:Joi.string().required().messages({
@@ -31,13 +31,13 @@ export const addProductSchema = Joi.object({
 export const updateProductSchema = Joi.object({
     name:Joi.string().required().min(2).max(20).messages({
         'string.empty':'A name is required',
-        'string.min':'A name should have a minimum length of {#length} characters',
-        'string.max':'A name should have a maximum length of {#length} characters',
+        'string.min':'A name should have a minimum length of {#limit} characters',
+        'string.max':'A name should have a maximum length of {#limit} characters',
         'any.required':'A name is required',
     }),
     description:Joi.string().required().max(500).messages({
         'string.empty':'A description is required',
-        'string.max':'A description should have a maximum length of {#length} characters',
+        'string.max':'A description should have a maximum length of {#limit} characters',
         'any.required':'A description is required'
     }),
     image:Joi.string().required().messages({

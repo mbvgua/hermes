@@ -3,8 +3,8 @@ import Joi from 'joi'
 export const registerUserSchema = Joi.object({
     username: Joi.string().required().min(2).max(20).messages({
         'string.empty':'Username is required',
-        'string.min':'Username should have a minimum length of {#length} characters',
-        'string.max':'Username should have a maximum length of {#length} characters',
+        'string.min':'Username should have a minimum length of {#limit} characters',
+        'string.max':'Username should have a maximum length of {#limit} characters',
         'any.required':'Username is required',
     }),
     email: Joi.string().required().email({
@@ -30,8 +30,8 @@ export const registerUserSchema = Joi.object({
 export const loginUserSchema = Joi.object({
     username: Joi.string().required().min(2).max(20).messages({
         'string.empty':'Username is required',
-        'string.min':'Username should have a minimum length of {#length} characters',
-        'string.max':'Username should have a maximum length of {#length} characters',
+        'string.min':'Username should have a minimum length of {#limit} characters',
+        'string.max':'Username should have a maximum length of {#limit} characters',
         'any.required':'Username is required',
     }),
     password: Joi.string().required().pattern(
@@ -47,8 +47,8 @@ export const loginUserSchema = Joi.object({
 export const getUserSchema = Joi.object({
     username: Joi.string().optional().min(2).max(20).messages({
         'string.empty':'Username is required',
-        'string.min':'Username should have a minimum length of {#length} characters',
-        'string.max':'Username should have a maximum length of {#length} characters',
+        'string.min':'Username should have a minimum length of {#limit} characters',
+        'string.max':'Username should have a maximum length of {#limit} characters',
         'any.required':'Username is required',
     }),
     email: Joi.string().optional().email({
@@ -67,8 +67,8 @@ export const getUserSchema = Joi.object({
 export const updateUserSchema = Joi.object({
     username: Joi.string().required().min(2).max(20).messages({
         'string.empty':'Username is required',
-        'string.min':'Username should have a minimum length of {#length} characters',
-        'string.max':'Username should have a maximum length of {#length} characters',
+        'string.min':'Username should have a minimum length of {#limit} characters',
+        'string.max':'Username should have a maximum length of {#limit} characters',
         'any.required':'Username is required',
     }),
     email: Joi.string().required().email({

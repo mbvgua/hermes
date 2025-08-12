@@ -1,6 +1,6 @@
 import { Request,Response } from 'express'
 import { Users } from '../models/users.models'
-import { pool } from '../helpers/db.helpers'
+import { pool } from './../../config/db.config'
 import { Orders } from '../models/orders.models'
 import { makeOrderSchema, updateOrderSchema } from '../validators/orders.validators'
 
