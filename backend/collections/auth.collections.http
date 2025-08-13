@@ -11,11 +11,11 @@ Content-Type: application/json
 
 ###################
 # loginUser
-POST http://localhost:4000/auth/login
+POST http://localhost:4000/v1/auth/login
 Content-Type: application/json
 
 {
-    "username":"mkuru",
+    "username":"mercy",
     "password":"Qwerty12!"
 }
 

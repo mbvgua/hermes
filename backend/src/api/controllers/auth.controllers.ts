@@ -17,12 +17,6 @@ export async function registerUser(request: Request, response: Response) {
   const { username, email, password } = request.body;
   const role = UserRoles.Customer;
 
-  ////make logs custom to this endpoint
-  ////need to also add transports, else error
-  //logger.configure({
-  //  defaultMeta: { endpoint: "registerUser" },
-  //});
-
   try {
     const is_valid_request = await validationHelper(
       request,
@@ -72,7 +66,6 @@ export async function registerUser(request: Request, response: Response) {
       });
     }
   } catch (error) {
-    //log any errors
     logger.log({
       level: "error",
       message: "Internal server error occurred",
@@ -92,42 +85,112 @@ export async function registerUser(request: Request, response: Response) {
 // login user
 export async function loginUser(request: Request, response: Response) {
   const { username, password } = request.body;
-  console.log(username, password);
-  const { error } = loginUserSchema.validate(request.body);
+
   try {
-    if (error) {
-      return response.status(401).json({ error: error.details[0].message });
-    } else {
-      const [rows, fields] = await pool.query(
-        `SELECT * FROM users
-                WHERE username='${username}'
-                AND isDeleted=0;`,
+    const is_valid_request = await validationHelper(
+      request,
+      response,
+      loginUserSchema,
+    );
+    if (is_valid_request) {
+      const [rows] = await pool.query(
+        `SELECT * FROM users WHERE username=? AND isDeleted=0;`,
+        [username],
       );
       const [user] = rows as Array<Users>;
-      if (!user) {
-        return response.status(401).json({
-          error: `You do not have an account. Try creating one instead?`,
-        });
-      } else if (user.username === username) {
-        const isValid = await bcrypt.compare(password, user.password);
-        if (isValid) {
-          return response.status(200).json({
-            success: `Congratulations ${user.username}! You have logged back in successfuly.`,
+
+      //if user exists and username matches
+      if (user.username == username) {
+        const is_valid = await bcrypt.compare(password, user.password);
+        //if passwords match
+        if (is_valid) {
+          logger.log({
+            level: "info",
+            message: `${username} has successfully logged in`,
+            data: {
+              user: {
+                username,
+                role: user.role,
+              },
+            },
           });
+
+          return response.status(200).json({
+            code: 200,
+            status: "success",
+            message: `Congratulations ${user.username}! You have logged back in successfully`,
+            data: {
+              user: {
+                username: user.username,
+                email: user.email,
+                role: user.role,
+              },
+            },
+            metadata: null,
+          });
+          //if passwords do not match
         } else {
+          logger.log({
+            level: "error",
+            message: "Incorrect username or password",
+            data: {
+              user: {
+                username,
+                password,
+              },
+            },
+          });
+
           return response.status(401).json({
-            error: `You have entered an incorrect username or password. Try again?`,
+            code: 401,
+            status: "error",
+            message:
+              "Oh no! You entered and incorrect username or password. Try again?",
+            data: {
+              user: {
+                username,
+                password,
+              },
+            },
+            metadata: null,
           });
         }
+        //else if user does not exist
       } else {
-        return response.status(401).json({
-          error: `You do not have an account. Try creating one instead?`,
+        logger.log({
+          level: "error",
+          message: "Account does not exist",
+          data: {
+            user: {
+              username,
+              password,
+            },
+          },
+        });
+
+        return response.status(404).json({
+          code: 404,
+          status: "error",
+          message: "Account does not exist.Try creating on instead?",
+          data: null,
+          metadata: null,
         });
       }
     }
   } catch (error) {
-    console.error("An error occurred: ", error);
-    return response.status(500).json({ error: error });
+    logger.log({
+      level: "error",
+      message: "Internal server error occurred",
+      data: { error },
+    });
+
+    return response.status(500).json({
+      code: 500,
+      status: "error",
+      message: "Internal server error",
+      data: { error },
+      metadata: null,
+    });
   }
 }
 
@@ -146,8 +209,19 @@ export async function getUsers(request: Request, response: Response) {
       });
     }
   } catch (error) {
-    console.error("An error occurred: ", error);
-    return response.status(500).json({ error: error });
+    logger.log({
+      level: "error",
+      message: "Internal server error occurred",
+      data: { error },
+    });
+
+    return response.status(500).json({
+      code: 500,
+      status: "error",
+      message: "Internal server error",
+      data: { error },
+      metadata: null,
+    });
   }
 }
 
@@ -190,8 +264,19 @@ export async function updateUser(
       }
     }
   } catch (error) {
-    console.error("An error occurred: ", error);
-    return response.status(500).json({ error: error });
+    logger.log({
+      level: "error",
+      message: "Internal server error occurred",
+      data: { error },
+    });
+
+    return response.status(500).json({
+      code: 500,
+      status: "error",
+      message: "Internal server error",
+      data: { error },
+      metadata: null,
+    });
   }
 }
 
@@ -221,7 +306,18 @@ export async function deleteUser(
         .json({ error: `You do not have an account. Try again?` });
     }
   } catch (error) {
-    console.error("An error occurred: ", error);
-    return response.status(500).json({ error: error });
+    logger.log({
+      level: "error",
+      message: "Internal server error occurred",
+      data: { error },
+    });
+
+    return response.status(500).json({
+      code: 500,
+      status: "error",
+      message: "Internal server error",
+      data: { error },
+      metadata: null,
+    });
   }
 }
