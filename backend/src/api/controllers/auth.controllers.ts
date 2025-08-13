@@ -10,11 +10,18 @@ import {
 } from "../validators/users.validators";
 import { UserRoles, Users } from "../models/users.models";
 import { validationHelper } from "../helpers/validator.helpers";
+import { logger } from "../../config/winston.config";
 
 // register new users into system
 export async function registerUser(request: Request, response: Response) {
   const { username, email, password } = request.body;
   const role = UserRoles.Customer;
+
+  ////make logs custom to this endpoint
+  ////need to also add transports, else error
+  //logger.configure({
+  //  defaultMeta: { endpoint: "registerUser" },
+  //});
 
   try {
     const is_valid_request = await validationHelper(
@@ -36,6 +43,19 @@ export async function registerUser(request: Request, response: Response) {
       );
       connection.release();
 
+      //log new user info
+      logger.log({
+        level: "info",
+        message: `${username} has registered a new account`,
+        data: {
+          user: {
+            username,
+            email,
+            role,
+          },
+        },
+      });
+
       //return response if successful
       return response.status(200).json({
         code: 201,
@@ -52,6 +72,13 @@ export async function registerUser(request: Request, response: Response) {
       });
     }
   } catch (error) {
+    //log any errors
+    logger.log({
+      level: "error",
+      message: "Internal server error occurred",
+      data: { error },
+    });
+
     return response.status(500).json({
       code: 500,
       status: "error",

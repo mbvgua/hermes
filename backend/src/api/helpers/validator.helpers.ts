@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { logger } from "../../config/winston.config";
 
 export async function validationHelper(
   request: Request,
@@ -9,6 +10,16 @@ export async function validationHelper(
 
   //if validation error exists, return response
   if (error) {
+    //log any validation errors
+    logger.log({
+      level: "error",
+      message: `Validation error occurred`,
+      data: {
+        path: error.details[0].path[0],
+        error: error.details[0].message,
+      },
+    });
+
     response.status(422).json({
       code: 422,
       status: "error",
