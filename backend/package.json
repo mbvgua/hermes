@@ -1,6 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,21 +12,22 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "packageManager": "pnpm@10.10.0",
   "dependencies": {
-    "@types/bcrypt": "^5.0.2",
-    "@types/concurrently": "^6.4.0",
-    "@types/cors": "^2.8.17",
-    "@types/dotenv": "^6.1.1",
-    "@types/express": "^4.17.21",
+    "@types/bcrypt": "^6.0.0",
+    "@types/concurrently": "^7.0.3",
+    "@types/cors": "^2.8.19",
+    "@types/dotenv": "^8.2.3",
+    "@types/express": "^5.0.3",
     "@types/joi": "^17.2.3",
-    "bcrypt": "^5.1.1",
-    "concurrently": "^9.1.0",
+    "bcrypt": "^6.0.0",
+    "concurrently": "^9.2.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "joi": "^17.13.3",
-    "mysql2": "^3.11.5",
-    "nodemon": "^3.1.10"
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "joi": "^18.0.0",
+    "mysql2": "^3.14.3",
+    "nodemon": "^3.1.10",
+    "winston": "^3.17.0"
   }
 }

@@ -10,7 +10,6 @@ Simple ecommerce website, with some added perks.
 
 ## Features
 
-- Authentication
 - OAuth
 - State Management(Signals & RxJs)
 - Mpesa Api Integration(Daraja Api)
