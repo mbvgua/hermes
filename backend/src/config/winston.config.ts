@@ -1,7 +1,7 @@
 import path from "path";
 import winston, { format } from "winston";
 
-const logDir = path.resolve(__dirname, "../../logs/");
+const logDir = path.resolve(__dirname, "./../../logs");
 
 const customLogger = () =>
   winston.createLogger({
@@ -10,7 +10,8 @@ const customLogger = () =>
     defaultMeta: { app: "backend" },
     exitOnError: false, //do not exit execution when error occurs
     transports: [
-      // writes all logs of http or higher to given files
+      // - Write all logs with importance level of `info` or higher to `combined.log`
+      //   (i.e., fatal, error, warn, and info, but not trace)
       new winston.transports.File({
         filename: path.resolve(logDir, "combined/combined.json"),
       }),
@@ -18,7 +19,8 @@ const customLogger = () =>
         filename: path.resolve(logDir, "combined/combined.log"),
       }),
 
-      // error and higher to given files
+      // - Write all logs with importance level of `error` or higher to `error.json`
+      //   (i.e., error, fatal, but not other levels)
       new winston.transports.File({
         filename: path.resolve(logDir, "error/error.json"),
         level: "error",
@@ -35,7 +37,6 @@ const customLogger = () =>
         filename: path.resolve(logDir, "exceptions/exceptions.log"),
       }),
     ],
-    //silent:true,
   });
 
 export const logger = customLogger();

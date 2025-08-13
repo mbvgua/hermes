@@ -4,8 +4,8 @@ POST http://localhost:4000/v1/auth/register
 Content-Type: application/json
 
 {
-    "username":"marksman",
-    "email":"mark@gmail.com",
+    "username":"mercy",
+    "email":"mercy@gmail.com",
     "password":"Qwerty12!"
 }
 
