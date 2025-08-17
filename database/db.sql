@@ -1,6 +1,6 @@
-CREATE DATABASE state_mngmt;
-
-USE state_mngmt;
+-- create and use the db
+CREATE DATABASE hermes;
+USE hermes;
 
 CREATE TABLE users (
     -- SERIAL DEFAULT VALUE equates to NOT NULL AUTO_INCREMENT UNIQUE
@@ -9,8 +9,8 @@ CREATE TABLE users (
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     role ENUM('customer','admin') NOT NULL,
-    createdAt DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
-    isDeleted BOOLEAN DEFAULT 0
+    created_at DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+    is_deleted BOOLEAN DEFAULT 0
 );
 
 -- DUMP USERS
@@ -20,7 +20,6 @@ INSERT INTO users VALUES
     (DEFAULT,'mende','mende@gmail.com','@1Mende!','customer',DEFAULT,DEFAULT),
     (DEFAULT,'cindy','cindy@gmail.com','@1Cindy!','customer',DEFAULT,DEFAULT);
 
-
 CREATE TABLE products (
     -- SERIAL DEFAULT VALUE equates to NOT NULL AUTO_INCREMENT UNIQUE
     id INT PRIMARY KEY SERIAL DEFAULT VALUE,
@@ -28,8 +27,8 @@ CREATE TABLE products (
     description VARCHAR(255) NOT NULL DEFAULT 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
     image VARCHAR(255) NOT NULL DEFAULT 'https://dummyimage.com/720x600',
     price DECIMAL(10,2) NOT NULL,
-    inStock INT DEFAULT 1 NOT NULL,
-    isDeleted BOOLEAN DEFAULT 0 NOT NULL
+    in_stock INT DEFAULT 1 NOT NULL,
+    is_deleted BOOLEAN DEFAULT 0 NOT NULL
 );
 
 -- dummy data
@@ -43,11 +42,11 @@ INSERT INTO products VALUES
 
 CREATE TABLE orders (
     id INT PRIMARY KEY SERIAL DEFAULT VALUE,
-    userId INT NOT NULL,
-    orderDetails JSON,
-    totalPrice DECIMAL(10,2) NOT NULL,
-    isCancelled BOOLEAN DEFAULT 0 NOT NULL,
-    FOREIGN KEY (userId) REFERENCES users(id)
+    user_id INT NOT NULL,
+    order_details JSON,
+    total_price DECIMAL(10,2) NOT NULL,
+    is_cancelled BOOLEAN DEFAULT 0 NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 -- dummy data
