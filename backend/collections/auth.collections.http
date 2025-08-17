@@ -1,4 +1,4 @@
-###################
+###
 # registerUser
 POST http://localhost:4000/v1/auth/register
 Content-Type: application/json
@@ -9,7 +9,7 @@ Content-Type: application/json
     "password":"Qwerty12!"
 }
 
-###################
+###
 # loginUser
 POST http://localhost:4000/v1/auth/login
 Content-Type: application/json
@@ -19,12 +19,15 @@ Content-Type: application/json
     "password":"Qwerty12!"
 }
 
-
-###################
+###
 # getUser
 GET http://localhost:4000/v1/auth/get-user?id=18
 
-###################
+###
+#getUsers
+GET http://localhost:4000/v1/auth/get-users?id=1
+
+###
 # UpdateUser
 PATCH http://localhost:4000/auth/update/5/
 Content-Type: application/json

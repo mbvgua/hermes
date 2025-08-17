@@ -279,7 +279,56 @@ export async function getUsers(request: Request, response: Response) {
    * get users in system
    * has pagination with limit-offset
    */
+  const user_id = parseInt(request.query.id as string);
+  const page = parseInt(request.query.page as string ?? "1");
+  const limit = parseInt(request.query.limit as string ?? "10");
+  const offset = (page - 1) * limit;
+
   try {
+    const connection = await pool.getConnection();
+
+    //get user making request for logging
+    const [user] = await connection.query(`SELECT * FROM users WHERE id=?;`, [
+      user_id,
+    ]);
+    const user_making_request = user as Array<Users>;
+
+    //get total number of users
+    const [results]: any = await connection.query(
+      "SELECT COUNT(*) as total FROM users;",
+    );
+    const total_items = results[0].total;
+
+    //get paginated results
+    const [rows] = await connection.query(
+      "SELECT * FROM users LIMIT ? OFFSET ?;",
+      [limit, offset],
+    );
+    const users = rows as Array<Users>;
+    const total_pages = Math.ceil(total_items / limit);
+
+    //log inormation
+    logger.log({
+      level: "info",
+      message: `${user_making_request[0].username} queried all users in the database\n
+                who are currently ${total_items}.\n
+                They are on page ${page} displaying ${limit} users.`,
+    });
+
+    //return response
+    return response.status(200).json({
+      code: 200,
+      status: "success",
+      message: "Users successfully retrieved",
+      data: { users },
+      metadata: {
+        previous_page: +page - 1,
+        current_page: +page,
+        next_page: +page + 1,
+        total_items,
+        total_pages,
+      },
+    });
   } catch (error) {
     logger.log({
       level: "error",
