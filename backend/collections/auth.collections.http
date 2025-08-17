@@ -21,9 +21,8 @@ Content-Type: application/json
 
 
 ###################
-# getUsers
-GET http://localhost:4000/auth/get-users
-
+# getUser
+GET http://localhost:4000/v1/auth/get-user?id=18
 
 ###################
 # UpdateUser
