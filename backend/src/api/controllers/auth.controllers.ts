@@ -1,6 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { logger } from "../../config/winston.config";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import path from "path";
 
 import { pool } from "./../../config/db.config";
 import {
@@ -9,8 +12,10 @@ import {
   registerUserSchema,
   updateUserSchema,
 } from "../validators/users.validators";
-import { UserRoles, Users } from "../models/users.models";
+import { UserRoles, IUsers, IPayload } from "../models/users.models";
 import { validationHelper } from "../helpers/validator.helpers";
+
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 export async function registerUser(request: Request, response: Response) {
   /*
@@ -98,16 +103,28 @@ export async function loginUser(request: Request, response: Response) {
     );
     if (is_valid_request) {
       const [rows] = await pool.query(
-        `SELECT * FROM users WHERE username=? AND isDeleted=0;`,
+        `SELECT * FROM users WHERE username=? AND is_deleted=0;`,
         [username],
       );
-      const [user] = rows as Array<Users>;
+      const [user] = rows as Array<IUsers>;
 
       //if user exists and username matches
       if (user.username == username) {
         const is_valid = await bcrypt.compare(password, user.password);
         //if passwords match
         if (is_valid) {
+          const payload: IPayload = {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            role: user.role,
+          };
+
+          //token has payload(data to send),secret_key and expiration time
+          const token = jwt.sign(payload, process.env.SECRET_KEY as string, {
+            expiresIn: "7 days",
+          });
+
           logger.log({
             level: "info",
             message: `${username} has successfully logged in`,
@@ -123,13 +140,7 @@ export async function loginUser(request: Request, response: Response) {
             code: 200,
             status: "success",
             message: `Congratulations ${user.username}! You have logged back in successfully`,
-            data: {
-              user: {
-                username: user.username,
-                email: user.email,
-                role: user.role,
-              },
-            },
+            data: { token },
             metadata: null,
           });
           //if passwords do not match
@@ -211,41 +222,14 @@ export async function getUserById(request: Request, response: Response) {
       "SELECT * FROM users WHERE id=? AND is_deleted=0;",
       [user_id],
     );
-    const user_making_request = rows as Array<Users>;
+    const user_making_request = rows as Array<IUsers>;
 
-    if (user_making_request.length > 0) {
-      //log action
-      logger.log({
-        level: "info",
-        message: `${user_making_request[0].username} viewed their profile`,
-        data: {
-          user: {
-            username: user_making_request[0].username,
-            password: user_making_request[0].password,
-          },
-        },
-      });
-
-      //return profile
-      return response.status(200).json({
-        code: 200,
-        status: "success",
-        message: `Successfully retrieved ${user_making_request[0].username}'s profile`,
-        data: {
-          user: {
-            id: user_id,
-            username: user_making_request[0].username,
-            email: user_making_request[0].email,
-            role: user_making_request[0].role,
-          },
-        },
-      });
-    } else {
-      //user does not exist
+    //user does not exist
+    if (!user_making_request || user_making_request.length < 0) {
       //TODO: find out why this does NOT run, it skips right to the catch block
       logger.log({
         level: "error",
-        message: `Tried viewing profile of ${user_making_request[0].id} which does not exist`,
+        message: `Tried viewing profile of id:${user_id} which does not exist`,
         data: null,
       });
 
@@ -257,6 +241,33 @@ export async function getUserById(request: Request, response: Response) {
         metadata: null,
       });
     }
+
+    //log action
+    logger.log({
+      level: "info",
+      message: `${user_making_request[0].username} viewed their profile`,
+      data: {
+        user: {
+          username: user_making_request[0].username,
+          password: user_making_request[0].password,
+        },
+      },
+    });
+
+    //return profile
+    return response.status(200).json({
+      code: 200,
+      status: "success",
+      message: `Successfully retrieved ${user_making_request[0].username}'s profile`,
+      data: {
+        user: {
+          id: user_id,
+          username: user_making_request[0].username,
+          email: user_making_request[0].email,
+          role: user_making_request[0].role,
+        },
+      },
+    });
   } catch (error) {
     logger.log({
       level: "error",
@@ -276,13 +287,21 @@ export async function getUserById(request: Request, response: Response) {
 
 export async function getUsers(request: Request, response: Response) {
   /*
-   * get users in system
+   * admin only. get users in system
    * has pagination with limit-offset
    */
-  const user_id = parseInt(request.query.id as string);
-  const page = parseInt(request.query.page as string ?? "1");
-  const limit = parseInt(request.query.limit as string ?? "10");
+  const page = parseInt((request.query.page as string) ?? "1");
+  const limit = parseInt((request.query.limit as string) ?? "10");
   const offset = (page - 1) * limit;
+
+  //decode token to get user_id
+  const token = request.headers["token"];
+  //NOTE:Massive error, still runs though
+  const decoded_token = jwt.verify(
+    token,
+    process.env.SECRET_KEY as string,
+  ) as IPayload;
+  const user_id = decoded_token.id;
 
   try {
     const connection = await pool.getConnection();
@@ -291,7 +310,7 @@ export async function getUsers(request: Request, response: Response) {
     const [user] = await connection.query(`SELECT * FROM users WHERE id=?;`, [
       user_id,
     ]);
-    const user_making_request = user as Array<Users>;
+    const user_making_request = user as Array<IUsers>;
 
     //get total number of users
     const [results]: any = await connection.query(
@@ -304,7 +323,7 @@ export async function getUsers(request: Request, response: Response) {
       "SELECT * FROM users LIMIT ? OFFSET ?;",
       [limit, offset],
     );
-    const users = rows as Array<Users>;
+    const users = rows as Array<IUsers>;
     const total_pages = Math.ceil(total_items / limit);
 
     //log inormation
@@ -361,7 +380,7 @@ export async function getUsers(request: Request, response: Response) {
 //      const [rows, fields] = await pool.query(
 //        `SELECT * FROM users
 //                WHERE id='${id}
-//                AND isDeleted=0;'`,
+//                AND is_deleted=0;'`,
 //      );
 //      const [user] = rows as Array<Users>;
 //      if (user) {
@@ -372,7 +391,7 @@ export async function getUsers(request: Request, response: Response) {
 //                        email='${email}',
 //                        password='${hashedPassword}'
 //                    WHERE id='${user.id}'
-//                    AND isDeleted=0;`,
+//                    AND is_deleted=0;`,
 //        );
 //        return response.status(200).json({
 //          success:
@@ -411,12 +430,12 @@ export async function getUsers(request: Request, response: Response) {
 //    const [rows, fields] = await pool.query(
 //      `SELECT * FROM users
 //            WHERE id='${id}'
-//            AND isDeleted=0;`,
+//            AND is_deleted=0;`,
 //    );
 //    const [user] = rows as Array<Users>;
 //    if (user) {
 //      const [rows, fields] = await pool.query(
-//        `UPDATE users SET isDeleted=1 WHERE id = '${id}';`,
+//        `UPDATE users SET is_deleted=1 WHERE id = '${id}';`,
 //      );
 //      return response.status(200).json({
 //        success: `Congratulations! You have successfully deleted you account.`,

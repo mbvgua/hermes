@@ -1,5 +1,5 @@
 import { Request,Response } from 'express'
-import { Users } from '../models/users.models'
+import { IUsers } from '../models/users.models'
 import { pool } from './../../config/db.config'
 import { Orders } from '../models/orders.models'
 import { makeOrderSchema, updateOrderSchema } from '../validators/orders.validators'
@@ -18,7 +18,7 @@ export async function makeOrder(request:Request<{id:string}>,response:Response){
                 WHERE id='${userId}'
                 AND isDeleted=0;`
             )
-            const [user] = rows as Array<Users[]>
+            const [user] = rows as Array<IUsers[]>
             if (!user){
                 return response.status(401).json({error:`User does not exists. Try again?`})
             } else if(user.length !== 0){
@@ -51,7 +51,7 @@ export async function getOrdersByUserId(request:Request<{id:string}>,response:Re
             WHERE id='${id}'
             AND isDeleted=0;`
         )
-        const [user] = rows as Array<Users>
+        const [user] = rows as Array<IUsers>
         if(user){
             const [rows,fields] = await pool.query(
                 `SELECT * FROM orders
@@ -108,7 +108,7 @@ export async function updateOrder(request:Request<{userId:string,orderId:string}
                 WHERE id='${userId}'
                 AND isDeleted=0;`
             )
-            const [user] = rows as Array<Users>
+            const [user] = rows as Array<IUsers>
             if(user){
                 // if yes. if he made the order. 
                 const [rows,fields] = await pool.query(
@@ -163,7 +163,7 @@ export async function cancellOrder(request:Request<{userId:string,orderId:string
         const [rows,fields] = await pool.query(
             `SELECT * FROM users WHERE id='${userId} AND isDeleted=0';`
         )
-        const [user] = rows as Array<Users>
+        const [user] = rows as Array<IUsers>
 
        if(user){
          // get order
