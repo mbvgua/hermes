@@ -288,3 +288,83 @@ export async function updateUser(request: ExtendedRequest, response: Response) {
     });
   }
 }
+
+export async function deleteUser(request: ExtendedRequest, response: Response) {
+  /*
+   * delete users account
+   */
+  try {
+    //get id from token
+    const token = request.headers["token"];
+    const decoded_token = jwt.verify(
+      token,
+      process.env.SECRET_KEY as string,
+    ) as IPayload;
+    const user_id = decoded_token.id;
+
+    const connection = await pool.getConnection();
+    const [rows] = await connection.query(
+      "SELECT * FROM users WHERE id=? AND is_deleted=0;",
+      [user_id],
+    );
+    const [user] = rows as Array<IUsers>;
+
+    //if user does not exist
+    if (!user) {
+      logger.log({
+        level: "error",
+        message: `Tried to delete user of id:${user_id} but they do not exist`,
+        data: {
+          user: {
+            id: user_id,
+          },
+        },
+      });
+      return response.status(404).json({
+        code: 404,
+        status: "error",
+        message: "User not found",
+        data: null,
+        metadata: null,
+      });
+    }
+
+    //else if user exists
+    const [results] = await connection.query(
+      "UPDATE users SET is_deleted=1 WHERE id=?;",
+      [user_id],
+    );
+    logger.log({
+      level: "info",
+      message: `Deleted user account of id:${user_id}`,
+      data: {
+        user: {
+          id: user_id,
+          role: user.role,
+        },
+      },
+    });
+
+    return response.status(200).json({
+      code: 200,
+      status: "success",
+      message: `You have successfully deleted your account!`,
+      data: null,
+      metadata: null,
+    });
+  } catch (error) {
+    logger.log({
+      level: "error",
+      message: "Internal server error occurred",
+      data: { error },
+    });
+
+    return response.status(500).json({
+      code: 500,
+      status: "error",
+      message: "Internal server error",
+      data: { error },
+      metadata: null,
+    });
+  }
+}
