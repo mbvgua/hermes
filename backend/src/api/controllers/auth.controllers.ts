@@ -12,7 +12,12 @@ import {
   registerUserSchema,
   updateUserSchema,
 } from "../validators/users.validators";
-import { UserRoles, IUsers, IPayload } from "../models/users.models";
+import {
+  UserRoles,
+  IUsers,
+  IPayload,
+  ExtendedRequest,
+} from "../models/users.models";
 import { validationHelper } from "../helpers/validator.helpers";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
@@ -209,14 +214,24 @@ export async function loginUser(request: Request, response: Response) {
   }
 }
 
-export async function getUserById(request: Request, response: Response) {
+export async function getUserById(
+  request: ExtendedRequest,
+  response: Response,
+) {
   /*
    * get user by their id, i.e user profile
    * else return an error
    */
-  const user_id = parseInt(request.query.id as string);
-
   try {
+    //get id from the user token
+    //TODO:Also handle this massive error
+    const token = request.headers["token"];
+    const decoded_token = jwt.verify(
+      token,
+      process.env.SECRET_KEY as string,
+    ) as IPayload;
+    const user_id = decoded_token.id;
+
     const connection = await pool.getConnection();
     const [rows] = await connection.query(
       "SELECT * FROM users WHERE id=? AND is_deleted=0;",

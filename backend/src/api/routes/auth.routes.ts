@@ -1,17 +1,9 @@
 import express from "express";
-import {
-  getUserById,
-  getUsers,
-  loginUser,
-  registerUser,
-} from "../controllers/auth.controllers";
-import { isAdmin } from "../middlewares/auth.middleware";
+import { loginUser, registerUser } from "../controllers/auth.controllers";
 
-const userRouter = express.Router();
+const authRouter = express.Router();
 
-userRouter.post("/register", registerUser);
-userRouter.post("/login", loginUser);
-userRouter.get("/get-user", getUserById);
-userRouter.get("/get-users", isAdmin, getUsers);
+authRouter.post("/register", registerUser);
+authRouter.post("/login", loginUser);
 
-export default userRouter;
+export default authRouter;
