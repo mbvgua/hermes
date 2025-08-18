@@ -1,0 +1,5 @@
+# the genereated db schema
+db.sql
+
+# output from db creation
+*.tab

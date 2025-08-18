@@ -1,146 +1,370 @@
-import { Request,Response } from 'express'
-import { pool } from '../helpers/db.helpers'
-import bcrypt  from 'bcrypt'
-import { getUserSchema, loginUserSchema, registerUserSchema, updateUserSchema } from '../validators/users.validators'
-import { UserRoles, Users } from '../models/users.models'
+import { NextFunction, Request, Response } from "express";
+import { logger } from "../../config/winston.config";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import path from "path";
 
+import { pool } from "./../../config/db.config";
+import {
+  getUserSchema,
+  updateUserSchema,
+} from "../validators/users.validators";
+import {
+  UserRoles,
+  IUsers,
+  IPayload,
+  ExtendedRequest,
+} from "../models/users.models";
+import { validationHelper } from "../helpers/validator.helpers";
 
-// register user
-export async function registerUser(request:Request,response:Response){
-    const { username,email,password} = request.body
-    const role = UserRoles.Customer
-    const {error} = registerUserSchema.validate(request.body)
-    try{
-        if(error){
-            return response.status(401).json({error:error.details[0].message})
-        } else {
-            const hashedPassword = await bcrypt.hash(password,9)
-            await pool.query(
-                `INSERT INTO users(username,email,password,role) VALUES (
-                    '${username}',
-                    '${email}',
-                    '${hashedPassword}',
-                    '${role}'
-                );`
-            )
-            console.log(role,password,hashedPassword)
-            return response.status(200).json({success:`Congratulations! You have successfully created a new account.`})
-        }
-    } catch(error){
-        console.error('Error occurred at: ', error)
-        return response.status(500).json({error:error})
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+
+export async function getUserById(
+  request: ExtendedRequest,
+  response: Response,
+) {
+  /*
+   * get user by their id, i.e user profile
+   * else return an error
+   */
+  try {
+    //get id from the user token
+    //TODO:Also handle this massive error
+    const token = request.headers["token"];
+    const decoded_token = jwt.verify(
+      token,
+      process.env.SECRET_KEY as string,
+    ) as IPayload;
+    const user_id = decoded_token.id;
+
+    const connection = await pool.getConnection();
+    const [rows] = await connection.query(
+      "SELECT * FROM users WHERE id=? AND is_deleted=0;",
+      [user_id],
+    );
+    const user_making_request = rows as Array<IUsers>;
+
+    //user does not exist
+    if (!user_making_request || user_making_request.length < 0) {
+      //TODO: find out why this does NOT run, it skips right to the catch block
+      logger.log({
+        level: "error",
+        message: `Tried viewing profile of id:${user_id} which does not exist`,
+        data: null,
+      });
+
+      return response.status(404).json({
+        code: 404,
+        status: "error",
+        message: "User not found",
+        data: null,
+        metadata: null,
+      });
     }
+
+    //log action
+    logger.log({
+      level: "info",
+      message: `${user_making_request[0].username} viewed their profile`,
+      data: {
+        user: {
+          username: user_making_request[0].username,
+          password: user_making_request[0].password,
+        },
+      },
+    });
+
+    //return profile
+    return response.status(200).json({
+      code: 200,
+      status: "success",
+      message: `Successfully retrieved ${user_making_request[0].username}'s profile`,
+      data: {
+        user: {
+          id: user_id,
+          username: user_making_request[0].username,
+          email: user_making_request[0].email,
+          role: user_making_request[0].role,
+        },
+      },
+    });
+  } catch (error) {
+    logger.log({
+      level: "error",
+      message: "Internal server error occurred",
+      data: { error },
+    });
+
+    return response.status(500).json({
+      code: 500,
+      status: "error",
+      message: "Internal server error",
+      data: { error },
+      metadata: null,
+    });
+  }
 }
 
-// login user
-export async function loginUser(request:Request,response:Response){
-    const {username,password} = request.body
-    console.log(username,password)
-    const {error} = loginUserSchema.validate(request.body)
-    try{
-        if(error){
-            return response.status(401).json({error:error.details[0].message})
-        } else {
-            const [rows,fields] = await pool.query(
-                `SELECT * FROM users
-                WHERE username='${username}'
-                AND isDeleted=0;`
-            )
-            const [user] = rows as Array<Users>
-            if(!user){
-                return response.status(401).json({error:`You do not have an account. Try creating one instead?`})
-            } else if(user.username === username) {
-                const isValid = await bcrypt.compare(password,user.password)
-                if(isValid){
-                    return response.status(200).json({success:`Congratulations ${user.username}! You have logged back in successfuly.`})
-                } else {
-                    return response.status(401).json({error:`You have entered an incorrect username or password. Try again?`})
-                }
-            } else {
-                return response.status(401).json({error:`You do not have an account. Try creating one instead?`})
-            }
-        }
-    }catch(error){
-        console.error('An error occurred: ',error)
-        return response.status(500).json({error:error})
-    }
-}
+export async function getUsers(request: Request, response: Response) {
+  /*
+   * admin only. get users in system
+   * has pagination with limit-offset
+   */
+  const page = parseInt((request.query.page as string) ?? "1");
+  const limit = parseInt((request.query.limit as string) ?? "10");
+  const offset = (page - 1) * limit;
 
-// get users
-export async function getUsers(request:Request,response:Response){
-    try{
-        const [rows,fields] = await pool.query(
-            `SELECT * FROM users WHERE isDeleted=0;`
-        )
-        const users = rows as Array<Users[]>
-        if(users){
-            return response.status(200).send(users)
-        } else {
-            return response.status(401).json({error:`There are currently no users in your database. Try again later?`})
-        }
-    } catch(error){
-        console.error('An error occurred: ',error)
-        return response.status(500).json({error:error})
-    }
-}
+  //decode token to get user_id
+  const token = request.headers["token"];
+  //NOTE:Massive error, still runs though
+  const decoded_token = jwt.verify(
+    token,
+    process.env.SECRET_KEY as string,
+  ) as IPayload;
+  const user_id = decoded_token.id;
 
+  try {
+    const connection = await pool.getConnection();
+
+    //get user making request for logging
+    const [user] = await connection.query(`SELECT * FROM users WHERE id=?;`, [
+      user_id,
+    ]);
+    const user_making_request = user as Array<IUsers>;
+
+    //get total number of users
+    const [results]: any = await connection.query(
+      "SELECT COUNT(*) as total FROM users;",
+    );
+    const total_items = results[0].total;
+
+    //get paginated results
+    const [rows] = await connection.query(
+      "SELECT * FROM users LIMIT ? OFFSET ?;",
+      [limit, offset],
+    );
+    const users = rows as Array<IUsers>;
+    const total_pages = Math.ceil(total_items / limit);
+
+    //log inormation
+    logger.log({
+      level: "info",
+      message: `${user_making_request[0].username} queried all users in the database\n
+                who are currently ${total_items}.\n
+                They are on page ${page} displaying ${limit} users.`,
+    });
+
+    //return response
+    return response.status(200).json({
+      code: 200,
+      status: "success",
+      message: "Users successfully retrieved",
+      data: { users },
+      metadata: {
+        previous_page: +page - 1,
+        current_page: +page,
+        next_page: +page + 1,
+        total_items,
+        total_pages,
+      },
+    });
+  } catch (error) {
+    logger.log({
+      level: "error",
+      message: "Internal server error occurred",
+      data: { error },
+    });
+
+    return response.status(500).json({
+      code: 500,
+      status: "error",
+      message: "Internal server error",
+      data: { error },
+      metadata: null,
+    });
+  }
+}
 
 // update user
-export async function updateUser(request:Request<{id:string}>,response:Response){
-    const id = request.params.id
-    const {username,email,password} = request.body
-    const {error} = updateUserSchema.validate(request.body)
-    try{
-        if(error){
-            return response.status(401).json({error:error.details[0].message})
-        } else {
-            const [rows,fields] = await pool.query(
-                `SELECT * FROM users
-                WHERE id='${id}
-                AND isDeleted=0;'`
-            )
-            const [user] = rows as Array<Users>
-            if(user){
-                const hashedPassword = await bcrypt.hash(password,9)
-                await pool.query(
-                    `UPDATE users SET
-                        username='${username}',
-                        email='${email}',
-                        password='${hashedPassword}'
-                    WHERE id='${user.id}'
-                    AND isDeleted=0;`
-                )
-                return response.status(200).json({success:'Congratulations! Your details have been successfully updated.'})
-            } else {
-                return response.status(401).json({error:`User does not exist. Try again?`})
-            }
-        }
-    } catch(error){
-        console.error('An error occurred: ',error)
-        return response.status(500).json({error:error})
+export async function updateUser(request: ExtendedRequest, response: Response) {
+  const { username, email, password } = request.body;
+  try {
+    // get token from response body
+    const token = request.headers["token"];
+    const decoded_token = jwt.verify(
+      token,
+      process.env.SECRET_KEY as string,
+    ) as IPayload;
+    const user_id = decoded_token.id;
+
+    //error validation
+    const is_valid_request = await validationHelper(
+      request,
+      response,
+      updateUserSchema,
+    );
+
+    if (is_valid_request) {
+      const connection = await pool.getConnection();
+      const [rows] = await connection.query(
+        `SELECT * FROM users WHERE id=? AND is_deleted=0;`,
+        [user_id],
+      );
+      const [user] = rows as Array<IUsers>;
+      if (!user) {
+        logger.log({
+          level: "error",
+          message: `Tried to update user of id:${user_id} but they do not exist`,
+          data: {
+            user: {
+              id: user_id,
+              username,
+            },
+          },
+        });
+        return response.status(404).json({
+          code: 404,
+          status: "error",
+          message: "User not found",
+          data: null,
+          metadata: null,
+        });
+      }
+
+      //else if user exists
+      const salt_rounds = 9;
+      const hashed_password = await bcrypt.hash(password, salt_rounds);
+      const [results] = await connection.query(
+        "UPDATE users SET username=?, email=?, password=? WHERE id=? AND is_deleted=0;",
+        [username, email, hashed_password, user_id],
+      );
+
+      //update token
+      const payload: IPayload = {
+        id: user.id,
+        username: username,
+        email: email,
+        role: user.role,
+      };
+      const token = jwt.sign(payload, process.env.SECRET_KEY as string, {
+        expiresIn: "7 days",
+      });
+
+      logger.log({
+        level: "info",
+        message: `Updated ${user.username}'s of id:${user_id} profile`,
+        data: {
+          user: {
+            username,
+            role: user.role,
+          },
+        },
+      });
+
+      return response.status(201).json({
+        code: 201,
+        status: "success",
+        message: `Congratulations ${username}! Your details have been successfully updated.`,
+        data: {
+          token: token,
+        },
+        metadata: null,
+      });
     }
+  } catch (error) {
+    logger.log({
+      level: "error",
+      message: "Internal server error occurred",
+      data: { error },
+    });
+
+    return response.status(500).json({
+      code: 500,
+      status: "error",
+      message: "Internal server error",
+      data: { error },
+      metadata: null,
+    });
+  }
 }
 
-// delete user
-export async function deleteUser(request:Request<{id:string}>,response:Response){
-    const id = request.params.id
-    try{
-        const [rows,fields] = await pool.query(
-            `SELECT * FROM users
-            WHERE id='${id}'
-            AND isDeleted=0;`
-        )
-        const [user] = rows as Array<Users>
-        if(user){
-            const [rows,fields] = await pool.query(
-                `UPDATE users SET isDeleted=1 WHERE id = '${id}';`
-            )
-            return response.status(200).json({success:`Congratulations! You have successfully deleted you account.`})
-        } else {
-            return response.status(401).json({error:`You do not have an account. Try again?`})
-        }
-    } catch(error){
-        console.error('An error occurred: ',error)
-        return response.status(500).json({error:error})
+export async function deleteUser(request: ExtendedRequest, response: Response) {
+  /*
+   * delete users account
+   */
+  try {
+    //get id from token
+    const token = request.headers["token"];
+    const decoded_token = jwt.verify(
+      token,
+      process.env.SECRET_KEY as string,
+    ) as IPayload;
+    const user_id = decoded_token.id;
+
+    const connection = await pool.getConnection();
+    const [rows] = await connection.query(
+      "SELECT * FROM users WHERE id=? AND is_deleted=0;",
+      [user_id],
+    );
+    const [user] = rows as Array<IUsers>;
+
+    //if user does not exist
+    if (!user) {
+      logger.log({
+        level: "error",
+        message: `Tried to delete user of id:${user_id} but they do not exist`,
+        data: {
+          user: {
+            id: user_id,
+          },
+        },
+      });
+      return response.status(404).json({
+        code: 404,
+        status: "error",
+        message: "User not found",
+        data: null,
+        metadata: null,
+      });
     }
+
+    //else if user exists
+    const [results] = await connection.query(
+      "UPDATE users SET is_deleted=1 WHERE id=?;",
+      [user_id],
+    );
+    logger.log({
+      level: "info",
+      message: `Deleted user account of id:${user_id}`,
+      data: {
+        user: {
+          id: user_id,
+          role: user.role,
+        },
+      },
+    });
+
+    return response.status(200).json({
+      code: 200,
+      status: "success",
+      message: `You have successfully deleted your account!`,
+      data: null,
+      metadata: null,
+    });
+  } catch (error) {
+    logger.log({
+      level: "error",
+      message: "Internal server error occurred",
+      data: { error },
+    });
+
+    return response.status(500).json({
+      code: 500,
+      status: "error",
+      message: "Internal server error",
+      data: { error },
+      metadata: null,
+    });
+  }
 }

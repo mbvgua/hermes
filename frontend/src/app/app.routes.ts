@@ -1,18 +1,48 @@
 import { Routes } from '@angular/router';
-import { RegisterComponent } from './components/register/register.component';
-import { LoginComponent } from './components/login/login.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { Error404Component } from './components/error-404/error-404.component';
-import { ContactUsComponent } from './components/contact-us/contact-us.component';
+import { Homepage } from './components/homepage/homepage';
 
 export const routes: Routes = [
-    {path:'', component:DashboardComponent},
-    {path:'auth', children:
-        [
-            {path:'register', component:RegisterComponent},
-            {path:'login', component:LoginComponent},
-        ]
-    },
-    {path:'contact-us', component:ContactUsComponent},
-    {path:'**',component:Error404Component}
+  {
+    path: '',
+    component: Homepage,
+    title: 'Homepage',
+  },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./components/login/login').then((m) => m.Login),
+    title: 'Login',
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./components/register/register').then((m) => m.Register),
+    title: 'Register',
+  },
+  {
+    path: 'contact-us',
+    loadComponent: () =>
+      import('./components/contact-us/contact-us').then((m) => m.ContactUs),
+    title: 'Contact Us',
+  },
+  // app redirects
+  { path: 'index', redirectTo: '' },
+  { path: 'home', redirectTo: '' },
+  { path: 'signup', redirectTo: 'register' },
+  { path: 'signin', redirectTo: 'login' },
+
+  //errors in the app
+  {
+    path: 'error-500',
+    loadComponent: () =>
+      import('./components/errors/error-500/error-500').then((m) => m.Error500),
+    title: 'Internal Server Error',
+  },
+  // wildcard to catch non-existent routes
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./components/errors/error-404/error-404').then((m) => m.Error404),
+    title: 'Not Found',
+  },
 ];
