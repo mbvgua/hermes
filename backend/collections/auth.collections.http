@@ -1,0 +1,28 @@
+###
+# registerUser
+POST http://localhost:4000/v1/auth/register
+Content-Type: application/json
+
+{
+    "username":"arthur",
+    "email":"arthur@gmail.com",
+    "password":"Qwerty12!"
+}
+
+###
+# loginUser
+POST http://localhost:4000/v1/auth/login
+Content-Type: application/json
+
+{
+    "username":"arthur",
+    "password":"Qwerty12!"
+}
+
+###
+#forgotPassword
+
+###################
+# DeleteUser
+PATCH http://localhost:4000/auth/delete/4
+

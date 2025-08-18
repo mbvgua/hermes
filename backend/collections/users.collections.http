@@ -1,42 +1,26 @@
-###################
-# registerUser
-POST http://localhost:4000/auth/register
+###
+# getUser
+GET http://localhost:4000/v1/users/get-user
+token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInVzZXJuYW1lIjoiYXJ0aHVyIiwiZW1haWwiOiJhcnRodXJAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzU1NTA5MDg5LCJleHAiOjE3NTYxMTM4ODl9.nc92UTQBAjcCInQ0DXTrw86TwLO510rWo585WqGCr6I
+
+###
+#getUsers
+GET http://localhost:4000/v1/users/get-users?page=1&&limit=10
+token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInVzZXJuYW1lIjoiYXJ0aHVyIiwiZW1haWwiOiJhcnRodXJAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzU1NTA5MDg5LCJleHAiOjE3NTYxMTM4ODl9.nc92UTQBAjcCInQ0DXTrw86TwLO510rWo585WqGCr6I
+
+###
+# updateUser
+PATCH http://localhost:4000/v1/users/update
+token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInVzZXJuYW1lIjoiYXJ0aHVyIiwiZW1haWwiOiJhcnRodXJAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzU1NTA5MDg5LCJleHAiOjE3NTYxMTM4ODl9.nc92UTQBAjcCInQ0DXTrw86TwLO510rWo585WqGCr6I
 Content-Type: application/json
 
 {
-    "username":"mkuru",
-    "email":"mkuru@gmail.com",
-    "password":"Qwerty12!"
+    "username":"michael",
+    "email":"michael@gmail.com",
+    "password":"@Lance25"
 }
 
-###################
-# loginUser
-POST http://localhost:4000/auth/login
-Content-Type: application/json
-
-{
-    "username":"mkuru",
-    "password":"Qwerty12!"
-}
-
-
-###################
-# getUsers
-GET http://localhost:4000/auth/get-users
-
-
-###################
-# UpdateUser
-PATCH http://localhost:4000/auth/update/5/
-Content-Type: application/json
-
-{
-    "username":"mkuru",
-    "email":"mkuru@gmail.com",
-    "password":"Qwerty12!"
-}
-
-###################
-# DeleteUser
-PATCH http://localhost:4000/auth/delete/4
-
+###
+# deleteUser
+PATCH http://localhost:4000/v1/users/delete
+token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInVzZXJuYW1lIjoiYXJ0aHVyIiwiZW1haWwiOiJhcnRodXJAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzU1NTA5MDg5LCJleHAiOjE3NTYxMTM4ODl9.nc92UTQBAjcCInQ0DXTrw86TwLO510rWo585WqGCr6I

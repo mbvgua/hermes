@@ -1,12 +1,17 @@
-import express from 'express'
-import { deleteUser, getUsers, loginUser, registerUser, updateUser } from '../controllers/users.controllers'
+import express from "express";
+import {
+  deleteUser,
+  getUserById,
+  getUsers,
+  updateUser,
+} from "../controllers/users.controllers";
+import { isAdmin, verifyToken } from "../middlewares/auth.middleware";
 
-const userRouter = express.Router()
+const userRouter = express.Router();
 
-userRouter.post('/register/',registerUser)
-userRouter.post('/login/',loginUser)
-userRouter.get('/get-users/',getUsers)
-userRouter.patch('/update/:id',updateUser)
-userRouter.patch('/delete/:id',deleteUser)
+userRouter.get("/get-user", verifyToken, getUserById);
+userRouter.get("/get-users", verifyToken, isAdmin, getUsers);
+userRouter.patch("/update", verifyToken, updateUser);
+userRouter.patch("/delete", verifyToken, deleteUser);
 
-export default userRouter
+export default userRouter;
