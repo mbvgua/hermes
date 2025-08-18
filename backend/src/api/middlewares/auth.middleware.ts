@@ -8,7 +8,56 @@ import { ExtendedRequest, IPayload, UserRoles } from "../models/users.models";
 
 dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
 
-export async function  isAdmin(
+export async function verifyToken(
+  request: ExtendedRequest,
+  response: Response,
+  next: NextFunction,
+) {
+  /*
+   * ensures a token is present in request
+   */
+  //read the token
+  const token = request.headers["token"];
+
+  try {
+    //if token does not exists, exit with error
+    if (!token) {
+      logger.log({
+        level: "error",
+        message: "Unauthorized attempt with no token",
+        data: null,
+      });
+
+      return response.status(403).json({
+        code: 403,
+        status: "error",
+        message: "Unauthorized! No token provided",
+        data: null,
+        metadata: null,
+      });
+    }
+    //else if token is present, continue
+    next();
+  } catch (error) {
+    //log any error
+    logger.log({
+      level: "error",
+      message: "Internal server error occurred",
+      data: { error },
+    });
+
+    //return error
+    return response.status(500).json({
+      code: 500,
+      status: "error",
+      message: "Internal server error",
+      data: { error },
+      metadata: null,
+    });
+  }
+}
+
+export async function isAdmin(
   request: ExtendedRequest,
   response: Response,
   next: NextFunction,
@@ -18,23 +67,6 @@ export async function  isAdmin(
    */
   //read the token
   const token = request.headers["token"];
-
-  //if token does not exists, exit with error
-  if (!token) {
-    logger.log({
-      level: "error",
-      message: "Unauthorized attempt with no token",
-      data: null,
-    });
-
-    return response.status(403).json({
-      code: 403,
-      status: "error",
-      message: "Unauthorized! No token provided",
-      data: null,
-      metadata: null,
-    });
-  }
 
   //else if token does exist
   try {
@@ -61,8 +93,7 @@ export async function  isAdmin(
         metadata: null,
       });
     }
-    //else if user role is an admin
-    // go to next function to be executed
+    //else if user role is an admin, continue
     next();
   } catch (error) {
     //log any error
