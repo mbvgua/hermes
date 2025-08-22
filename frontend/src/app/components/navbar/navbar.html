@@ -71,40 +71,57 @@
     <!--Logo end-->
 
     <!--Navbar start-->
+    <!--toggler. shows only on smaller screens.-->
     <button
       class="navbar-toggler"
       type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#collaspeNav"
-      aria-controls="navbarsExample05"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#offcanvasWithBothOptions"
+      aria-controls="offcanvasWithBothOptions"
       aria-expanded="false"
       aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
+    <!--end toggler-->
 
-    <div class="collapse navbar-collapse d-lg-flex" id="collaspeNav">
-      <a class="navbar-brand col-lg-3 me-0" href="#">
-        <!--despite being empty, dont remove to allow centering of navbar-->
-      </a>
-      <ul class="navbar-nav col-lg-6 justify-content-lg-center">
-        <ul class="nav gap-4 mb-0">
+    <div
+      class="offcanvas offcanvas-end"
+      data-bs-scroll="true"
+      tabindex="-1"
+      id="offcanvasWithBothOptions"
+      aria-labelledby="offcanvasWithBothOptionsLabel"
+    >
+      <div class="offcanvas-header">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="offcanvas-body">
+        <a class="navbar-brand col-lg-3 me-0" href="#">
+          <!--despite being empty, dont remove to allow centering of navbar-->
+        </a>
+        <ul class="navbar-nav col-lg-6 justify-content-lg-center px-3 py-2">
           <li class="nav-item">
             <a
               routerLink=""
               routerLinkActive="text-primary"
               [routerLinkActiveOptions]="{ exact: true }"
-              class="nav-link fw-bold fs-6 px-0"
+              class="nav-link fw-bold fs-6"
               >Home</a
             >
           </li>
-          <li class="nav-item dropdown position-relative">
+          <li class="nav-item dropdown">
             <a
-              class="nav-link dropdown-toggle fw-bold fs-6 text-secondary"
+              class="nav-link dropdown-toggle fw-bold fs-6 text-secondary d-flex align-items-center text-decoration-none"
               id="categoriesDropdown"
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
+              aria-haspopup="true"
             >
               Categories
             </a>
@@ -114,9 +131,6 @@
               style="min-width: 250px"
             >
               <li>
-                <svg class="ms-1" width="16" height="16">
-                  <use xlink:href="#icon-arrow-down"></use>
-                </svg>
                 <a
                   class="dropdown-item fw-bold fs-6 text-secondary"
                   href="javascript:void(0)"
@@ -151,97 +165,117 @@
               routerLink="contact-us"
               routerLinkActive="text-primary"
               [routerLinkActiveOptions]="{ exact: true }"
-              class="nav-link fw-bold fs-6 px-0"
-              >Contact</a
+              class="nav-link fw-bold fs-6"
+              >Contact Us</a
             >
           </li>
+
+          <form class="px-3" role="search">
+            <input
+              class="form-control"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+          </form>
         </ul>
 
-        <form class="px-3" role="search">
-          <input
-            class="form-control"
-            type="search"
-            placeholder="Search"
-            aria-label="Search"
-          />
-        </form>
-      </ul>
-    </div>
-
-    <!-- Icon set (wishlist, cart, profile) -->
-    <div class="d-flex align-items-center gap-4 ms-auto">
-      <!-- Wishlist -->
-      <div
-        class="position-relative"
-        role="button"
-        tabindex="0"
-        aria-label="Wishlist"
-      >
-        <svg
-          width="20"
-          height="20"
-          class="fill-secondary hover-fill-primary"
-          role="img"
-          aria-hidden="true"
-        >
-          <use xlink:href="#icon-wishlist"></use>
-        </svg>
-        <span
-          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
-          >0</span
-        >
-      </div>
-      <!-- Cart -->
-      <div
-        class="position-relative"
-        role="button"
-        tabindex="0"
-        aria-label="Shopping Cart"
-      >
-        <svg
-          width="20"
-          height="20"
-          class="fill-secondary hover-fill-primary"
-          role="img"
-          aria-hidden="true"
-        >
-          <use xlink:href="#icon-cart"></use>
-        </svg>
-        <span
-          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
-          >0</span
-        >
-      </div>
-
-      <!-- Profile Dropdown -->
-      <div class="dropdown">
-        <a
-          class="d-flex align-items-center text-secondary text-decoration-none dropdown-toggle"
-          id="profileDropdown"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-          role="button"
-          aria-haspopup="true"
-        >
-          <svg
-            width="27"
-            height="27"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            class="me-1"
-            role="img"
-            aria-hidden="true"
+        <!-- Icon set (wishlist, cart, profile) -->
+        <div class="d-flex align-items-center gap-4 ms-auto pt-3 px-3 py-2">
+          <!-- Wishlist -->
+          <div
+            class="position-relative"
+            role="button"
+            tabindex="0"
+            aria-label="Wishlist"
           >
-            <use xlink:href="#icon-profile"></use>
-          </svg>
-        </a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item fw-bold fs-6 text-secondary" href="#">Profile</a></li>
-          <li><a class="dropdown-item fw-bold fs-6 text-secondary" href="#">Login</a></li>
-          <li><a class="dropdown-item fw-bold fs-6 text-secondary" href="#">Register</a></li>
-          <li><a class="dropdown-item fw-bold fs-6 text-secondary" href="#">Logout</a></li>
-        </ul>
+            <svg
+              width="20"
+              height="20"
+              class="fill-secondary hover-fill-primary"
+              role="img"
+              aria-hidden="true"
+            >
+              <use xlink:href="#icon-wishlist"></use>
+            </svg>
+            <span
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
+              >0</span
+            >
+          </div>
+          <!-- Cart -->
+          <div
+            class="position-relative"
+            role="button"
+            tabindex="0"
+            aria-label="Shopping Cart"
+          >
+            <svg
+              width="20"
+              height="20"
+              class="fill-secondary hover-fill-primary"
+              role="img"
+              aria-hidden="true"
+            >
+              <use xlink:href="#icon-cart"></use>
+            </svg>
+            <span
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
+              >0</span
+            >
+          </div>
+
+          <!-- Profile Dropdown -->
+          <div class="dropdown">
+            <a
+              class="d-flex align-items-center text-secondary text-decoration-none dropdown-toggle"
+              id="profileDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              role="button"
+              aria-haspopup="true"
+            >
+              <svg
+                width="27"
+                height="27"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                class="me-1"
+                role="img"
+                aria-hidden="true"
+              >
+                <use xlink:href="#icon-profile"></use>
+              </svg>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item fw-bold fs-6 text-secondary" href="#"
+                  >Profile</a
+                >
+              </li>
+              <li>
+                <a
+                  routerLink="login"
+                  class="dropdown-item fw-bold fs-6 text-secondary"
+                  >Login</a
+                >
+              </li>
+              <li>
+                <a
+                  routerLink="register"
+                  class="dropdown-item fw-bold fs-6 text-secondary"
+                  >Register</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item fw-bold fs-6 text-secondary" href="#"
+                  >Logout</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>

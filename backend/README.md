@@ -6,12 +6,13 @@ The application backend has been built in [`NodeJs`](https://nodejs.org/en) and 
 
 Some worthwhile features I intend to implement here include:
 
-- [ ] Pagination of `GET` routes
-- [ ] Rate-limiting with `express-rate-limit`
+- [x] Pagination of `GET` routes
+- [x] Logging with `winston`
+- [x] Authorization middleware with `jwt`
 - [ ] Oauth with `passport.js`
+- [ ] Rate-limiting with `express-rate-limit`
 - [ ] Mpesa Integration with `daraja api`
 - [ ] Testing with `jest`
-- [ ] Logging with `winston`
 
 ## Setup
 

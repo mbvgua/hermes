@@ -8,16 +8,21 @@ export const routes: Routes = [
     title: 'Homepage',
   },
   {
-    path: 'login',
-    loadComponent: () =>
-      import('./components/login/login').then((m) => m.Login),
-    title: 'Login',
-  },
-  {
-    path: 'register',
-    loadComponent: () =>
-      import('./components/register/register').then((m) => m.Register),
-    title: 'Register',
+    path: 'auth',
+    children: [
+      {
+        path: 'login',
+        loadComponent: () =>
+          import('./components/login/login').then((m) => m.Login),
+        title: 'Login',
+      },
+      {
+        path: 'register',
+        loadComponent: () =>
+          import('./components/register/register').then((m) => m.Register),
+        title: 'Register',
+      },
+    ],
   },
   {
     path: 'contact-us',
@@ -28,8 +33,10 @@ export const routes: Routes = [
   // app redirects
   { path: 'index', redirectTo: '' },
   { path: 'home', redirectTo: '' },
-  { path: 'signup', redirectTo: 'register' },
-  { path: 'signin', redirectTo: 'login' },
+  { path: 'login', redirectTo: 'auth/login' },
+  { path: 'register', redirectTo: 'auth/register' },
+  { path: 'signup', redirectTo: 'auth/register' },
+  { path: 'signin', redirectTo: 'auth/login' },
 
   //errors in the app
   {
