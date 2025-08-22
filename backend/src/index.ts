@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import productRouter from "./api/routes/products.routes";
 import orderRouter from "./api/routes/orders.routes";
 import authRouter from "./api/routes/auth.routes";
@@ -12,6 +13,7 @@ const port = process.env.PORT;
 
 // add body to requests
 app.use(express.json());
+app.use(cors());
 
 // application middleware
 app.use("/v1/auth", authRouter);
