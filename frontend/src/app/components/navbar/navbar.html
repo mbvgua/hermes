@@ -249,30 +249,35 @@
               </svg>
             </a>
             <ul class="dropdown-menu">
-              <li>
-                <a class="dropdown-item fw-bold fs-6 text-secondary" href="#"
-                  >Profile</a
-                >
-              </li>
-              <li>
-                <a
-                  routerLink="login"
-                  class="dropdown-item fw-bold fs-6 text-secondary"
-                  >Login</a
-                >
-              </li>
-              <li>
-                <a
-                  routerLink="register"
-                  class="dropdown-item fw-bold fs-6 text-secondary"
-                  >Register</a
-                >
-              </li>
-              <li>
-                <a class="dropdown-item fw-bold fs-6 text-secondary" href="#"
-                  >Logout</a
-                >
-              </li>
+              @if (this.authService.showStatus()) {
+                <li>
+                  <a class="dropdown-item fw-bold fs-6 text-secondary"
+                    >Profile</a
+                  >
+                </li>
+                <li>
+                  <a
+                    (click)="logoutUser()"
+                    class="dropdown-item fw-bold fs-6 text-secondary"
+                    >Logout</a
+                  >
+                </li>
+              } @else if (!this.authService.showStatus()) {
+                <li>
+                  <a
+                    routerLink="login"
+                    class="dropdown-item fw-bold fs-6 text-secondary"
+                    >Login</a
+                  >
+                </li>
+                <li>
+                  <a
+                    routerLink="register"
+                    class="dropdown-item fw-bold fs-6 text-secondary"
+                    >Register</a
+                  >
+                </li>
+              }
             </ul>
           </div>
         </div>

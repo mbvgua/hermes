@@ -11,6 +11,7 @@ import { Router, RouterLink } from '@angular/router';
 import { LocalStorage } from '../../services/local-storage/local-storage';
 import { Users } from '../../services/users/users';
 import { UserResponse } from '../../models/users.models';
+import { Auth } from '../../services/auth/auth';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +23,7 @@ export class Login implements OnInit {
   constructor(
     private ls: LocalStorage,
     private userService: Users,
+    private authService: Auth,
   ) {}
 
   router = inject(Router);
@@ -44,6 +46,7 @@ export class Login implements OnInit {
             this.ls.setItem('token', response.data?.token);
 
             //navigate to main dashboard
+            this.authService.login();
             this.router.navigate(['dashboard']);
           }
         }, 2000);
