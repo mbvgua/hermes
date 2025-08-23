@@ -55,27 +55,49 @@
   style="min-height: 100vh; padding: 2rem"
 >
   <!--start toast notification-->
-  <div
-    #toastNotification
-    class="toast position-absolute end-0 m-3"
-    role="alert"
-    aria-live="assertive"
-    aria-atomic="true"
-    style="z-index: 1000"
-  >
-    <div class="toast-header">
-      <img src="..." class="rounded me-2" alt="..." />
-      <strong class="me-auto">Bootstrap</strong>
-      <small>11 mins ago</small>
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="toast"
-        aria-label="Close"
-      ></button>
+  @if (this.message()) {
+    <div
+      class="toast position-absolute end-0 m-3 show"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+      style="z-index: 1000"
+    >
+      <!--if success-->
+      @if (this.status() == "success") {
+        <div class="toast-header bg-success text-white fw-semibold">
+          <i class="bi bi-check2-circle"></i>
+          <strong class="me-auto">Success</strong>
+          <small>now</small>
+          <button
+            type="button"
+            class="btn-close bg-white"
+            data-bs-dismiss="toast"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="toast-body bg-success text-white fw-semibold">
+          {{ this.message() }}
+        </div>
+        <!--else if error-->
+      } @else if (this.status() == "error") {
+        <div class="toast-header bg-danger text-white fw-semibold">
+          <i class="bi bi-exclamation-triangle"></i>
+          <strong class="me-auto">Error</strong>
+          <small>now</small>
+          <button
+            type="button"
+            class="btn-close bg-white"
+            data-bs-dismiss="toast"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="toast-body bg-danger text-white fw-semibold">
+          {{ this.message() }}
+        </div>
+      }
     </div>
-    <div class="toast-body">Hello, world! This is a toast message.</div>
-  </div>
+  }
   <!--end toast notification-->
 
   <div class="mx-auto shadow rounded p-5 bg-white" style="max-width: 900px">
