@@ -16,6 +16,10 @@ export class Users {
   }
 
   // login existing users
+  loginUser(user: IUser): Observable<any> {
+    return this.http.post(this.base_url + 'auth/login', user);
+  }
+
   // get user by id
   // get all users
   // update user
