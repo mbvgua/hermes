@@ -37,9 +37,6 @@ export class Login implements OnInit {
         this.ls.removeAllItems();
         this.status.set(response.status);
         this.message.set(response.message);
-        console.log(response.data?.token);
-        //TODO: figure out how to decode this token without passing
-        //it as a decoded toke from the backend side
 
         setTimeout(() => {
           if (response.data?.token) {
@@ -61,7 +58,6 @@ export class Login implements OnInit {
         }
       },
     );
-    console.log(this.loginForm.value);
     this.loginForm.reset();
   }
 

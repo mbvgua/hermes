@@ -9,7 +9,7 @@ import { LocalStorage } from '../../services/local-storage/local-storage';
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss',
 })
-export class Navbar implements OnInit {
+export class Navbar {
   constructor(
     public authService: Auth, // public for acces on template side
     private router: Router,
@@ -24,9 +24,5 @@ export class Navbar implements OnInit {
     // call logout method. removes all data in local sorage
     // and redirects to login page
     this.authService.logout();
-  }
-
-  ngOnInit(): void {
-    console.log(this.authService.showStatus())
   }
 }

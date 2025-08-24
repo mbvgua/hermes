@@ -1,9 +1,14 @@
+export enum UserRoles {
+  Customer = 'customer',
+  Admin = 'admin',
+}
+
 export interface IUser {
   id?: string;
   username: string;
   email: string;
   password: string;
-  role?: string;
+  role?: UserRoles;
   created_at?: string;
   is_deleted?: string;
 }
@@ -21,13 +26,21 @@ export interface UserResponse {
   status: string;
   message: string;
   data: {
-    // register
     user?: IUser;
-    // login/update
+    role?: UserRoles;
     token?: string;
     // incase of validation error
     error?: string;
     path?: string;
   } | null;
   metadata: IPaginationData | null;
+}
+
+export interface DecodedTokenPayload {
+  id: string;
+  username: string;
+  email: string;
+  role: string; // dont user UserRole enum. problem in destructuring token
+  iat: number;
+  exp: number;
 }
