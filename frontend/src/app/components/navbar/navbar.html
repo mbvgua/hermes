@@ -40,249 +40,253 @@
 </svg>
 <!--Svg icons end-->
 
-<!-- Navbar start -->
-<header
-  class="navbar sticky-top border-bottom bg-white shadow-sm"
-  style="z-index: 1050; min-height: 70px"
->
-  <div
-    class="navbar navbar-expand-lg py-3 px-5 container-fluid"
-    aria-label="Fifth navbar example"
+<!--Only show if user is not logged in-->
+<!--Else use the side bar for navigation-->
+@if (!this.authService.showStatus()) {
+  <!-- Navbar start -->
+  <header
+    class="navbar sticky-top border-bottom bg-white shadow-sm"
+    style="z-index: 1050; min-height: 70px"
   >
-    <!-- Logo -->
-    <div class="px-2 py-0">
-      <!--smaller screen-->
-      <a class="d-block d-lg-none mb-3 mb-lg-0">
-        <img
-          src="hermes-logo.jpg"
-          alt="logo"
-          style="width: 70px; border-radius: 50%"
-        />
-      </a>
-      <!--larger screens-->
-      <a class="d-none d-lg-block">
-        <img
-          src="hermes-logo.jpg"
-          alt="logo"
-          style="width: 80px; border-radius: 50%"
-        />
-      </a>
-    </div>
-    <!--Logo end-->
-
-    <!--Navbar start-->
-    <!--toggler. shows only on smaller screens.-->
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="offcanvas"
-      data-bs-target="#offcanvasWithBothOptions"
-      aria-controls="offcanvasWithBothOptions"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <!--end toggler-->
-
     <div
-      class="offcanvas offcanvas-end"
-      data-bs-scroll="true"
-      tabindex="-1"
-      id="offcanvasWithBothOptions"
-      aria-labelledby="offcanvasWithBothOptionsLabel"
+      class="navbar navbar-expand-lg py-3 px-5 container-fluid"
+      aria-label="Fifth navbar example"
     >
-      <div class="offcanvas-header">
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="offcanvas"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="offcanvas-body">
-        <a class="navbar-brand col-lg-3 me-0" href="#">
-          <!--despite being empty, dont remove to allow centering of navbar-->
+      <!-- Logo -->
+      <div class="px-2 py-0">
+        <!--smaller screen-->
+        <a class="d-block d-lg-none mb-3 mb-lg-0">
+          <img
+            src="hermes-logo.jpg"
+            alt="logo"
+            style="width: 70px; border-radius: 50%"
+          />
         </a>
-        <ul class="navbar-nav col-lg-6 justify-content-lg-center px-3 py-2">
-          <li class="nav-item">
-            <a
-              routerLink=""
-              routerLinkActive="text-primary"
-              [routerLinkActiveOptions]="{ exact: true }"
-              class="nav-link fw-bold fs-6"
-              >Home</a
-            >
-          </li>
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle fw-bold fs-6 text-secondary d-flex align-items-center text-decoration-none"
-              id="categoriesDropdown"
+        <!--larger screens-->
+        <a class="d-none d-lg-block">
+          <img
+            src="hermes-logo.jpg"
+            alt="logo"
+            style="width: 80px; border-radius: 50%"
+          />
+        </a>
+      </div>
+      <!--Logo end-->
+
+      <!--Navbar start-->
+      <!--toggler. shows only on smaller screens.-->
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasWithBothOptions"
+        aria-controls="offcanvasWithBothOptions"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <!--end toggler-->
+
+      <div
+        class="offcanvas offcanvas-end"
+        data-bs-scroll="true"
+        tabindex="-1"
+        id="offcanvasWithBothOptions"
+        aria-labelledby="offcanvasWithBothOptionsLabel"
+      >
+        <div class="offcanvas-header">
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="offcanvas-body">
+          <a class="navbar-brand col-lg-3 me-0" href="#">
+            <!--despite being empty, dont remove to allow centering of navbar-->
+          </a>
+          <ul class="navbar-nav col-lg-6 justify-content-lg-center px-3 py-2">
+            <li class="nav-item">
+              <a
+                routerLink=""
+                routerLinkActive="text-primary"
+                [routerLinkActiveOptions]="{ exact: true }"
+                class="nav-link fw-bold fs-6"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle fw-bold fs-6 text-secondary d-flex align-items-center text-decoration-none"
+                id="categoriesDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                aria-haspopup="true"
+              >
+                Categories
+              </a>
+              <ul
+                class="dropdown-menu shadow p-3"
+                aria-labelledby="categoriesDropdown"
+                style="min-width: 250px"
+              >
+                <li>
+                  <a
+                    class="dropdown-item fw-bold fs-6 text-secondary"
+                    href="javascript:void(0)"
+                    >Foods
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item fw-bold fs-6 text-secondary"
+                    href="javascript:void(0)"
+                    >Clothing</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item fw-bold fs-6 text-secondary"
+                    href="javascript:void(0)"
+                    >Electronics</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item fw-bold fs-6 text-secondary"
+                    href="javascript:void(0)"
+                    >Sale</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a
+                routerLink="contact-us"
+                routerLinkActive="text-primary"
+                [routerLinkActiveOptions]="{ exact: true }"
+                class="nav-link fw-bold fs-6"
+                >Contact Us</a
+              >
+            </li>
+
+            <form class="px-3" role="search">
+              <input
+                class="form-control"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+            </form>
+          </ul>
+
+          <!-- Icon set (wishlist, cart, profile) -->
+          <div class="d-flex align-items-center gap-4 ms-auto pt-3 px-3 py-2">
+            <!-- Wishlist -->
+            <div
+              class="position-relative"
               role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              aria-haspopup="true"
-            >
-              Categories
-            </a>
-            <ul
-              class="dropdown-menu shadow p-3"
-              aria-labelledby="categoriesDropdown"
-              style="min-width: 250px"
-            >
-              <li>
-                <a
-                  class="dropdown-item fw-bold fs-6 text-secondary"
-                  href="javascript:void(0)"
-                  >Foods
-                </a>
-              </li>
-              <li>
-                <a
-                  class="dropdown-item fw-bold fs-6 text-secondary"
-                  href="javascript:void(0)"
-                  >Clothing</a
-                >
-              </li>
-              <li>
-                <a
-                  class="dropdown-item fw-bold fs-6 text-secondary"
-                  href="javascript:void(0)"
-                  >Electronics</a
-                >
-              </li>
-              <li>
-                <a
-                  class="dropdown-item fw-bold fs-6 text-secondary"
-                  href="javascript:void(0)"
-                  >Sale</a
-                >
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a
-              routerLink="contact-us"
-              routerLinkActive="text-primary"
-              [routerLinkActiveOptions]="{ exact: true }"
-              class="nav-link fw-bold fs-6"
-              >Contact Us</a
-            >
-          </li>
-
-          <form class="px-3" role="search">
-            <input
-              class="form-control"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-          </form>
-        </ul>
-
-        <!-- Icon set (wishlist, cart, profile) -->
-        <div class="d-flex align-items-center gap-4 ms-auto pt-3 px-3 py-2">
-          <!-- Wishlist -->
-          <div
-            class="position-relative"
-            role="button"
-            tabindex="0"
-            aria-label="Wishlist"
-          >
-            <svg
-              width="20"
-              height="20"
-              class="fill-secondary hover-fill-primary"
-              role="img"
-              aria-hidden="true"
-            >
-              <use xlink:href="#icon-wishlist"></use>
-            </svg>
-            <span
-              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
-              >0</span
-            >
-          </div>
-          <!-- Cart -->
-          <div
-            class="position-relative"
-            role="button"
-            tabindex="0"
-            aria-label="Shopping Cart"
-          >
-            <svg
-              width="20"
-              height="20"
-              class="fill-secondary hover-fill-primary"
-              role="img"
-              aria-hidden="true"
-            >
-              <use xlink:href="#icon-cart"></use>
-            </svg>
-            <span
-              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
-              >0</span
-            >
-          </div>
-
-          <!-- Profile Dropdown -->
-          <div class="dropdown">
-            <a
-              class="d-flex align-items-center text-secondary text-decoration-none dropdown-toggle"
-              id="profileDropdown"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              role="button"
-              aria-haspopup="true"
+              tabindex="0"
+              aria-label="Wishlist"
             >
               <svg
-                width="27"
-                height="27"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-                class="me-1"
+                width="20"
+                height="20"
+                class="fill-secondary hover-fill-primary"
                 role="img"
                 aria-hidden="true"
               >
-                <use xlink:href="#icon-profile"></use>
+                <use xlink:href="#icon-wishlist"></use>
               </svg>
-            </a>
-            <ul class="dropdown-menu">
-              @if (this.authService.showStatus()) {
-                <li>
-                  <a class="dropdown-item fw-bold fs-6 text-secondary"
-                    >Profile</a
-                  >
-                </li>
-                <li>
-                  <a
-                    (click)="logoutUser()"
-                    class="dropdown-item fw-bold fs-6 text-secondary"
-                    >Logout</a
-                  >
-                </li>
-              } @else if (!this.authService.showStatus()) {
-                <li>
-                  <a
-                    routerLink="login"
-                    class="dropdown-item fw-bold fs-6 text-secondary"
-                    >Login</a
-                  >
-                </li>
-                <li>
-                  <a
-                    routerLink="register"
-                    class="dropdown-item fw-bold fs-6 text-secondary"
-                    >Register</a
-                  >
-                </li>
-              }
-            </ul>
+              <span
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
+                >0</span
+              >
+            </div>
+            <!-- Cart -->
+            <div
+              class="position-relative"
+              role="button"
+              tabindex="0"
+              aria-label="Shopping Cart"
+            >
+              <svg
+                width="20"
+                height="20"
+                class="fill-secondary hover-fill-primary"
+                role="img"
+                aria-hidden="true"
+              >
+                <use xlink:href="#icon-cart"></use>
+              </svg>
+              <span
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
+                >0</span
+              >
+            </div>
+
+            <!-- Profile Dropdown -->
+            <div class="dropdown">
+              <a
+                class="d-flex align-items-center text-secondary text-decoration-none dropdown-toggle"
+                id="profileDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                role="button"
+                aria-haspopup="true"
+              >
+                <svg
+                  width="27"
+                  height="27"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  class="me-1"
+                  role="img"
+                  aria-hidden="true"
+                >
+                  <use xlink:href="#icon-profile"></use>
+                </svg>
+              </a>
+              <ul class="dropdown-menu">
+                @if (this.authService.showStatus()) {
+                  <li>
+                    <a class="dropdown-item fw-bold fs-6 text-secondary"
+                      >Profile</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      (click)="logoutUser()"
+                      class="dropdown-item fw-bold fs-6 text-secondary"
+                      >Logout</a
+                    >
+                  </li>
+                } @else if (!this.authService.showStatus()) {
+                  <li>
+                    <a
+                      routerLink="login"
+                      class="dropdown-item fw-bold fs-6 text-secondary"
+                      >Login</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      routerLink="register"
+                      class="dropdown-item fw-bold fs-6 text-secondary"
+                      >Register</a
+                    >
+                  </li>
+                }
+              </ul>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</header>
-<!--Navbar end-->
+  </header>
+  <!--Navbar end-->
+}
