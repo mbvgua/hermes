@@ -10,8 +10,10 @@ Simple ecommerce website, with some added perks.
 
 ## Features
 
-- OAuth
+- Authentication with JWT(JsonWeb Tokens)
+- OAuth with PassportJs
 - State Management(Signals & RxJs)
 - Mpesa Api Integration(Daraja Api)
-- Rate Limiting & Session Management
+- Rate Limiting with Express Rate Limit
+- Session Management with Express Session
 - Testing(unit,integration,e2e)

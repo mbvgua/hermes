@@ -1,1 +1,61 @@
-<p>dashboard works!</p>
+@if (this.decoded_token().role == "customer") {
+  <div>
+    Still figurign out what to do here. Maybe the checkout section? Like you
+    can<br />
+    add items to cart, but to pay you need to be logged in
+  </div>
+} @else if (this.decoded_token().role === "admin") {
+  <div class="d-flex">
+    <!--sidebar starts-->
+    <div
+      class="flex-shrink-0 p-3 bg-body-tertiary min-vh-100"
+      style="width: 200px"
+    >
+      <a
+        class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
+      >
+        <span class="fs-4 fw-bold">Admin Panel</span>
+      </a>
+      <hr />
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a
+            routerLink="microfinances"
+            routerLinkActive="active text-white"
+            class="nav-link"
+            aria-current="page"
+          >
+            Users
+          </a>
+        </li>
+        <li>
+          <a
+            routerLink="users"
+            routerLinkActive="active text-white"
+            class="nav-link"
+          >
+            Products
+          </a>
+        </li>
+        <li>
+          <a
+            routerLink="loans"
+            routerLinkActive="active text-white"
+            class="nav-link"
+          >
+            Orders
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!--sidebar ends-->
+
+    <!--main content starts here-->
+    <!--here lies the first nested component-->
+    <div class="flex-grow-1 p-4">
+      Heloo world
+      <!--<router-outlet></router-outlet>-->
+    </div>
+    <!--main content ends here-->
+  </div>
+}
