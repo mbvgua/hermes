@@ -58,17 +58,19 @@
 <div class="d-flex">
   <!--sidebar starts-->
   <div
-    class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary min-vh-100"
+    class="d-flex flex-column flex-shrink-0 p-3 bg-body-secondary min-vh-100"
     style="width: 280px"
   >
     <a
       href="/"
       class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-black text-decoration-none"
     >
-      <svg class="bi pe-none me-2" width="40" height="32" aria-hidden="true">
-        <use xlink:href="#bootstrap" />
-      </svg>
-      <span class="fs-4">Hermes</span>
+      <img
+        src="hermes-logo.jpg"
+        alt="logo"
+        style="width: 50px; border-radius: 50%"
+      />
+      <span class="fs-4  px-4">Hermes</span>
     </a>
     <hr />
     <ul class="nav nav-pills flex-column mb-auto">
@@ -86,7 +88,10 @@
         </a>
       </li>
       <li>
-        <a href="#" class="nav-link text-black">
+        <a
+          routerLink="profile/this.decoded_token().id"
+          class="nav-link text-black"
+        >
           <svg
             class="bi pe-none me-2"
             width="16"
@@ -182,7 +187,7 @@
           height="32"
           class="rounded-circle me-2"
         />
-        <strong>mdo</strong>
+        <strong>username</strong>
       </a>
       <ul class="dropdown-menu text-small shadow">
         <li><a class="dropdown-item" href="#">Settings</a></li>
@@ -197,8 +202,7 @@
   <!--main content starts here-->
   <div class="d-flex">
     <div class="flex-grow-1 p-4">
-      First nested component
-      <!--<router-outlet></router-outlet>-->
+      <router-outlet></router-outlet>
     </div>
   </div>
   <!--main content ends here-->

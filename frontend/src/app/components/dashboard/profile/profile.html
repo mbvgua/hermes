@@ -1,0 +1,107 @@
+<div class="container mt-4">
+  <!-- Tabs -->
+  <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link active"
+        id="profile-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#profile"
+        type="button"
+        role="tab"
+      >
+        Profile
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="tellus-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#tellus"
+        type="button"
+        role="tab"
+      >
+        Tell Us More
+      </button>
+    </li>
+
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="security-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#security"
+        type="button"
+        role="tab"
+      >
+        Security
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="settings-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#settings"
+        type="button"
+        role="tab"
+      >
+        Settings
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="permissions-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#permissions"
+        type="button"
+        role="tab"
+      >
+        Permissions
+      </button>
+    </li>
+  </ul>
+
+  <div class="tab-content mt-4">
+    <!-- Profile Section -->
+    <div class="tab-pane fade show active" id="profile" role="tabpanel">
+      <h4>Profile Information</h4>
+      <p><strong>Name:</strong> John Doe</p>
+      <p><strong>Email:</strong> johnexample.com</p>
+      <button class="btn btn-primary">Edit</button>
+    </div>
+
+    <!-- Tell Us More Section -->
+    <div class="tab-pane fade" id="tellus" role="tabpanel">
+      <h4>Tell Us More</h4>
+      <form>
+        <div class="mb-3">
+          <label for="bio" class="form-label">Short Bio</label>
+          <textarea id="bio" class="form-control"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="skills" class="form-label">Skills</label>
+          <input type="text" id="skills" class="form-control" />
+        </div>
+        <button class="btn btn-success" type="submit">Save</button>
+      </form>
+    </div>
+
+    <!--security section-->
+    <div class="tab-pane fade" id="security" role="tabpanel">
+      <h4>Security</h4>
+    </div>
+
+    <!--settings section-->
+    <div class="tab-pane fade" id="settings" role="tabpanel">
+      <h4>Settings</h4>
+    </div>
+
+    <!--permissions section-->
+    <div class="tab-pane fade" id="permissions" role="tabpanel">
+      <h4>Permissions</h4>
+    </div>
+  </div>
+</div>

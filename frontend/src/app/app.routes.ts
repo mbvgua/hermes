@@ -27,10 +27,20 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    canActivate: [authGuard],
+    //canActivate: [authGuard],
     loadComponent: () =>
       import('./components/dashboard/dashboard').then((m) => m.Dashboard),
     title: 'Dashboard',
+    children: [
+      {
+        path: 'profile/:id',
+        loadComponent: () =>
+          import('./components/dashboard/profile/profile').then(
+            (m) => m.Profile,
+          ),
+        title: 'Profile',
+      },
+    ],
   },
   {
     path: 'contact-us',
