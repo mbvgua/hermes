@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { Homepage } from './components/homepage/homepage';
+import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
   {
@@ -8,16 +9,28 @@ export const routes: Routes = [
     title: 'Homepage',
   },
   {
-    path: 'login',
-    loadComponent: () =>
-      import('./components/login/login').then((m) => m.Login),
-    title: 'Login',
+    path: 'auth',
+    children: [
+      {
+        path: 'login',
+        loadComponent: () =>
+          import('./components/login/login').then((m) => m.Login),
+        title: 'Login',
+      },
+      {
+        path: 'register',
+        loadComponent: () =>
+          import('./components/register/register').then((m) => m.Register),
+        title: 'Register',
+      },
+    ],
   },
   {
-    path: 'register',
+    path: 'dashboard',
+    canActivate: [authGuard],
     loadComponent: () =>
-      import('./components/register/register').then((m) => m.Register),
-    title: 'Register',
+      import('./components/dashboard/dashboard').then((m) => m.Dashboard),
+    title: 'Dashboard',
   },
   {
     path: 'contact-us',
@@ -28,8 +41,10 @@ export const routes: Routes = [
   // app redirects
   { path: 'index', redirectTo: '' },
   { path: 'home', redirectTo: '' },
-  { path: 'signup', redirectTo: 'register' },
-  { path: 'signin', redirectTo: 'login' },
+  { path: 'login', redirectTo: 'auth/login' },
+  { path: 'register', redirectTo: 'auth/register' },
+  { path: 'signup', redirectTo: 'auth/register' },
+  { path: 'signin', redirectTo: 'auth/login' },
 
   //errors in the app
   {
