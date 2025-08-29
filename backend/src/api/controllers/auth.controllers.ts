@@ -213,4 +213,3 @@ export async function loginUser(request: Request, response: Response) {
     });
   }
 }
-
