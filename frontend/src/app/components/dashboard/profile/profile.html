@@ -1,6 +1,6 @@
-<div class="container mt-4">
+<div class="container mt-2">
   <!-- Tabs -->
-  <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+  <ul class="nav nav-tabs nav-fill" id="profileTabs" role="tablist">
     <li class="nav-item" role="presentation">
       <button
         class="nav-link active"
@@ -10,7 +10,7 @@
         type="button"
         role="tab"
       >
-        Profile
+        My Profile
       </button>
     </li>
     <li class="nav-item" role="presentation">
@@ -67,15 +67,146 @@
   <div class="tab-content mt-4">
     <!-- Profile Section -->
     <div class="tab-pane fade show active" id="profile" role="tabpanel">
-      <h4>Profile Information</h4>
-      <p><strong>Name:</strong> John Doe</p>
-      <p><strong>Email:</strong> johnexample.com</p>
-      <button class="btn btn-primary">Edit</button>
+      <h4>Personal Information</h4>
+      <label class="text-secondary">
+        Complete you user profile here. You can update your information at
+        anytime</label
+      >
+
+      <!--start form-->
+      <form class="py-3">
+        <!--profile picture-->
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1"
+            ><strong>Profile Picture</strong></span
+          >
+          <input class="form-control" type="file" id="formFile" />
+        </div>
+        <!--end profile picture-->
+
+        <!--email start-->
+        <div class="my-2">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"
+              ><strong>Email<span class="text-danger"> *</span></strong>
+            </span>
+            <input
+              type="email"
+              class="form-control"
+              placeholder="Enter email"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+          <span class="fs-6 fst-italic text-secondary">
+            If you update your email address, you will need to re-verify it.<br />
+            You will receive the email verification within 5-10 minutes.
+          </span>
+        </div>
+        <!--email end-->
+
+        <!--first name start-->
+        <div class="my-2">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"
+              ><strong>First Name</strong>
+            </span>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter first name"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+          <span class="fs-6 fst-italic text-secondary">
+            As written on your passport or national ID
+          </span>
+        </div>
+        <!--first name end-->
+
+        <!--last name start-->
+        <div class="my-2">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"
+              ><strong>Last Name</strong>
+            </span>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter last name"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+          <span class="mt-2 fs-6 fst-italic text-secondary">
+            As written on your passport or national ID
+          </span>
+        </div>
+        <!--last name-->
+
+        <!--start username-->
+        <div class="my-2">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"
+              ><strong>Username</strong>
+            </span>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter username"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+        </div>
+        <!--end username-->
+
+        <!--start dob-->
+        <div class="my-2">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"
+              ><strong>Date of Birth<span class="text-danger"> *</span></strong>
+            </span>
+            <input
+              type="date"
+              class="form-control"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+        </div>
+        <!--end dob-->
+
+        <!--start phone number-->
+        <div class="my-2">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"
+              ><strong>Phone<span class="text-danger"> *</span></strong>
+            </span>
+            <input
+              type="tel"
+              class="form-control"
+              placeholder="07xxxxxx10"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+        </div>
+        <!--end phone number-->
+
+        <button class="btn btn-lg btn-primary">Save</button>
+      </form>
+      <!--end form-->
     </div>
 
     <!-- Tell Us More Section -->
     <div class="tab-pane fade" id="tellus" role="tabpanel">
-      <h4>Tell Us More</h4>
+      <h4>Education & Experience</h4>
+      <label class="text-secondary">
+        Tell us a little more about yourself
+      </label>
+
       <form>
         <div class="mb-3">
           <label for="bio" class="form-label">Short Bio</label>
@@ -85,18 +216,101 @@
           <label for="skills" class="form-label">Skills</label>
           <input type="text" id="skills" class="form-control" />
         </div>
-        <button class="btn btn-success" type="submit">Save</button>
+        <button class="btn btn-lg btn-primary">Save</button>
       </form>
     </div>
 
     <!--security section-->
     <div class="tab-pane fade" id="security" role="tabpanel">
       <h4>Security</h4>
+      <label class="text-secondary">
+        You can update your settings at anytime</label
+      >
+      <!--security buttons start-->
+      <div class="d-grid gap-2 col-6 my-3">
+        <button
+          class="btn btn-primary"
+          type="button"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+          data-bs-custom-class="custom-tooltip"
+          data-bs-title="This top tooltip is themed via CSS variables."
+        >
+          Update Password
+        </button>
+        <button class="btn btn-success" type="button">Add 2FA</button>
+        <button class="btn btn-danger" type="button">Delete Account</button>
+        <button
+          type="button"
+          class="btn btn-outline-secondary me-2"
+          placement="top"
+          ngbTooltip="Tooltip on top"
+        >
+          Tooltip on top
+        </button>
+      </div>
+      <!--security buttons end-->
     </div>
 
     <!--settings section-->
     <div class="tab-pane fade" id="settings" role="tabpanel">
       <h4>Settings</h4>
+      <label class="text-secondary">
+        You can update your settings at anytime</label
+      >
+      <!--start form-->
+      <form class="py-3">
+        <!--language-->
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1"
+            ><strong>Language<span class="text-danger"> *</span></strong></span
+          >
+
+          <label class="dropdown rounded-end">
+            <button
+              class="btn btn-light rounded-end dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Select Language
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item">Default</a></li>
+              <li><a class="dropdown-item">English</a></li>
+              <li><a class="dropdown-item">Swahili</a></li>
+            </ul>
+          </label>
+        </div>
+        <!--end language-->
+
+        <!--timezone-->
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1"
+            ><strong>Timezone<span class="text-danger"> *</span></strong></span
+          >
+
+          <label class="dropdown rounded-end">
+            <button
+              class="btn btn-light rounded-end dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Select Timezone
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item">Default</a></li>
+              <li><a class="dropdown-item">English</a></li>
+              <li><a class="dropdown-item">Swahili</a></li>
+            </ul>
+          </label>
+        </div>
+        <!--timezone end-->
+
+        <button class="btn btn-lg btn-primary">Save</button>
+      </form>
+      <!--end form-->
     </div>
 
     <!--permissions section-->
