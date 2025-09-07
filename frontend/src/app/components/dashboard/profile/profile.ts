@@ -1,4 +1,10 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  signal,
+  AfterViewInit,
+} from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs';
 import { IUser, UserResponse, UserRoles } from '../../../models/users.models';
@@ -11,7 +17,7 @@ import { LocalStorage } from '../../../services/local-storage/local-storage';
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
 })
-export class Profile implements OnInit {
+export class Profile implements OnInit{
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
