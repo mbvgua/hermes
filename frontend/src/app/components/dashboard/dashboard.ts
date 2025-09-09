@@ -7,6 +7,7 @@ import { Observable, switchMap } from 'rxjs';
 import { LocalStorage } from '../../services/local-storage/local-storage';
 import { DecodedTokenPayload, UserRoles } from '../../models/users.models';
 import { Users } from '../../services/users/users';
+import { Auth } from '../../services/auth/auth';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,6 +20,7 @@ export class Dashboard implements OnInit {
   constructor(
     public ls: LocalStorage,
     private userService: Users,
+    private authService: Auth,
   ) {}
 
   token = signal<string>('');
@@ -31,6 +33,12 @@ export class Dashboard implements OnInit {
     iat: 0,
     exp: 0,
   });
+
+  logoutUser() {
+    // call logout method. removes all data in local sorage
+    // and redirects to login page
+    this.authService.logout();
+  }
 
   ngOnInit(): void {
     this.token.set(this.ls.getItem('token') ?? '');
