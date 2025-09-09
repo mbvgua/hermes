@@ -33,12 +33,28 @@ export const routes: Routes = [
     title: 'Dashboard',
     children: [
       {
+        path: 'panel/:id',
+        loadComponent: () =>
+          import('./components/dashboard/panel/panel.component').then(
+            (m) => m.PanelComponent,
+          ),
+        title: 'Main Panel',
+      },
+      {
         path: 'profile/:id',
         loadComponent: () =>
           import('./components/dashboard/profile/profile').then(
             (m) => m.Profile,
           ),
         title: 'Profile',
+      },
+      {
+        path: 'notifications',
+        loadComponent: () =>
+          import(
+            './components/dashboard/notifications/notifications.component'
+          ).then((m) => m.NotificationsComponent),
+        title: 'Notifications',
       },
     ],
   },

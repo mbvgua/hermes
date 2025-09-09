@@ -218,20 +218,211 @@
 
     <!-- Tell Us More Section -->
     <div class="tab-pane fade" id="tellus" role="tabpanel">
-      <h4>Education & Experience</h4>
+      <h4>Personalization</h4>
       <label class="text-secondary">
         Tell us a little more about yourself
       </label>
 
-      <form>
-        <div class="mb-3">
-          <label for="bio" class="form-label">Short Bio</label>
-          <textarea id="bio" class="form-control"></textarea>
+      <form class="my-2">
+        <!--start gender-->
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="inputGroupSelect01"
+            ><strong>Gender<span class="text-danger"> *</span></strong></label
+          >
+          <select class="form-select" id="inputGroupSelect01">
+            <option selected>Choose...</option>
+            <option value="1">Male</option>
+            <option value="2">Female</option>
+            <option value="3">Prefer not to say</option>
+          </select>
         </div>
-        <div class="mb-3">
-          <label for="skills" class="form-label">Skills</label>
-          <input type="text" id="skills" class="form-control" />
+        <!--end gender-->
+
+        <!--start adress-->
+        <div class="my-2">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"
+              ><strong>Shipping Address</strong>
+            </span>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter default shipping address"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+            />
+          </div>
         </div>
+        <!--end address-->
+
+        <!--start payment method-->
+
+        <!--mpesa modal-->
+        <div
+          class="modal fade"
+          id="mpesaModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                  Modal title
+                </h1>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">...</div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--end mpesa modal-->
+
+        <!--start credit card modal-->
+        <div
+          class="modal fade"
+          id="creditCardModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                  Modal title
+                </h1>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">...</div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--end credit card modal-->
+
+        <!--start paypal modal-->
+        <div
+          class="modal fade"
+          id="payPalModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                  Modal title
+                </h1>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">...</div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--end paypal modal-->
+
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="inputGroupSelect01"
+            ><strong>Payment Method</strong></label
+          >
+          <select class="form-select" id="inputGroupSelect01">
+            <option selected>Choose...</option>
+            <option
+              value="1"
+              data-bs-toggle="modal"
+              data-bs-target="#mpesaModal"
+            >
+              Mpesa
+            </option>
+            <option
+              value="2"
+              data-bs-toggle="modal"
+              data-bs-target="#creditCardModal"
+            >
+              Credit Card
+            </option>
+            <option
+              value="3"
+              data-bs-toggle="modal"
+              data-bs-target="#payPalModal"
+            >
+              Pay Pal
+            </option>
+          </select>
+        </div>
+        <!--end payment method-->
+
+        <!--start referral code-->
+        <div class="my-2">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"
+              ><strong>Referral Code</strong>
+            </span>
+            <input
+              type="text"
+              class="form-control"
+              disabled
+              placeholder="430xxxxxxxx12"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+        </div>
+        <!--end referral code-->
+
         <button class="btn btn-lg btn-primary">Save</button>
       </form>
     </div>
@@ -476,69 +667,31 @@
       <form class="py-3">
         <!--language-->
         <div class="input-group mb-3">
-          <span class="input-group-text" id="basic-addon1"
-            ><strong>Language<span class="text-danger"> *</span></strong></span
+          <label class="input-group-text" for="inputGroupSelect01"
+            ><strong>Language<span class="text-danger"> *</span></strong></label
           >
-          <div
-            class="btn-group"
-            ngbDropdown
-            role="group"
-            aria-label="Button group with nested dropdown"
-          >
-            <button
-              class="btn btn-outline-secondary  dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Select Language
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item">Default</a></li>
-              <li><a class="dropdown-item">English</a></li>
-              <li><a class="dropdown-item">Swahili</a></li>
-            </ul>
-          </div>
+          <select class="form-select" id="inputGroupSelect01">
+            <option selected>Choose...</option>
+            <option value="1">English</option>
+            <option value="2">Swahili</option>
+            <option value="3">Arabic</option>
+          </select>
         </div>
         <!--language end-->
 
         <!--timezone-->
         <div class="input-group mb-3">
-          <span class="input-group-text" id="basic-addon1"
-            ><strong>Language<span class="text-danger"> *</span></strong></span
+          <label class="input-group-text" for="inputGroupSelect01"
+            ><strong>Timezone<span class="text-danger"> *</span></strong></label
           >
-          <div
-            class="btn-group"
-            ngbDropdown
-            role="group"
-            aria-label="Button group with nested dropdown"
-          >
-            <button
-              class="btn btn-outline-secondary  dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Select Language
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item">Default</a></li>
-              <li><a class="dropdown-item">English</a></li>
-              <li><a class="dropdown-item">Swahili</a></li>
-            </ul>
-          </div>
+          <select class="form-select" id="inputGroupSelect01">
+            <option selected>Choose...</option>
+            <option value="1">English</option>
+            <option value="2">Swahili</option>
+            <option value="3">Arabic</option>
+          </select>
         </div>
         <!--timezone end-->
-
-<div class="input-group mb-3">
-  <label class="input-group-text" for="inputGroupSelect01">Options</label>
-  <select class="form-select" id="inputGroupSelect01">
-    <option selected>Choose...</option>
-    <option value="1">One</option>
-    <option value="2">Two</option>
-    <option value="3">Three</option>
-  </select>
-</div>
 
         <button class="btn btn-lg btn-primary">Save</button>
       </form>
@@ -548,6 +701,35 @@
     <!--permissions section-->
     <div class="tab-pane fade" id="permissions" role="tabpanel">
       <h4>Permissions</h4>
+      <label class="text-secondary">
+        You can update your settings at anytime</label
+      >
+      <form class="my-2">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="flexCheckDefault"
+          />
+          <label class="form-check-label" for="flexCheckDefault">
+            I would like to receive marketing newsletters pertaining to the app
+          </label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="flexCheckChecked"
+            checked
+          />
+          <label class="form-check-label" for="flexCheckDefault">
+            I would like to subscribe to promotional emails
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary">Save</button>
+      </form>
     </div>
   </div>
 </div>
