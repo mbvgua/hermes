@@ -1,3 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol
+    id="info"
+    fill="currentColor"
+    class="bi bi-info-circle"
+    viewBox="0 0 16 16"
+  >
+    <path
+      d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"
+    />
+    <path
+      d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"
+    />
+  </symbol>
+</svg>
+
 <div class="container mt-2">
   <!-- Tabs -->
   <ul class="nav nav-tabs nav-fill" id="profileTabs" role="tablist">
@@ -226,29 +242,227 @@
       <label class="text-secondary">
         You can update your settings at anytime</label
       >
+      <!--start modal-->
+
+      <!-- Modals -->
+      <!--start Update Password modal-->
+      <div
+        class="modal fade"
+        id="updatePasswordModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Modal title
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">...</div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" class="btn btn-primary">
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end update password modal-->
+
+      <!--start 2FA modal-->
+      <div
+        class="modal fade"
+        id="2FAModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Modal title
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">...</div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" class="btn btn-primary">
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end 2FA modal-->
+
+      <!--start delete account modal-->
+      <div
+        class="modal fade"
+        id="deleteAccountModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Modal title
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">...</div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" class="btn btn-primary">
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end delete account modal-->
+
+      <!--end modals-->
+
       <!--security buttons start-->
       <div class="d-grid gap-2 col-6 my-3">
-        <button
-          class="btn btn-primary"
-          type="button"
-          data-bs-toggle="tooltip"
-          data-bs-placement="top"
-          data-bs-custom-class="custom-tooltip"
-          data-bs-title="This top tooltip is themed via CSS variables."
-        >
-          Update Password
-        </button>
-        <button class="btn btn-success" type="button">Add 2FA</button>
-        <button class="btn btn-danger" type="button">Delete Account</button>
-        <button
-          type="button"
-          class="btn btn-outline-secondary me-2"
-          placement="top"
-          ngbTooltip="Tooltip on top"
-        >
-          Tooltip on top
-        </button>
+        <div class="btn-group me-3">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#updatePasswordModal"
+          >
+            Update Password
+          </button>
+          <div
+            class="btn-group"
+            type="button"
+            placement="top"
+            ngbTooltip="Ensure your account is protected by choosing a strong password with a mix of letters, numbers and special characters"
+          >
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              ngbDropdownToggle
+            >
+              <svg
+                class="bi pe-none me-2"
+                width="16"
+                height="16"
+                aria-hidden="true"
+              >
+                <use xlink:href="#info" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="btn-group me-3">
+          <button
+            type="button"
+            class="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#2FAModal"
+          >
+            Add 2FA
+          </button>
+          <div
+            class="btn-group"
+            type="button"
+            placement="top"
+            ngbTooltip="Two-factor authentication allows you to add more security to your account. Every login requires a 30-second temporary password"
+          >
+            <button
+              type="button"
+              class="btn btn-outline-success"
+              ngbDropdownToggle
+            >
+              <svg
+                class="bi pe-none me-2"
+                width="16"
+                height="16"
+                aria-hidden="true"
+              >
+                <use xlink:href="#info" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="btn-group me-3">
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteAccountModal"
+          >
+            Delete Account
+          </button>
+          <div
+            class="btn-group"
+            type="button"
+            placement="top"
+            ngbTooltip="Your account will be deleted and you will no longer have access to the portal. This cannot be undone"
+          >
+            <button
+              type="button"
+              class="btn btn-outline-danger"
+              ngbDropdownToggle
+            >
+              <svg
+                class="bi pe-none me-2"
+                width="16"
+                height="16"
+                aria-hidden="true"
+              >
+                <use xlink:href="#info" />
+              </svg>
+            </button>
+          </div>
+        </div>
       </div>
+
       <!--security buttons end-->
     </div>
 
@@ -265,10 +479,14 @@
           <span class="input-group-text" id="basic-addon1"
             ><strong>Language<span class="text-danger"> *</span></strong></span
           >
-
-          <label class="dropdown rounded-end">
+          <div
+            class="btn-group"
+            ngbDropdown
+            role="group"
+            aria-label="Button group with nested dropdown"
+          >
             <button
-              class="btn btn-light rounded-end dropdown-toggle"
+              class="btn btn-outline-secondary  dropdown-toggle"
               type="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
@@ -280,33 +498,47 @@
               <li><a class="dropdown-item">English</a></li>
               <li><a class="dropdown-item">Swahili</a></li>
             </ul>
-          </label>
+          </div>
         </div>
-        <!--end language-->
+        <!--language end-->
 
         <!--timezone-->
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1"
-            ><strong>Timezone<span class="text-danger"> *</span></strong></span
+            ><strong>Language<span class="text-danger"> *</span></strong></span
           >
-
-          <label class="dropdown rounded-end">
+          <div
+            class="btn-group"
+            ngbDropdown
+            role="group"
+            aria-label="Button group with nested dropdown"
+          >
             <button
-              class="btn btn-light rounded-end dropdown-toggle"
+              class="btn btn-outline-secondary  dropdown-toggle"
               type="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              Select Timezone
+              Select Language
             </button>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item">Default</a></li>
               <li><a class="dropdown-item">English</a></li>
               <li><a class="dropdown-item">Swahili</a></li>
             </ul>
-          </label>
+          </div>
         </div>
         <!--timezone end-->
+
+<div class="input-group mb-3">
+  <label class="input-group-text" for="inputGroupSelect01">Options</label>
+  <select class="form-select" id="inputGroupSelect01">
+    <option selected>Choose...</option>
+    <option value="1">One</option>
+    <option value="2">Two</option>
+    <option value="3">Three</option>
+  </select>
+</div>
 
         <button class="btn btn-lg btn-primary">Save</button>
       </form>
