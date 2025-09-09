@@ -4,20 +4,23 @@ import {
   OnInit,
   signal,
   AfterViewInit,
+  Input,
 } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs';
 import { IUser, UserResponse, UserRoles } from '../../../models/users.models';
 import { Users } from '../../../services/users/users';
 import { LocalStorage } from '../../../services/local-storage/local-storage';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-profile',
-  imports: [],
+  imports: [NgbTooltipModule ],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
 })
-export class Profile implements OnInit{
+export class Profile implements OnInit {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
