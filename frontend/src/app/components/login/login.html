@@ -54,49 +54,52 @@
   class="flex align-items-center bg-light"
   style="min-height: 100vh; padding: 2rem"
 >
+  <!--TODO: use ng-bootstrap toast instead-->
+  <!--there are three tiers to it: standard, success and danger.-->
+  <!--Also much cleaner than this-->
   <!--start toast notification-->
   @if (this.message()) {
-    <div
-      class="toast position-absolute end-0 m-3 show"
-      role="alert"
-      aria-live="assertive"
-      aria-atomic="true"
-      style="z-index: 1000"
-    >
-      <!--if success-->
-      @if (this.status() == "success") {
-        <div class="toast-header bg-success text-white fw-semibold">
-          <i class="bi bi-check2-circle"></i>
-          <strong class="me-auto">Success</strong>
-          <small>now</small>
-          <button
-            type="button"
-            class="btn-close bg-white"
-            data-bs-dismiss="toast"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="toast-body bg-success text-white fw-semibold">
-          {{ this.message() }}
-        </div>
-        <!--else if error-->
-      } @else if (this.status() == "error") {
-        <div class="toast-header bg-danger text-white fw-semibold">
-          <i class="bi bi-exclamation-triangle"></i>
-          <strong class="me-auto">Error</strong>
-          <small>now</small>
-          <button
-            type="button"
-            class="btn-close bg-white"
-            data-bs-dismiss="toast"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="toast-body bg-danger text-white fw-semibold">
-          {{ this.message() }}
-        </div>
-      }
+  <div
+    class="toast position-absolute end-0 m-3 show"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+    style="z-index: 1000"
+  >
+    <!--if success-->
+    @if (this.status() == "success") {
+    <div class="toast-header bg-success text-white fw-semibold">
+      <i class="bi bi-check2-circle"></i>
+      <strong class="me-auto">Success</strong>
+      <small>now</small>
+      <button
+        type="button"
+        class="btn-close bg-white"
+        data-bs-dismiss="toast"
+        aria-label="Close"
+      ></button>
     </div>
+    <div class="toast-body bg-success text-white fw-semibold">
+      {{ this.message() }}
+    </div>
+    <!--else if error-->
+    } @else if (this.status() == "error") {
+    <div class="toast-header bg-danger text-white fw-semibold">
+      <i class="bi bi-exclamation-triangle"></i>
+      <strong class="me-auto">Error</strong>
+      <small>now</small>
+      <button
+        type="button"
+        class="btn-close bg-white"
+        data-bs-dismiss="toast"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="toast-body bg-danger text-white fw-semibold">
+      {{ this.message() }}
+    </div>
+    }
+  </div>
   }
   <!--end toast notification-->
 
@@ -177,27 +180,22 @@
             />
             <!--start usrname validation-->
             <div>
-              @if (
-                loginForm.get("username")?.touched ||
-                loginForm.get("username")?.dirty
-              ) {
-                <!--required error-->
-                @if (loginForm.get("username")?.hasError("required")) {
-                  <span class="form-text text-danger fst-italic">
-                    Username is required
-                  </span>
-                }
-                <!--min/max length error-->
-                @if (
-                  loginForm.get("username")?.hasError("minlength") ||
-                  loginForm.get("username")?.hasError("maxlength")
-                ) {
-                  <span class="form-text text-danger fst-italic">
-                    Username must have a minimum length of 2 characters and a
-                    maximum length of 30 characters
-                  </span>
-                }
+              @if ( loginForm.get("username")?.touched ||
+              loginForm.get("username")?.dirty ) {
+              <!--required error-->
+              @if (loginForm.get("username")?.hasError("required")) {
+              <span class="form-text text-danger fst-italic">
+                Username is required
+              </span>
               }
+              <!--min/max length error-->
+              @if ( loginForm.get("username")?.hasError("minlength") ||
+              loginForm.get("username")?.hasError("maxlength") ) {
+              <span class="form-text text-danger fst-italic">
+                Username must have a minimum length of 2 characters and a
+                maximum length of 30 characters
+              </span>
+              } }
             </div>
             <!--end username validation-->
           </div>
@@ -220,25 +218,22 @@
             />
             <!--start password validation-->
             <div>
-              @if (
-                loginForm.get("password")?.touched ||
-                loginForm.get("password")?.dirty
-              ) {
-                <!--required error-->
-                @if (loginForm.get("password")?.hasError("required")) {
-                  <span class="form-text text-danger fst-italic">
-                    Password is required</span
-                  >
-                }
-                <!--regex error-->
-                @if (loginForm.get("password")?.hasError("pattern")) {
-                  <span class="form-text text-danger fst-italic">
-                    Password must contain at least one lowercase letter, one
-                    uppercase letter, one digit, one special character, and a
-                    minimum length of 6 characters!
-                  </span>
-                }
+              @if ( loginForm.get("password")?.touched ||
+              loginForm.get("password")?.dirty ) {
+              <!--required error-->
+              @if (loginForm.get("password")?.hasError("required")) {
+              <span class="form-text text-danger fst-italic">
+                Password is required</span
+              >
               }
+              <!--regex error-->
+              @if (loginForm.get("password")?.hasError("pattern")) {
+              <span class="form-text text-danger fst-italic">
+                Password must contain at least one lowercase letter, one
+                uppercase letter, one digit, one special character, and a
+                minimum length of 6 characters!
+              </span>
+              } }
             </div>
             <!--end password validation-->
           </div>

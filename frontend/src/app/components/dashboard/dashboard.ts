@@ -1,18 +1,30 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { LocalStorage } from '../../services/local-storage/local-storage';
+import { RouterModule } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
+import { inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Observable, switchMap } from 'rxjs';
+import { LocalStorage } from '../../services/local-storage/local-storage';
 import { DecodedTokenPayload, UserRoles } from '../../models/users.models';
+import { Users } from '../../services/users/users';
+import { Auth } from '../../services/auth/auth';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
 export class Dashboard implements OnInit {
-  constructor(public ls: LocalStorage) {}
+  private readonly route = inject(ActivatedRoute);
+  constructor(
+    public ls: LocalStorage,
+    private userService: Users,
+    private authService: Auth,
+  ) {}
 
   token = signal<string>('');
+  id = signal<number>(0);
   decoded_token = signal<DecodedTokenPayload>({
     id: '',
     username: '',
@@ -22,8 +34,22 @@ export class Dashboard implements OnInit {
     exp: 0,
   });
 
+  logoutUser() {
+    // call logout method. removes all data in local sorage
+    // and redirects to login page
+    this.authService.logout();
+  }
+
   ngOnInit(): void {
     this.token.set(this.ls.getItem('token') ?? '');
     this.decoded_token.set(jwtDecode<DecodedTokenPayload>(this.token()));
+
+    //navigate to user id profile
+    this.route.paramMap.pipe(
+      switchMap((params) => {
+        this.id.set(Number(params.get('id')));
+        return this.userService.getUser();
+      }),
+    );
   }
 }

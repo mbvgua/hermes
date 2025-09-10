@@ -21,9 +21,14 @@ export function tokenInterceptor(
     return next(request);
   } else {
     const token = ls.getItem('token') as string;
-    const modified_request = request.clone({
-      headers: new HttpHeaders().append('token', token),
-    });
-    return next(modified_request);
+
+    // if token exists
+    if (token) {
+      const modified_request = request.clone({
+        headers: new HttpHeaders().append('token', token),
+      });
+      return next(modified_request);
+    }
+    return next(request);
   }
 }

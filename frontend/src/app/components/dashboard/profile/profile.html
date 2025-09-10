@@ -1,0 +1,735 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol
+    id="info"
+    fill="currentColor"
+    class="bi bi-info-circle"
+    viewBox="0 0 16 16"
+  >
+    <path
+      d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"
+    />
+    <path
+      d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"
+    />
+  </symbol>
+</svg>
+
+<div class="container mt-2">
+  <!-- Tabs -->
+  <ul class="nav nav-tabs nav-fill" id="profileTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link active"
+        id="profile-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#profile"
+        type="button"
+        role="tab"
+      >
+        My Profile
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="tellus-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#tellus"
+        type="button"
+        role="tab"
+      >
+        Tell Us More
+      </button>
+    </li>
+
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="security-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#security"
+        type="button"
+        role="tab"
+      >
+        Security
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="settings-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#settings"
+        type="button"
+        role="tab"
+      >
+        Settings
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="permissions-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#permissions"
+        type="button"
+        role="tab"
+      >
+        Permissions
+      </button>
+    </li>
+  </ul>
+
+  <div class="tab-content mt-4">
+    <!-- Profile Section -->
+    <div class="tab-pane fade show active" id="profile" role="tabpanel">
+      <h4>Personal Information</h4>
+      <label class="text-secondary">
+        Complete you user profile here. You can update your information at
+        anytime</label
+      >
+
+      <!--start form-->
+      <form class="py-3">
+        <!--profile picture-->
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1"
+            ><strong>Profile Picture</strong></span
+          >
+          <input class="form-control" type="file" id="formFile" />
+        </div>
+        <!--end profile picture-->
+
+        <!--email start-->
+        <div class="my-2">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"
+              ><strong>Email<span class="text-danger"> *</span></strong>
+            </span>
+            <input
+              type="email"
+              class="form-control"
+              placeholder="Enter email"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+          <span class="fs-6 fst-italic text-secondary">
+            If you update your email address, you will need to re-verify it.<br />
+            You will receive the email verification within 5-10 minutes.
+          </span>
+        </div>
+        <!--email end-->
+
+        <!--first name start-->
+        <div class="my-2">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"
+              ><strong>First Name</strong>
+            </span>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter first name"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+          <span class="fs-6 fst-italic text-secondary">
+            As written on your passport or national ID
+          </span>
+        </div>
+        <!--first name end-->
+
+        <!--last name start-->
+        <div class="my-2">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"
+              ><strong>Last Name</strong>
+            </span>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter last name"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+          <span class="mt-2 fs-6 fst-italic text-secondary">
+            As written on your passport or national ID
+          </span>
+        </div>
+        <!--last name-->
+
+        <!--start username-->
+        <div class="my-2">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"
+              ><strong>Username</strong>
+            </span>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter username"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+        </div>
+        <!--end username-->
+
+        <!--start dob-->
+        <div class="my-2">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"
+              ><strong>Date of Birth<span class="text-danger"> *</span></strong>
+            </span>
+            <input
+              type="date"
+              class="form-control"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+        </div>
+        <!--end dob-->
+
+        <!--start phone number-->
+        <div class="my-2">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"
+              ><strong>Phone<span class="text-danger"> *</span></strong>
+            </span>
+            <input
+              type="tel"
+              class="form-control"
+              placeholder="07xxxxxx10"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+        </div>
+        <!--end phone number-->
+
+        <button class="btn btn-lg btn-primary">Save</button>
+      </form>
+      <!--end form-->
+    </div>
+
+    <!-- Tell Us More Section -->
+    <div class="tab-pane fade" id="tellus" role="tabpanel">
+      <h4>Personalization</h4>
+      <label class="text-secondary">
+        Tell us a little more about yourself
+      </label>
+
+      <form class="my-2">
+        <!--start gender-->
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="inputGroupSelect01"
+            ><strong>Gender<span class="text-danger"> *</span></strong></label
+          >
+          <select class="form-select" id="inputGroupSelect01">
+            <option selected>Choose...</option>
+            <option value="1">Male</option>
+            <option value="2">Female</option>
+            <option value="3">Prefer not to say</option>
+          </select>
+        </div>
+        <!--end gender-->
+
+        <!--start adress-->
+        <div class="my-2">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"
+              ><strong>Shipping Address</strong>
+            </span>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter default shipping address"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+        </div>
+        <!--end address-->
+
+        <!--start payment method-->
+
+        <!--mpesa modal-->
+        <div
+          class="modal fade"
+          id="mpesaModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                  Modal title
+                </h1>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">...</div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--end mpesa modal-->
+
+        <!--start credit card modal-->
+        <div
+          class="modal fade"
+          id="creditCardModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                  Modal title
+                </h1>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">...</div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--end credit card modal-->
+
+        <!--start paypal modal-->
+        <div
+          class="modal fade"
+          id="payPalModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                  Modal title
+                </h1>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">...</div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--end paypal modal-->
+
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="inputGroupSelect01"
+            ><strong>Payment Method</strong></label
+          >
+          <select class="form-select" id="inputGroupSelect01">
+            <option selected>Choose...</option>
+            <option
+              value="1"
+              data-bs-toggle="modal"
+              data-bs-target="#mpesaModal"
+            >
+              Mpesa
+            </option>
+            <option
+              value="2"
+              data-bs-toggle="modal"
+              data-bs-target="#creditCardModal"
+            >
+              Credit Card
+            </option>
+            <option
+              value="3"
+              data-bs-toggle="modal"
+              data-bs-target="#payPalModal"
+            >
+              Pay Pal
+            </option>
+          </select>
+        </div>
+        <!--end payment method-->
+
+        <!--start referral code-->
+        <div class="my-2">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"
+              ><strong>Referral Code</strong>
+            </span>
+            <input
+              type="text"
+              class="form-control"
+              disabled
+              placeholder="430xxxxxxxx12"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+            />
+          </div>
+        </div>
+        <!--end referral code-->
+
+        <button class="btn btn-lg btn-primary">Save</button>
+      </form>
+    </div>
+
+    <!--security section-->
+    <div class="tab-pane fade" id="security" role="tabpanel">
+      <h4>Security</h4>
+      <label class="text-secondary">
+        You can update your settings at anytime</label
+      >
+      <!--start modal-->
+
+      <!-- Modals -->
+      <!--start Update Password modal-->
+      <div
+        class="modal fade"
+        id="updatePasswordModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Modal title
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">...</div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" class="btn btn-primary">
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end update password modal-->
+
+      <!--start 2FA modal-->
+      <div
+        class="modal fade"
+        id="2FAModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Modal title
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">...</div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" class="btn btn-primary">
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end 2FA modal-->
+
+      <!--start delete account modal-->
+      <div
+        class="modal fade"
+        id="deleteAccountModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Modal title
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">...</div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" class="btn btn-primary">
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end delete account modal-->
+
+      <!--end modals-->
+
+      <!--security buttons start-->
+      <div class="d-grid gap-2 col-6 my-3">
+        <div class="btn-group me-3">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#updatePasswordModal"
+          >
+            Update Password
+          </button>
+          <div
+            class="btn-group"
+            type="button"
+            placement="top"
+            ngbTooltip="Ensure your account is protected by choosing a strong password with a mix of letters, numbers and special characters"
+          >
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              ngbDropdownToggle
+            >
+              <svg
+                class="bi pe-none me-2"
+                width="16"
+                height="16"
+                aria-hidden="true"
+              >
+                <use xlink:href="#info" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="btn-group me-3">
+          <button
+            type="button"
+            class="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#2FAModal"
+          >
+            Add 2FA
+          </button>
+          <div
+            class="btn-group"
+            type="button"
+            placement="top"
+            ngbTooltip="Two-factor authentication allows you to add more security to your account. Every login requires a 30-second temporary password"
+          >
+            <button
+              type="button"
+              class="btn btn-outline-success"
+              ngbDropdownToggle
+            >
+              <svg
+                class="bi pe-none me-2"
+                width="16"
+                height="16"
+                aria-hidden="true"
+              >
+                <use xlink:href="#info" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="btn-group me-3">
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteAccountModal"
+          >
+            Delete Account
+          </button>
+          <div
+            class="btn-group"
+            type="button"
+            placement="top"
+            ngbTooltip="Your account will be deleted and you will no longer have access to the portal. This cannot be undone"
+          >
+            <button
+              type="button"
+              class="btn btn-outline-danger"
+              ngbDropdownToggle
+            >
+              <svg
+                class="bi pe-none me-2"
+                width="16"
+                height="16"
+                aria-hidden="true"
+              >
+                <use xlink:href="#info" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!--security buttons end-->
+    </div>
+
+    <!--settings section-->
+    <div class="tab-pane fade" id="settings" role="tabpanel">
+      <h4>Settings</h4>
+      <label class="text-secondary">
+        You can update your settings at anytime</label
+      >
+      <!--start form-->
+      <form class="py-3">
+        <!--language-->
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="inputGroupSelect01"
+            ><strong>Language<span class="text-danger"> *</span></strong></label
+          >
+          <select class="form-select" id="inputGroupSelect01">
+            <option selected>Choose...</option>
+            <option value="1">English</option>
+            <option value="2">Swahili</option>
+            <option value="3">Arabic</option>
+          </select>
+        </div>
+        <!--language end-->
+
+        <!--timezone-->
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="inputGroupSelect01"
+            ><strong>Timezone<span class="text-danger"> *</span></strong></label
+          >
+          <select class="form-select" id="inputGroupSelect01">
+            <option selected>Choose...</option>
+            <option value="1">English</option>
+            <option value="2">Swahili</option>
+            <option value="3">Arabic</option>
+          </select>
+        </div>
+        <!--timezone end-->
+
+        <button class="btn btn-lg btn-primary">Save</button>
+      </form>
+      <!--end form-->
+    </div>
+
+    <!--permissions section-->
+    <div class="tab-pane fade" id="permissions" role="tabpanel">
+      <h4>Permissions</h4>
+      <label class="text-secondary">
+        You can update your settings at anytime</label
+      >
+      <form class="my-2">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="flexCheckDefault"
+          />
+          <label class="form-check-label" for="flexCheckDefault">
+            I would like to receive marketing newsletters pertaining to the app
+          </label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="flexCheckChecked"
+            checked
+          />
+          <label class="form-check-label" for="flexCheckDefault">
+            I would like to subscribe to promotional emails
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary">Save</button>
+      </form>
+    </div>
+  </div>
+</div>

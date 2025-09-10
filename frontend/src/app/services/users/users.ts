@@ -21,6 +21,10 @@ export class Users {
   }
 
   // get user by id
+  // used any, since string returns an error
+  getUser(): Observable<any> {
+    return this.http.get(this.base_url + 'users/get-user');
+  }
   // get all users
   // update user
   // delete user
