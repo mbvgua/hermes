@@ -46,7 +46,7 @@ CREATE TABLE orders (
     order_details JSON,
     total_price DECIMAL(10,2) NOT NULL,
     is_cancelled BOOLEAN DEFAULT 0 NOT NULL,
-    FOREIGN KEY (userId) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 -- dummy data
