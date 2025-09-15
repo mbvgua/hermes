@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { logger } from "../../config/winston.config";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { v4 as uid } from "uuid";
 import dotenv from "dotenv";
 import path from "path";
 
@@ -24,8 +25,9 @@ dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 export async function registerUser(request: Request, response: Response) {
   /*
-   * register new users into system
+   * register new users into the system using an email & password
    */
+  const id = uid();
   const { username, email, password } = request.body;
   const role = UserRoles.Customer;
 
@@ -43,10 +45,13 @@ export async function registerUser(request: Request, response: Response) {
 
       //make connection to db
       const connection = await pool.getConnection();
-      await connection.query(
-        `INSERT INTO users(username,email,password,role) VALUES ( ?,?,?,?);`,
-        [username, email, hashed_password, role],
-      );
+      await connection.execute(`CALL addUser(?,?,?,?,?);`, [
+        id,
+        username,
+        email,
+        hashed_password,
+        role,
+      ]);
       connection.release();
 
       //log new user info
@@ -107,11 +112,20 @@ export async function loginUser(request: Request, response: Response) {
       loginUserSchema,
     );
     if (is_valid_request) {
-      const [rows] = await pool.query(
-        `SELECT * FROM users WHERE username=? AND is_deleted=0;`,
-        [username],
-      );
-      const [user] = rows as Array<IUsers>;
+      /*
+       * const [rows] = await pool.query(
+       * `SELECT * FROM users WHERE username=? AND is_deleted=0;`,
+       *     [username],
+       * );
+       * const [user] = rows as Array<IUsers>;
+       * NOTE: The above demonstrates how it was with a normal sql query
+       * changed it when I switched to using stored procedures
+       * else the code breaks
+       */
+      const [rows]: any = await pool.execute(`CALL getUserByUsername(?);`, [
+        username,
+      ]);
+      const [user] = rows[0] as Array<IUsers>;
 
       //if user exists and username matches
       if (user.username == username) {
@@ -152,7 +166,7 @@ export async function loginUser(request: Request, response: Response) {
         } else {
           logger.log({
             level: "error",
-            message: "Incorrect username or password",
+            message: "Unsuccesful login attempt with username and password",
             data: {
               user: {
                 username,
@@ -179,7 +193,7 @@ export async function loginUser(request: Request, response: Response) {
       } else {
         logger.log({
           level: "error",
-          message: "Account does not exist",
+          message: "Unsuccesful login attempt with user account that does not exist",
           data: {
             user: {
               username,
@@ -191,7 +205,7 @@ export async function loginUser(request: Request, response: Response) {
         return response.status(404).json({
           code: 404,
           status: "error",
-          message: "Account does not exist.Try creating on instead?",
+          message: "Account does not exist.Try creating one instead?",
           data: null,
           metadata: null,
         });
