@@ -5,8 +5,8 @@ USE hermes;
 CREATE TABLE users (
     -- SERIAL DEFAULT VALUE equates to NOT NULL AUTO_INCREMENT UNIQUE
     id VARCHAR(255) PRIMARY KEY,
-    username VARCHAR(100) NOT NULL ,
-    email VARCHAR(100) NOT NULL ,
+    username VARCHAR(100) UNIQUE NOT NULL ,
+    email VARCHAR(100) UNIQUE NOT NULL ,
     password VARCHAR(255) NOT NULL,
     role ENUM("admin","customer") NOT NULL,
     created_at DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
@@ -91,12 +91,12 @@ DELIMITER #
 
 -- START USERS SPs
 -- addUser
-CREATE PROCEDURE addUser2(
-    IN id VARCHAR(255),
-    IN username VARCHAR(100),
-    IN email VARCHAR(100),
-    IN password VARCHAR(255),
-    IN role ENUM("admin","customer")
+CREATE PROCEDURE addUser(
+    IN new_id VARCHAR(255),
+    IN new_username VARCHAR(100),
+    IN new_email VARCHAR(100),
+    IN new_password VARCHAR(255),
+    IN new_role ENUM("admin","customer")
 )
 BEGIN
     DECLARE existing_account INT DEFAULT 0;
@@ -108,7 +108,7 @@ BEGIN
 
     -- check if email/username already exists
     SELECT COUNT(*) INTO existing_account FROM users
-    WHERE username=username OR email=email;
+    WHERE username=new_username OR email=new_email;
 
     IF existing_account > 0 THEN
         -- rollback if existing
@@ -117,7 +117,7 @@ BEGIN
             SET MESSAGE_TEXT = rollback_message;
     ELSE
         INSERT INTO users(id,username,email,password,role)
-        VALUES (id,username,email,password,role);
+        VALUES (new_id,new_username,new_email,new_password,new_role);
 
         -- commit transaction
         COMMIT;
