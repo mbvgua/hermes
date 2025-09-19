@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+//import passport from "passport"
 import productRouter from "./api/routes/products.routes";
 import orderRouter from "./api/routes/orders.routes";
 import authRouter from "./api/routes/auth.routes";
@@ -11,11 +12,12 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT;
 
-// add body to requests
+// application middleware
 app.use(express.json());
 app.use(cors());
+//app.use(passport.initialize())
+//app.use(passport.session())
 
-// application middleware
 app.use("/v1/auth", authRouter);
 app.use("/v1/users", userRouter);
 //app.use("/products", productRouter);

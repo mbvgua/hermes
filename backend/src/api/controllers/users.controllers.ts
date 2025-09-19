@@ -39,11 +39,11 @@ export async function getUserById(
     const user_id = decoded_token.id;
 
     const connection = await pool.getConnection();
-    const [rows] = await connection.query(
-      "SELECT * FROM users WHERE id=? AND is_deleted=0;",
-      [user_id],
-    );
-    const user_making_request = rows as Array<IUsers>;
+    const [rows]: any = await connection.execute(`CALL getUserById(?);`, [
+      user_id,
+    ]);
+    const user_making_request = rows[0] as Array<IUsers>;
+    connection.release();
 
     //user does not exist
     if (!user_making_request || user_making_request.length < 0) {
@@ -128,10 +128,10 @@ export async function getUsers(request: Request, response: Response) {
     const connection = await pool.getConnection();
 
     //get user making request for logging
-    const [user] = await connection.query(`SELECT * FROM users WHERE id=?;`, [
+    const [user]: any = await connection.execute(`CALL getUserById(?);`, [
       user_id,
     ]);
-    const user_making_request = user as Array<IUsers>;
+    const user_making_request = user[0] as Array<IUsers>;
 
     //get total number of users
     const [results]: any = await connection.query(
@@ -207,11 +207,10 @@ export async function updateUser(request: ExtendedRequest, response: Response) {
 
     if (is_valid_request) {
       const connection = await pool.getConnection();
-      const [rows] = await connection.query(
-        `SELECT * FROM users WHERE id=? AND is_deleted=0;`,
-        [user_id],
-      );
-      const [user] = rows as Array<IUsers>;
+      const [rows]: any = await connection.execute(`CALL getUserById(?);`, [
+        user_id,
+      ]);
+      const [user] = rows[0] as Array<IUsers>;
       if (!user) {
         logger.log({
           level: "error",
@@ -235,9 +234,9 @@ export async function updateUser(request: ExtendedRequest, response: Response) {
       //else if user exists
       const salt_rounds = 9;
       const hashed_password = await bcrypt.hash(password, salt_rounds);
-      const [results] = await connection.query(
-        "UPDATE users SET username=?, email=?, password=? WHERE id=? AND is_deleted=0;",
-        [username, email, hashed_password, user_id],
+      const [results]: any = await connection.execute(
+        `CALL updateUser(?,?,?,?);`,
+        [user_id, username, email, hashed_password],
       );
 
       //update token
@@ -303,11 +302,10 @@ export async function deleteUser(request: ExtendedRequest, response: Response) {
     const user_id = decoded_token.id;
 
     const connection = await pool.getConnection();
-    const [rows] = await connection.query(
-      "SELECT * FROM users WHERE id=? AND is_deleted=0;",
-      [user_id],
-    );
-    const [user] = rows as Array<IUsers>;
+    const [rows]: any = await connection.execute(`CALL getUserById(?);`, [
+      user_id,
+    ]);
+    const [user] = rows[0] as Array<IUsers>;
 
     //if user does not exist
     if (!user) {
@@ -330,10 +328,10 @@ export async function deleteUser(request: ExtendedRequest, response: Response) {
     }
 
     //else if user exists
-    const [results] = await connection.query(
-      "UPDATE users SET is_deleted=1 WHERE id=?;",
-      [user_id],
-    );
+    const [results]: any = await connection.execute(`CALL deleteUser(?);`, [
+      user_id,
+    ]);
+    connection.release();
     logger.log({
       level: "info",
       message: `Deleted user account of id:${user_id}`,
