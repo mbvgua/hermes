@@ -76,8 +76,7 @@ CREATE PROCEDURE updateUser(
     IN user_id VARCHAR(255),
     IN new_username VARCHAR(100),
     IN new_email VARCHAR(100),
-    IN new_password VARCHAR(255),
-    IN new_role ENUM("admin","customer")
+    IN new_password VARCHAR(255)
 )
 BEGIN
     DECLARE existing_account INT DEFAULT 0;
@@ -95,7 +94,7 @@ BEGIN
             SET MESSAGE_TEXT = rollback_message;
     ELSE
         UPDATE users
-        SET username=new_username,email=new_email,password=nwe_password,role=new_role
+        SET username=new_username,email=new_email,password=new_password
         WHERE id=user_id;
 
         COMMIT;
@@ -118,7 +117,25 @@ CREATE PROCEDURE deleteUser(
     IN user_id VARCHAR(255)
 )
 BEGIN
-    UPDATE user SET is_deleted=0 WHERE id=user_id;
+    DECLARE existing_account INT DEFAULT 0;
+    DECLARE rollback_message VARCHAR(255) DEFAULT 'Transaction rolled back: User does not exists';
+    DECLARE commit_message VARCHAR(255) DEFAULT 'Transaction committed successfully';
+
+    START TRANSACTION;
+
+    SELECT COUNT(*) INTO existing_account FROM users
+    WHERE id=user_id AND is_deleted=0;
+
+    IF existing_account > 0 THEN
+        UPDATE users SET is_deleted=1 WHERE id=user_id;
+
+        COMMIT;
+        SELECT commit_message AS "result";
+    ELSE
+        ROLLBACK;
+        SIGNAL SQLSTATE "45000"
+            SET MESSAGE_TEXT = rollback_message;
+    END IF;
 END#
 -- END USERS SPs
 
