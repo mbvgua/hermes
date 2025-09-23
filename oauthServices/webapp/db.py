@@ -37,7 +37,7 @@ def close_db(e=None):
     """
     # retrieve and remove db connection fom the "g" object. This
     # means any active connections are closes eventually
-    # NOTE: 1 over express: I have to manually connect then later 
+    # NOTE: 1 over express: I have to manually connect then later
     # connection.release() everytime
     db = g.pop("db", None)
 
@@ -45,18 +45,8 @@ def close_db(e=None):
         db.close()
 
 
-def init_app(app):
-    """
-    core logic for db initialization
-    add init_db_command() as a CLI command with click
-    """
-    # close db when app context closes. the app context in flask is 
-    # created in each request.
-    app.teardown_appcontext(close_db)
-    app.cli.add_command(init_db_command)
-
-
 @click.command("init-db")
+@with_appcontext
 def init_db_command():
     db = get_db()
 
@@ -66,3 +56,14 @@ def init_db_command():
         db.executescript(f.read().decode("utf-8"))
 
     click.echo("You successfully initialized the database")
+
+
+def init_app(app):
+    """
+    core logic for db initialization
+    add init_db_command() as a CLI command with click
+    """
+    # close db when app context closes. the app context in flask is
+    # created in each request.
+    app.teardown_appcontext(close_db)
+    app.cli.add_command(init_db_command)
