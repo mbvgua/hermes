@@ -1,5 +1,5 @@
 ###
 # gets all oauth users
-GET http://127.0.0.1:5000/oauth/login/google
+GET https://127.0.0.1:5000/oauth/login/google
 
 ###

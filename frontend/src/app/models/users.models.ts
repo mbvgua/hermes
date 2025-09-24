@@ -13,6 +13,17 @@ export interface IUser {
   is_deleted?: string;
 }
 
+export interface IOauthUser {
+  id?: string;
+  username: string;
+  email: string;
+  password: string;
+  profile_pic: string;
+  role?: UserRoles;
+  created_at?: string;
+  is_deleted?: string;
+}
+
 interface IPaginationData {
   previous_page: number;
   current_page: number;

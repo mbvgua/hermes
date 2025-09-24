@@ -13,11 +13,11 @@ load_dotenv()
 oauth = Blueprint("oauth", __name__)
 
 # get the env variables
-GOOGLE_CLENT_ID = os.environ.get("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET")
 GOOGLE_DISCOVERY_URL = "https://accounts.google.com/.well-known/openid-configuration"
 
-client = WebApplicationClient(GOOGLE_DISCOVERY_URL)
+client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
 
 @oauth.route("login/google", methods=["GET", "POST"])
@@ -56,7 +56,7 @@ def google_login():
     # # users = db.execute(".tables")
     # users = db.execute("SELECT * FROM oauth_users WHERE is_deleted=0;").fetchall()
     # print(users)
-    # print(GOOGLE_CLENT_ID)
+    # print(GOOGLE_CLIENT_ID)
 
 
 @oauth.route("login/google/callback", methods=["GET", "POST"])
@@ -69,7 +69,7 @@ def authorize_google():
         code = request.args.get("code")
 
         # get endpoint to hit for google tokens
-        google_provider_cfg = request.get(GOOGLE_DISCOVERY_URL).json()
+        google_provider_cfg = requests.get(GOOGLE_DISCOVERY_URL).json()
         token_endpoint = google_provider_cfg["token_endpoint"]
 
         # prepare and send the request to get the tokens
@@ -83,7 +83,7 @@ def authorize_google():
             token_url,
             headers=headers,
             data=body,
-            auth=(GOOGLE_CLENT_ID, GOOGLE_CLIENT_SECRET),
+            auth=(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET),
         )
 
         # parse the tokens
@@ -118,14 +118,21 @@ def authorize_google():
         # check is user exists in db
         db = get_db()
         users = db.execute(
+            # MUST place , after last value, else bindings error
             "SELECT * FROM oauth_users WHERE email=? AND is_deleted=0;",
-            (users_email),
+            (users_email,),
         ).fetchone()
         # if not create user in db with this info
         if not users:
+            # MUST place , after last value, else bindings error
             db.execute(
-                "INSERT INTO users(id,username,email,profile_pic) VALUES(?,?,?,?);",
-                (unique_id, users_name, users_email, users_picture),
+                "INSERT INTO oauth_users(id,username,email,profile_pic) VALUES(?,?,?,?);",
+                (
+                    unique_id,
+                    users_name,
+                    users_email,
+                    users_picture,
+                ),
             )
             db.commit()
 
