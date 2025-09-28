@@ -5,6 +5,7 @@ import sqlite3
 # 3rd party libs
 from flask import Flask
 from dotenv import load_dotenv
+from flask_cors import CORS
 
 # local imports
 
@@ -16,6 +17,8 @@ def create_app():
     main function that sets up the application
     """
     app = Flask(__name__)
+    # allow interaction with other servers
+    CORS(app)
     # Interesting way to put it:
     # https://realpython.com/flask-database/#hide-your-secrets
     app.config.from_prefixed_env()

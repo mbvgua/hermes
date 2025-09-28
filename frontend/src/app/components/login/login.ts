@@ -59,7 +59,42 @@ export class Login implements OnInit {
         }
       },
     );
+
     this.loginForm.reset();
+  }
+
+  googleLogin() {
+    // login with google
+    this.userService.loginUserWithGoogle().subscribe(
+      (response: UserResponse) => {
+        console.log(response)
+        // this.ls.removeAllItems();
+        // this.status.set(response.status);
+        // this.message.set(response.message);
+        //
+        // //NOTE: trying to login without issuing token
+        // //setTimeout(() => {
+        // //  if (response.data?.token) {
+        // //    this.ls.setItem('token', response.data?.token);
+        // console.log(this.message)
+        //
+        //navigate to main dashboard
+        this.authService.login();
+        this.router.navigate(['dashboard']);
+         // }
+        //}, 2000);
+      },
+      (error: UserResponse | any) => {
+        console.log(error)
+        // this.status.set(error.status);
+        // this.message.set(error.message);
+        // // if statements to handle diff kinds of nesting
+        // if (error.error.code == 422 || error.error.code == 500) {
+        //   this.status.set(error.error.status);
+        //   this.message.set(error.error.message);
+        // }
+      },
+    );
   }
 
   ngOnInit(): void {

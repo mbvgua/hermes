@@ -137,7 +137,7 @@ def authorize_google():
             db.commit()
 
         message = (
-            "Congratulations {users_name}! You have successfuly logged in with google"
+            f"Congratulations {users_name}! You have successfuly logged in with google"
         )
         return (
             jsonify(
