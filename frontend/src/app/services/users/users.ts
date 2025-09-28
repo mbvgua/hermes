@@ -9,6 +9,9 @@ import { IOauthUser, IUser } from '../../models/users.models';
 export class Users {
   constructor(private http: HttpClient) {}
   private readonly base_url = 'http://localhost:4000/v1/';
+  private readonly google_oauth_url = "https://127.0.0.5000/oauth/login/google"
+  // private readonly google_oauth_url = "https://127.0.0.5000/oauth/login/google/callback"
+
 
   // register new users
   registerUser(user: IUser): Observable<any> {
@@ -18,6 +21,11 @@ export class Users {
   // login existing users
   loginUser(user: IUser): Observable<any> {
     return this.http.post(this.base_url + 'auth/login', user);
+  }
+
+  // login with google
+  loginUserWithGoogle():Observable<any>{
+    return this.http.get(this.google_oauth_url)
   }
 
   // get user by id
