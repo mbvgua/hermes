@@ -13,11 +13,6 @@ CREATE TABLE users (
     is_deleted BOOLEAN DEFAULT 0
 );
 
--- DUMP USERS
-INSERT INTO users VALUES
-    ("1",'lance','lance@gmail.com','!1Lance!','customer',DEFAULT,DEFAULT),
-    ("2",'mende','mende@gmail.com','@1Mende!','customer',DEFAULT,DEFAULT),
-    ("3",'cindy','cindy@gmail.com','@1Cindy!','customer',DEFAULT,DEFAULT);
 
 CREATE TABLE user_details(
     -- SERIAL DEFAULT VALUE equates to NOT NULL AUTO_INCREMENT UNIQUE
@@ -38,25 +33,19 @@ CREATE TABLE user_details(
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
 
+
 CREATE TABLE products(
     -- SERIAL DEFAULT VALUE equates to NOT NULL AUTO_INCREMENT UNIQUE
-    id INT PRIMARY KEY SERIAL DEFAULT VALUE,
+    -- id INT PRIMARY KEY SERIAL DEFAULT VALUE,
+    id VARCHAR(25) PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE,
     category ENUM("electronics","clothing","sports","stationery","food","toys") NOT NULL,
-    description VARCHAR(255) NOT NULL DEFAULT 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
-    image VARCHAR(255) NOT NULL DEFAULT 'https://dummyimage.com/720x600',
+    description TEXT NOT NULL ,
+    image VARCHAR(250) NOT NULL DEFAULT 'https://dummyimage.com/720x600',
     price DECIMAL(10,2) NOT NULL,
     in_stock INT DEFAULT 1 NOT NULL,
     is_deleted BOOLEAN DEFAULT 0 NOT NULL
 );
-
--- dummy data
-INSERT INTO products VALUES
-    (DEFAULT,'earphones',"electronics",DEFAULT,'https://cdn.pixabay.com/photo/2014/04/05/11/41/earphone-316753_640.jpg',300.50,20,DEFAULT),
-    (DEFAULT,'joy stick',"electronics",DEFAULT,'https://cdn.pixabay.com/photo/2016/07/22/15/11/android-tv-game-controller-1535038_640.jpg',500.00,10,DEFAULT),
-    (DEFAULT,'rubix cube',"electronics",DEFAULT,'https://cdn.pixabay.com/photo/2019/03/03/00/35/cinema-4d-4030940_640.jpg',100.50,30,DEFAULT),
-    (DEFAULT,'lighter',"electronics",DEFAULT,'https://cdn.pixabay.com/photo/2017/08/17/13/09/lighter-2651263_640.jpg',20.00,50,DEFAULT),
-    (DEFAULT,'television',"electronics",DEFAULT,'https://cdn.pixabay.com/photo/2017/08/10/07/44/tv-2619649_640.jpg',20000.5,5,DEFAULT);
 
 
 CREATE TABLE orders (
@@ -68,11 +57,6 @@ CREATE TABLE orders (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
--- dummy data
-INSERT INTO orders VALUES
-    (DEFAULT,"1",'{"itemId":1,"itemQuantity":3,"itemPrice":300.50}',901.50,0),
-    (DEFAULT,"2",'{"itemId":2,"itemQuantity":5,"itemPrice":500.00}',2500.00,0),
-    (DEFAULT,"3",'{"itemId":4,"itemQuantity":1,"itemPrice":20.00}',20.00,0);
 
 CREATE TABLE payments (
     id VARCHAR(255) PRIMARY KEY,
@@ -92,11 +76,11 @@ DELIMITER #
 -- START USERS SPs
 -- addUser
 CREATE PROCEDURE addUser(
-    IN new_id VARCHAR(255),
-    IN new_username VARCHAR(100),
-    IN new_email VARCHAR(100),
-    IN new_password VARCHAR(255),
-    IN new_role ENUM("admin","customer")
+    IN u_id VARCHAR(255),
+    IN u_username VARCHAR(100),
+    IN u_email VARCHAR(100),
+    IN u_password VARCHAR(255),
+    IN u_role ENUM("admin","customer")
 )
 BEGIN
     DECLARE existing_account INT DEFAULT 0;
@@ -108,7 +92,7 @@ BEGIN
 
     -- check if email/username already exists
     SELECT COUNT(*) INTO existing_account FROM users
-    WHERE username=new_username OR email=new_email;
+    WHERE username=u_username OR email=u_email;
 
     IF existing_account > 0 THEN
         -- rollback if existing
@@ -117,7 +101,7 @@ BEGIN
             SET MESSAGE_TEXT = rollback_message;
     ELSE
         INSERT INTO users(id,username,email,password,role)
-        VALUES (new_id,new_username,new_email,new_password,new_role);
+        VALUES (u_id,u_username,u_email,u_password,u_role);
 
         -- commit transaction
         COMMIT;
@@ -127,20 +111,29 @@ END#
 
 -- getUserById
 CREATE PROCEDURE getUserById(
-    IN user_id VARCHAR(255)
+    IN u_id VARCHAR(255)
 )
 BEGIN
     SELECT * FROM users
-    WHERE id=user_id AND is_deleted=0;
+    WHERE id=u_id AND is_deleted=0;
 END#
 
 -- getUserByEmail
 CREATE PROCEDURE getUserByEmail(
-    IN user_email VARCHAR(100)
+    IN u_email VARCHAR(100)
 )
 BEGIN
     SELECT * FROM users
-    WHERE email=user_email AND is_deleted=0;
+    WHERE email=u_email AND is_deleted=0;
+END#
+
+-- getUserByUsername
+CREATE PROCEDURE getUserByUsername(
+    IN u_username VARCHAR(100)
+)
+BEGIN
+    SELECT * FROM users
+    WHERE username=u_username AND is_deleted=0;
 END#
 
 -- getUsers
@@ -151,11 +144,10 @@ END#
 
 -- updateUser
 CREATE PROCEDURE updateUser(
-    IN user_id VARCHAR(255),
-    IN new_username VARCHAR(100),
-    IN new_email VARCHAR(100),
-    IN new_password VARCHAR(255),
-    IN new_role ENUM("admin","customer")
+    IN u_id VARCHAR(255),
+    IN u_username VARCHAR(100),
+    IN u_email VARCHAR(100),
+    IN u_password VARCHAR(255)
 )
 BEGIN
     DECLARE existing_account INT DEFAULT 0;
@@ -165,7 +157,7 @@ BEGIN
     START TRANSACTION;
 
     SELECT COUNT(*) INTO existing_account FROM users
-    WHERE username=new_username OR email=new_email;
+    WHERE username=u_username OR email=u_email;
 
     IF existing_account > 0 THEN
         ROLLBACK;
@@ -173,8 +165,8 @@ BEGIN
             SET MESSAGE_TEXT = rollback_message;
     ELSE
         UPDATE users
-        SET username=new_username,email=new_email,password=nwe_password,role=new_role
-        WHERE id=user_id;
+        SET username=u_username,email=u_email,password=u_password
+        WHERE id=u_id;
 
         COMMIT;
         SELECT commit_message AS "result";
@@ -183,20 +175,38 @@ END#
 
 -- updatePassword
 CREATE PROCEDURE updatePassword(
-    IN user_id VARCHAR(255),
-    IN new_password VARCHAR(255)
+    IN u_id VARCHAR(255),
+    IN u_password VARCHAR(255)
 )
 BEGIN
-    UPDATE users SET password=new_password
-    WHERE id=user_id AND is_deleted=0;
+    UPDATE users SET password=u_password
+    WHERE id=u_id AND is_deleted=0;
 END#
 
 -- deleteUser
 CREATE PROCEDURE deleteUser(
-    IN user_id VARCHAR(255)
+    IN u_id VARCHAR(255)
 )
 BEGIN
-    UPDATE user SET is_deleted=0 WHERE id=user_id;
+    DECLARE existing_account INT DEFAULT 0;
+    DECLARE rollback_message VARCHAR(255) DEFAULT 'Transaction rolled back: User does not exists';
+    DECLARE commit_message VARCHAR(255) DEFAULT 'Transaction committed successfully';
+
+    START TRANSACTION;
+
+    SELECT COUNT(*) INTO existing_account FROM users
+    WHERE id=u_id AND is_deleted=0;
+
+    IF existing_account > 0 THEN
+        UPDATE users SET is_deleted=1 WHERE id=u_id;
+
+        COMMIT;
+        SELECT commit_message AS "result";
+    ELSE
+        ROLLBACK;
+        SIGNAL SQLSTATE "45000"
+            SET MESSAGE_TEXT = rollback_message;
+    END IF;
 END#
 -- END USERS SPs
 
@@ -204,6 +214,69 @@ END#
 -- END USER_DETAILS SPs
 
 -- START PRODUCTS SPs
+
+-- addProduct
+CREATE PROCEDURE addProduct(
+    IN p_id VARCHAR(250),
+    IN p_name VARCHAR(100),
+    IN p_category ENUM("electronics","clothing","sports","stationery","food","toys"),
+    IN p_description TEXT,
+    IN p_image VARCHAR(250),
+    IN p_price DECIMAL(10,2)
+)
+BEGIN
+    INSERT into products(id,name,category,description,image,price)
+    VALUES(p_id,p_name,p_category,p_description,p_image,p_price);
+END#
+
+-- getProductById
+CREATE PROCEDURE getProductById(
+    IN p_id VARCHAR(250)
+)
+BEGIN
+    SELECT * FROM products 
+    WHERE id=p_id AND is_deleted=0;
+END#
+
+-- getProductByCategory
+CREATE PROCEDURE getProductByCategory(
+    IN p_category ENUM("electronics","clothing","sports","stationery","food","toys")
+)
+BEGIN
+    SELECT * FROM products
+    WHERE category=p_category AND is_deleted=0;
+END#
+
+-- getProducts
+CREATE PROCEDURE getProducts()
+BEGIN
+    SELECT * FROM products WHERE is_deleted=0;
+END#
+
+-- updateProduct
+CREATE PROCEDURE updateProduct(
+    IN p_id VARCHAR(250),
+    IN p_name VARCHAR(100),
+    IN p_category ENUM("electronics","clothing","sports","stationery","food","toys"),
+    IN p_description TEXT,
+    IN p_image TEXT,
+    IN p_price DECIMAL(10,2)
+)
+BEGIN
+    UPDATE products
+    SET name=p_name,category=p_category,description=p_description,image=p_image,price=p_price
+    WHERE id=p_id AND is_deleted=0;
+END#
+
+-- deleteProduct
+CREATE PROCEDURE deleteProduct(
+    IN p_id VARCHAR(250)
+)
+BEGIN
+    UPDATE products 
+    SET is_deleted=1 WHERE id=p_id;
+END#
+
 -- END PRODUCTS SPs
 
 -- START ORDERS SPs

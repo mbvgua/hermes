@@ -1,14 +1,14 @@
 ###############
 # addProduct
-POST http://localhost:4000/products/add/
+POST http://localhost:4000/v1/products/add
 Content-Type: application/json
 
 {
     "name":"kabuti",
+    "category":"electronics",
     "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     "image":"https://cdn.pixabay.com/photo/2017/08/05/15/04/leather-2584298_640.jpg",
-    "price":5000.00,
-    "inStock":17
+    "price":5000.00
 }
 
 ###############
