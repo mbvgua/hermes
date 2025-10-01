@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
 import { v4 as uid } from "uuid";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import path from "path";
 
 import { pool } from "../../config/db.config";
 import { IProducts } from "../models/products.models";
@@ -9,6 +12,9 @@ import {
 } from "../validators/products.validators";
 import { validationHelper } from "../helpers/validator.helpers";
 import { logger } from "../../config/winston.config";
+import { IPayload, UserRoles } from "../models/users.models";
+
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 // add product
 export async function addProduct(request: Request, response: Response) {
@@ -172,37 +178,62 @@ export async function getProductsByCategory(
   /*
    * get products from the db with their categories
    * not a request, but instead in the URL, say 123/get/eectronics
+   * pagination implemented with limit-offset
    */
   const category = request.query.category as string;
+  //defaults to page 1 and limit of 10 if none passed
+  const page = parseInt(request.query.page as string) || 1;
+  const limit = parseInt(request.query.limit as string) || 10;
+  const offset = (page - 1) * limit;
+
   try {
     const connection = await pool.getConnection();
-    const [rows]: any = await connection.execute(
-      "CALL getProductByCategory(?);",
+    // get total num of products in given category
+    const [results]: any = await connection.query(
+      `SELECT COUNT(*) AS total FROM products WHERE category=?;`,
       [category],
     );
-    const [products] = rows[0] as Array<IProducts>;
+    const totalItems = results[0].total;
+    const totalPages = Math.ceil(totalItems / limit);
+
+    // get paginated query based on user input
+    const [rows]: any = await connection.query(
+      `SELECT * FROM products WHERE category=? LIMIT ? OFFSET ? ;`,
+      [category, limit, offset],
+    );
+    const products = rows as Array<IProducts>;
+    connection.release();
 
     if (products) {
       // log request
       logger.log({
         level: "info",
-        message: `Succesfully retrieved items under the ${category} category.`,
-        data: {
-          products: {
-            // begin pagination to return this better
-          },
+        message: `Succesfully retrieved ${limit} items under the ${category} category.`,
+        data: `totalItems: ${totalItems}`,
+        metadata: {
+          previousPage: +page - 1,
+          currentPage: +page,
+          nextPage: +page + 1,
+          totalPages,
+          totalItems,
         },
       });
       // return response
       return response.status(200).json({
         code: 200,
         status: "success",
-        message:
-          "Succesfully retrieved products under the ${category} category",
+        message: `Succesfully retrieved products under the ${category} category`,
         data: {
           products: {
-            // begin pagination to return this better
+            products,
           },
+        },
+        metadata: {
+          previousPage: +page - 1,
+          currentPage: +page,
+          nextPage: +page + 1,
+          totalPages,
+          totalItems,
         },
       });
     }
@@ -210,22 +241,15 @@ export async function getProductsByCategory(
     logger.log({
       level: "error",
       message: `Error fetching products in the ${category} category.`,
-      data: {
-        products: {
-          // begin pagination to return this better
-        },
-      },
+      data: null,
+      metadata: null,
     });
     // return response
     return response.status(404).json({
       code: 404,
       status: "error",
       message: `No products found in the ${category} category`,
-      data: {
-        products: {
-          // begin pagination to return this better
-        },
-      },
+      data: null,
       metadata: null,
     });
   } catch (error) {
@@ -250,11 +274,27 @@ export async function getProductsByCategory(
 export async function getProducts(request: Request, response: Response) {
   /*
    * get all products from the system
+   * implement pagination with limit-offset
    */
+  const page = parseInt(request.query.page as string) || 1;
+  const limit = parseInt(request.query.limit as string) || 10;
+  const offset = (page - 1) * limit;
+
   try {
     const connection = await pool.getConnection();
-    const [rows]: any = await connection.execute(`CALL getProducts();`);
-    const [products] = rows[0] as Array<IProducts>;
+    // get total num of products
+    const [results]: any = await connection.query(
+      `SELECT COUNT(*) AS total FROM products;`,
+    );
+    const totalItems = results[0].total;
+    const totalPages = Math.ceil(totalItems / limit);
+
+    // get paginated query from user input
+    const [rows]: any = await connection.query(
+      `SELECT * FROM products LIMIT ? OFFSET ?;`,
+      [limit, offset],
+    );
+    const products = rows as Array<IProducts>;
     connection.release();
 
     if (products) {
@@ -262,10 +302,13 @@ export async function getProducts(request: Request, response: Response) {
       logger.log({
         level: "info",
         message: "Succesfully retrieved all products in the system",
-        data: {
-          products: {
-            // begin pagination to return this better
-          },
+        data: `totalItems: ${totalItems}`,
+        metadata: {
+          previousPage: +page - 1,
+          currentPage: +page,
+          nextPage: +page + 1,
+          totalPages,
+          totalItems,
         },
       });
       //return response
@@ -275,32 +318,31 @@ export async function getProducts(request: Request, response: Response) {
         message: "Succesfully retrieved all products in the system",
         data: {
           products: {
-            // begin pagination to return this better
+            products,
           },
         },
-        metadata: null,
+        metadata: {
+          previousPage: +page - 1,
+          currentPage: +page,
+          nextPage: +page + 1,
+          totalPages,
+          totalItems,
+        },
       });
     }
     // log request
     logger.log({
       level: "error",
       message: `Error fetching products in the system`,
-      data: {
-        products: {
-          // begin pagination to return this better
-        },
-      },
+      data: null,
+      metadata: null,
     });
     // return response
     return response.status(404).json({
       code: 404,
       status: "error",
       message: `No products found in the system. Try again later`,
-      data: {
-        products: {
-          // begin pagination to return this better
-        },
-      },
+      data: null,
       metadata: null,
     });
   } catch (error) {
@@ -367,27 +409,50 @@ export async function getProducts(request: Request, response: Response) {
 //     return response.status(500).json({ error: error });
 //   }
 // }
-//
-// // delete  product
-// export async function deleteProduct(request:Request<{id:string}>,response:Response){
-//     const id = request.params.id
-//     try{
-//         const [rows,fields] = await pool.query(
-//             `SELECT * FROM products
-//             WHERE id='${id}'
-//             AND isDeleted=0;`
-//         )
-//         const [product] = rows as Array<Products>
-//         if(product){
-//             await pool.query(
-//                 `UPDATE products SET isDeleted=1 WHERE id='${id}';`
-//             )
-//             return response.status(200).json({success:`You have successfuly deleted ${product.name} from the records!`})
-//         } else {
-//             return response.status(401).json({error:`It looks like the product does not exists. Try again?`})
-//         }
-//     } catch(error){
-//         console.error('An error occurred: ',error)
-//         return response.status(500).json({error:error})
-//     }
-// }
+
+export async function deleteProduct(request: Request, response: Response) {
+  /*
+   * soft delete a product from the db
+   * user id gotten from token. if admin delete item
+   */
+  //get items to delete id
+  const product_id = request.query.id as string;
+
+  try {
+    const token = request.headers["token"];
+    const decoded_token = jwt.verify(
+      token,
+      process.env.SECRET_KEY as string,
+    ) as IPayload;
+    const user_id = decoded_token.id;
+    const user_role = decoded_token.role;
+
+    // if user role is an admin
+    if (user_role == UserRoles.Admin) {
+      const connection = await pool.getConnection();
+      const [rows]: any = await connection.execute(`CALL getProductById(?);`, [
+        product_id,
+      ]);
+      const [product] = rows[0] as Array<IProducts>;
+
+      //if product exists
+      if (product) {
+        await pool.query(
+          `UPDATE products SET isDeleted=1 WHERE id='${product_id}';`,
+        );
+        return response.status(200).json({
+          success: `You have successfuly deleted ${product.name} from the records!`,
+        });
+      }
+      //else if it was already deleted
+
+      return response.status(401).json({
+        error: `It looks like the product does not exists. Try again?`,
+      });
+    }
+    // else not authorize
+  } catch (error) {
+    console.error("An error occurred: ", error);
+    return response.status(500).json({ error: error });
+  }
+}

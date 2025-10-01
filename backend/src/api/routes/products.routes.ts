@@ -9,7 +9,7 @@ import {
 const productRouter = express.Router();
 
 productRouter.post("/add", addProduct);
-productRouter.get("/get", getProducts);
+productRouter.get("/get-all", getProducts);
 productRouter.get("/get-by-category", getProductsByCategory);
 productRouter.get("/get-by-id/:id", getProductById);
 // productRouter.patch('/update/:id',updateProduct)
