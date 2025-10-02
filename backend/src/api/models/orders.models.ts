@@ -1,7 +1,7 @@
 
 export interface Orders {
-    id:string,
-    userId:string,
+    id:number,
+    userId:number,
     orderDetails:{
         itemId:number,
         itemQuantity:number,

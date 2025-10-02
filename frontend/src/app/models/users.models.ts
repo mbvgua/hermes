@@ -37,7 +37,7 @@ export interface UserResponse {
 }
 
 export interface DecodedTokenPayload {
-  id: string;
+  id: number;
   username: string;
   email: string;
   role: string; // dont user UserRole enum. problem in destructuring token
