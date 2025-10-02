@@ -6,15 +6,16 @@ export enum UserRoles {
 }
 
 export interface IUsers {
-  id: string;
+  id: number;
   username: string;
   email: string;
-  password: string;
+  password?: string;
   role: UserRoles;
+  google_id?: string;
 }
 
 export interface IPayload {
-  id: string;
+  id: number;
   username: string;
   email: string;
   role: UserRoles;

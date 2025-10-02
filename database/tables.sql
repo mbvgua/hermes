@@ -7,7 +7,8 @@ CREATE TABLE users (
     id INT PRIMARY KEY SERIAL DEFAULT VALUE,
     username VARCHAR(255) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
+    google_id VARCHAR(255) UNIQUE,
+    password VARCHAR(255),
     role ENUM('customer','admin') NOT NULL,
     created_at DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     is_deleted BOOLEAN DEFAULT 0
@@ -15,10 +16,10 @@ CREATE TABLE users (
 
 -- DUMP USERS
 INSERT INTO users VALUES
-    (DEFAULT,'admin','admin@gmail.com','@1Admin!','admin',DEFAULT,DEFAULT),
-    (DEFAULT,'lance','lance@gmail.com','!1Lance!','customer',DEFAULT,DEFAULT),
-    (DEFAULT,'mende','mende@gmail.com','@1Mende!','customer',DEFAULT,DEFAULT),
-    (DEFAULT,'cindy','cindy@gmail.com','@1Cindy!','customer',DEFAULT,DEFAULT);
+    (DEFAULT,'admin','admin@gmail.com',NULL,'@1Admin!','admin',DEFAULT,DEFAULT),
+    (DEFAULT,'lance','lance@gmail.com',NULL,'!1Lance!','customer',DEFAULT,DEFAULT),
+    (DEFAULT,'mende','mende@gmail.com',NULL,'@1Mende!','customer',DEFAULT,DEFAULT),
+    (DEFAULT,'cindy','cindy@gmail.com',NULL,'@1Cindy!','customer',DEFAULT,DEFAULT);
 
 CREATE TABLE products (
     -- SERIAL DEFAULT VALUE equates to NOT NULL AUTO_INCREMENT UNIQUE

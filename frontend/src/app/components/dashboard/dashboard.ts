@@ -1,7 +1,6 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit, signal, inject } from '@angular/core';
+import { RouterModule, Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import { inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, switchMap } from 'rxjs';
 import { LocalStorage } from '../../services/local-storage/local-storage';
@@ -17,6 +16,7 @@ import { Auth } from '../../services/auth/auth';
 })
 export class Dashboard implements OnInit {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   constructor(
     public ls: LocalStorage,
     private userService: Users,
@@ -26,7 +26,7 @@ export class Dashboard implements OnInit {
   token = signal<string>('');
   id = signal<number>(0);
   decoded_token = signal<DecodedTokenPayload>({
-    id: '',
+    id: 0,
     username: '',
     email: '',
     role: '',
@@ -41,8 +41,21 @@ export class Dashboard implements OnInit {
   }
 
   ngOnInit(): void {
+    // Check for token in query params (from OAuth redirect)
+    this.route.queryParams.subscribe(params => {
+      const token = params['token'];
+      if (token) {
+        this.ls.setItem('token', token);
+        this.authService.login();
+        this.router.navigate(['/dashboard']);
+        return;
+      }
+    });
+
     this.token.set(this.ls.getItem('token') ?? '');
-    this.decoded_token.set(jwtDecode<DecodedTokenPayload>(this.token()));
+    if (this.token()) {
+      this.decoded_token.set(jwtDecode<DecodedTokenPayload>(this.token()));
+    }
 
     //navigate to user id profile
     this.route.paramMap.pipe(
