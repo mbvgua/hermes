@@ -1,0 +1,9 @@
+# ignore python build files
+__pycache__
+*.pyc
+
+# environment variables
+.env
+
+# virtual env
+.venv
