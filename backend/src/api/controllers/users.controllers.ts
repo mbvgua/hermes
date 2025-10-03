@@ -31,7 +31,7 @@ export async function getUserById(
   try {
     //get id from the user token
     //TODO:Also handle this massive error
-    const token = request.headers["token"];
+    const token = request.headers["token"] as string;
     const decoded_token = jwt.verify(
       token,
       process.env.SECRET_KEY as string,
@@ -116,7 +116,7 @@ export async function getUsers(request: Request, response: Response) {
   const offset = (page - 1) * limit;
 
   //decode token to get user_id
-  const token = request.headers["token"];
+  const token = request.headers["token"] as string;
   //NOTE:Massive error, still runs though
   const decoded_token = jwt.verify(
     token,
@@ -191,7 +191,7 @@ export async function updateUser(request: ExtendedRequest, response: Response) {
   const { username, email, password } = request.body;
   try {
     // get token from response body
-    const token = request.headers["token"];
+    const token = request.headers["token"] as string;
     const decoded_token = jwt.verify(
       token,
       process.env.SECRET_KEY as string,
@@ -295,7 +295,7 @@ export async function deleteUser(request: ExtendedRequest, response: Response) {
    */
   try {
     //get id from token
-    const token = request.headers["token"];
+    const token = request.headers["token"] as string;
     const decoded_token = jwt.verify(
       token,
       process.env.SECRET_KEY as string,

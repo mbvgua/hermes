@@ -115,6 +115,15 @@ export async function loginUser(request: Request, response: Response) {
 
       //if user exists and username matches
       if (user.username == username) {
+        if (!user.password) {
+          return response.status(400).json({
+            code: 400,
+            status: "error",
+            message: "This account uses Google OAuth. Please login with Google.",
+            data: null,
+            metadata: null,
+          });
+        }
         const is_valid = await bcrypt.compare(password, user.password);
         //if passwords match
         if (is_valid) {
