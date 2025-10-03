@@ -6,7 +6,7 @@ export enum UserRoles {
 }
 
 export interface IUsers {
-  id: number;
+  id: string;
   username: string;
   email: string;
   password?: string;
@@ -15,7 +15,7 @@ export interface IUsers {
 }
 
 export interface IPayload {
-  id: number;
+  id: string;
   username: string;
   email: string;
   role: UserRoles;

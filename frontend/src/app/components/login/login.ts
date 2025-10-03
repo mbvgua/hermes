@@ -61,7 +61,7 @@ export class Login implements OnInit {
   }
 
   googleLogin() {
-    window.location.href = 'http://localhost:3000/v1/auth/google';
+    window.location.href = 'http://localhost:4000/v1/auth/google';
   }
 
   ngOnInit(): void {

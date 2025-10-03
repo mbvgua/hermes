@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import { logger } from "../../config/winston.config";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { v4 as uid } from "uuid";
 import dotenv from "dotenv";
 import path from "path";
 
@@ -20,6 +19,7 @@ import {
   ExtendedRequest,
 } from "../models/users.models";
 import { validationHelper } from "../helpers/validator.helpers";
+import { generateRandomnId } from "../helpers/id.helper";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
@@ -27,7 +27,7 @@ export async function registerUser(request: Request, response: Response) {
   /*
    * register new users into the system using an email & password
    */
-  const id = uid();
+  const id = generateRandomnId();
   const { username, email, password } = request.body;
   const role = UserRoles.Customer;
 

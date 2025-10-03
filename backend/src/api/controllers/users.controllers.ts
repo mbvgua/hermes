@@ -30,7 +30,6 @@ export async function getUserById(
    */
   try {
     //get id from the user token
-    //TODO:Also handle this massive error
     const token = request.headers["token"] as string;
     const decoded_token = jwt.verify(
       token,
@@ -117,7 +116,6 @@ export async function getUsers(request: Request, response: Response) {
 
   //decode token to get user_id
   const token = request.headers["token"] as string;
-  //NOTE:Massive error, still runs though
   const decoded_token = jwt.verify(
     token,
     process.env.SECRET_KEY as string,
