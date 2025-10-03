@@ -66,7 +66,7 @@ export async function isAdmin(
    * ensure only users with admin roles gain excess to certain routes
    */
   //read the token
-  const token = request.headers["token"];
+  const token = request.headers["token"] as string;
 
   //else if token does exist
   try {

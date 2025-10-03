@@ -38,15 +38,13 @@ export class Login implements OnInit {
         this.status.set(response.status);
         this.message.set(response.message);
 
-        setTimeout(() => {
-          if (response.data?.token) {
-            this.ls.setItem('token', response.data?.token);
+        if (response.data?.token) {
+          this.ls.setItem('token', response.data?.token);
 
-            //navigate to main dashboard
-            this.authService.login();
-            this.router.navigate(['dashboard']);
-          }
-        }, 2000);
+          //navigate to main dashboard
+          this.authService.login();
+          this.router.navigate(['dashboard']);
+        }
       },
       (error: UserResponse | any) => {
         this.status.set(error.status);
@@ -59,6 +57,10 @@ export class Login implements OnInit {
       },
     );
     this.loginForm.reset();
+  }
+
+  googleLogin() {
+    window.location.href = 'http://localhost:3000/v1/auth/google';
   }
 
   ngOnInit(): void {

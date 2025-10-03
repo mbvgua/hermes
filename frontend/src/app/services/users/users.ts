@@ -8,7 +8,7 @@ import { IUser } from '../../models/users.models';
 })
 export class Users {
   constructor(private http: HttpClient) {}
-  private readonly base_url = 'http://localhost:4000/v1/';
+  private readonly base_url = 'http://localhost:3000/v1/';
 
   // register new users
   registerUser(user: IUser): Observable<any> {
