@@ -32,6 +32,7 @@ export class Login implements OnInit {
   message = signal<string>('');
 
   onSubmit() {
+    // login user with email and password
     this.userService.loginUser(this.loginForm.value).subscribe(
       (response: UserResponse) => {
         this.ls.removeAllItems();
