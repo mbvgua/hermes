@@ -4,8 +4,9 @@ USE hermes;
 
 CREATE TABLE users (
     -- SERIAL DEFAULT VALUE equates to NOT NULL AUTO_INCREMENT UNIQUE
+    id INT PRIMARY KEY SERIAL DEFAULT VALUE,
+    -- used for storing uuid,google_id e.t.c
     google_id VARCHAR(255) UNIQUE,
-    id VARCHAR(255) PRIMARY KEY,
     username VARCHAR(100) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255),

@@ -17,7 +17,7 @@ export async function verifyToken(
    * ensures a token is present in request
    */
   //read the token
-  const token = request.headers["token"];
+  const token = request.headers["token"] as string;
 
   try {
     //if token does not exists, exit with error

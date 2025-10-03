@@ -17,9 +17,15 @@ importers:
       '@types/express':
         specifier: ^5.0.3
         version: 5.0.3
-      '@types/passport-oauth2':
-        specifier: ^1.8.0
-        version: 1.8.0
+      '@types/express-session':
+        specifier: ^1.18.2
+        version: 1.18.2
+      '@types/passport':
+        specifier: ^1.0.17
+        version: 1.0.17
+      '@types/passport-google-oauth20':
+        specifier: ^2.0.16
+        version: 2.0.16
       '@types/uuid':
         specifier: ^10.0.0
         version: 10.0.0
@@ -38,6 +44,9 @@ importers:
       express:
         specifier: ^5.1.0
         version: 5.1.0
+      express-session:
+        specifier: ^1.18.2
+        version: 1.18.2
       joi:
         specifier: ^18.0.0
         version: 18.0.0
@@ -53,9 +62,9 @@ importers:
       passport:
         specifier: ^0.7.0
         version: 0.7.0
-      passport-oauth2:
-        specifier: ^1.8.0
-        version: 1.8.0
+      passport-google-oauth20:
+        specifier: ^2.0.0
+        version: 2.0.0
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
@@ -131,6 +140,9 @@ packages:
   '@types/express-serve-static-core@5.0.7':
     resolution: {integrity: sha512-R+33OsgWw7rOhD1emjU7dzCDHucJrgJXMA5PYCzJxVil0dsyx5iBEPHqpPfiKNJQb7lZ1vxwoLR4Z87bBUpeGQ==}
 
+  '@types/express-session@1.18.2':
+    resolution: {integrity: sha512-k+I0BxwVXsnEU2hV77cCobC08kIsn4y44C3gC0b46uxZVMaXA04lSPgRLR/bSL2w0t0ShJiG8o4jPzRG/nscFg==}
+
   '@types/express@5.0.3':
     resolution: {integrity: sha512-wGA0NX93b19/dZC1J18tKWVIYWyyF2ZjT9vin/NRu0qzzvfVzWjs04iq2rQ3H65vCTQYlRqs3YHfY7zjdV+9Kw==}
 
@@ -155,6 +167,9 @@ packages:
 
   '@types/oauth@0.9.6':
     resolution: {integrity: sha512-H9TRCVKBNOhZZmyHLqFt9drPM9l+ShWiqqJijU1B8P3DX3ub84NjxDuy+Hjrz+fEca5Kwip3qPMKNyiLgNJtIA==}
+
+  '@types/passport-google-oauth20@2.0.16':
+    resolution: {integrity: sha512-ayXK2CJ7uVieqhYOc6k/pIr5pcQxOLB6kBev+QUGS7oEZeTgIs1odDobXRqgfBPvXzl0wXCQHftV5220czZCPA==}
 
   '@types/passport-oauth2@1.8.0':
     resolution: {integrity: sha512-6//z+4orIOy/g3zx17HyQ71GSRK4bs7Sb+zFasRoc2xzlv7ZCJ+vkDBYFci8U6HY+or6Zy7ajf4mz4rK7nsWJQ==}
@@ -294,6 +309,9 @@ packages:
     resolution: {integrity: sha512-nTjqfcBFEipKdXCv4YDQWCfmcLZKm81ldF0pAopTvyrFGVbcR6P/VAAd5G7N+0tTr8QqiU0tFadD6FK4NtJwOA==}
     engines: {node: '>= 0.6'}
 
+  cookie-signature@1.0.7:
+    resolution: {integrity: sha512-NXdYc3dLr47pBkpUCHtKSwIOQXLVn8dZEuywboCOJY/osA0wFSLlSawr3KN8qXJEyX66FcONTH8EIlVuK0yyFA==}
+
   cookie-signature@1.2.2:
     resolution: {integrity: sha512-D76uU73ulSXrD1UXF4KE2TMxVVwhsnCgfAyTg9k8P6KGZjlXKrOLe4dJQKI3Bxi5wjesZoFXJWElNWBjPZMbhg==}
     engines: {node: '>=6.6.0'}
@@ -305,6 +323,14 @@ packages:
   cors@2.8.5:
     resolution: {integrity: sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g==}
     engines: {node: '>= 0.10'}
+
+  debug@2.6.9:
+    resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
 
   debug@4.4.1:
     resolution: {integrity: sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ==}
@@ -369,6 +395,10 @@ packages:
   etag@1.8.1:
     resolution: {integrity: sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==}
     engines: {node: '>= 0.6'}
+
+  express-session@1.18.2:
+    resolution: {integrity: sha512-SZjssGQC7TzTs9rpPDuUrR23GNZ9+2+IkA/+IJWmvQilTr5OSliEHGF+D9scbIpdC6yGtTI0/VhaHoVes2AN/A==}
+    engines: {node: '>= 0.8.0'}
 
   express@5.1.0:
     resolution: {integrity: sha512-DT9ck5YIRU+8GYzzU5kT3eHGA5iL+1Zd0EutOmTE9Dtk+Tvuzd23VBU+ec7HPNSTxXYO55gPV/hq4pSBJDjFpA==}
@@ -573,6 +603,9 @@ packages:
   minimatch@3.1.2:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
 
+  ms@2.0.0:
+    resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
+
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
@@ -620,6 +653,10 @@ packages:
     resolution: {integrity: sha512-oVlzkg3ENAhCk2zdv7IJwd/QUD4z2RxRwpkcGY8psCVcCYZNq4wYnVWALHM+brtuJjePWiYF/ClmuDr8Ch5+kg==}
     engines: {node: '>= 0.8'}
 
+  on-headers@1.1.0:
+    resolution: {integrity: sha512-737ZY3yNnXy37FHkQxPzt4UZ2UWPWiCZWLvFZ4fu5cueciegX0zGPnrlY6bwRg4FdQOe9YU8MkmJwGhoMybl8A==}
+    engines: {node: '>= 0.8'}
+
   once@1.4.0:
     resolution: {integrity: sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==}
 
@@ -629,6 +666,10 @@ packages:
   parseurl@1.3.3:
     resolution: {integrity: sha512-CiyeOxFT/JZyN5m0z9PfXw4SCBJ6Sygz1Dpl0wqjlhDEGGBP1GnsUVEL0p63hoG1fcj3fHynXi9NYO4nWOL+qQ==}
     engines: {node: '>= 0.8'}
+
+  passport-google-oauth20@2.0.0:
+    resolution: {integrity: sha512-KSk6IJ15RoxuGq7D1UKK/8qKhNfzbLeLrG3gkLZ7p4A6DBCcv7xpyQwuXtWdpyR0+E0mwkpjY1VfPOhxQrKzdQ==}
+    engines: {node: '>= 0.4.0'}
 
   passport-oauth2@1.8.0:
     resolution: {integrity: sha512-cjsQbOrXIDE4P8nNb3FQRCCmJJ/utnFKEz2NX209f7KOHPoX18gF7gBzBbLLsj2/je4KrgiwLLGjf0lm9rtTBA==}
@@ -663,6 +704,10 @@ packages:
   qs@6.14.0:
     resolution: {integrity: sha512-YWWTjgABSKcvs/nWBi9PycY/JiPJqOD4JA6o9Sej2AtvSGarXxKC3OQSk4pAarbdQlKAh5D4FCQkJNkW+GAn3w==}
     engines: {node: '>=0.6'}
+
+  random-bytes@1.0.0:
+    resolution: {integrity: sha512-iv7LhNVO047HzYR3InF6pUcUsPQiHTM1Qal51DcGSuZFBil1aBBWG5eHPNek7bvILMaYJ/8RU1e8w1AMdHmLQQ==}
+    engines: {node: '>= 0.8'}
 
   range-parser@1.2.1:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
@@ -815,6 +860,10 @@ packages:
     resolution: {integrity: sha512-OZs6gsjF4vMp32qrCbiVSkrFmXtG/AZhY3t0iAMrMBiAZyV9oALtXO8hsrHbMXF9x6L3grlFuwW2oAz7cav+Gw==}
     engines: {node: '>= 0.6'}
 
+  uid-safe@2.1.5:
+    resolution: {integrity: sha512-KPHm4VL5dDXKz01UuEd88Df+KzynaohSL9fBh096KWAxSKZQDI2uBrVqtvRM4rwrIrRRKsdLNML/lnaaVSRioA==}
+    engines: {node: '>= 0.8'}
+
   uid2@0.0.4:
     resolution: {integrity: sha512-IevTus0SbGwQzYh3+fRsAMTVVPOoIVufzacXcHPmdlle1jUpq7BRL+mw3dgeLanvGZdwwbWhRV6XrcFNdBmjWA==}
 
@@ -930,6 +979,10 @@ snapshots:
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.5
 
+  '@types/express-session@1.18.2':
+    dependencies:
+      '@types/express': 5.0.3
+
   '@types/express@5.0.3':
     dependencies:
       '@types/body-parser': 1.19.6
@@ -958,6 +1011,12 @@ snapshots:
   '@types/oauth@0.9.6':
     dependencies:
       '@types/node': 24.2.1
+
+  '@types/passport-google-oauth20@2.0.16':
+    dependencies:
+      '@types/express': 5.0.3
+      '@types/passport': 1.0.17
+      '@types/passport-oauth2': 1.8.0
 
   '@types/passport-oauth2@1.8.0':
     dependencies:
@@ -1124,6 +1183,8 @@ snapshots:
 
   content-type@1.0.5: {}
 
+  cookie-signature@1.0.7: {}
+
   cookie-signature@1.2.2: {}
 
   cookie@0.7.2: {}
@@ -1132,6 +1193,10 @@ snapshots:
     dependencies:
       object-assign: 4.1.1
       vary: 1.1.2
+
+  debug@2.6.9:
+    dependencies:
+      ms: 2.0.0
 
   debug@4.4.1(supports-color@5.5.0):
     dependencies:
@@ -1176,6 +1241,19 @@ snapshots:
   escape-html@1.0.3: {}
 
   etag@1.8.1: {}
+
+  express-session@1.18.2:
+    dependencies:
+      cookie: 0.7.2
+      cookie-signature: 1.0.7
+      debug: 2.6.9
+      depd: 2.0.0
+      on-headers: 1.1.0
+      parseurl: 1.3.3
+      safe-buffer: 5.2.1
+      uid-safe: 2.1.5
+    transitivePeerDependencies:
+      - supports-color
 
   express@5.1.0:
     dependencies:
@@ -1400,6 +1478,8 @@ snapshots:
     dependencies:
       brace-expansion: 1.1.12
 
+  ms@2.0.0: {}
+
   ms@2.1.3: {}
 
   mysql2@3.14.3:
@@ -1449,6 +1529,8 @@ snapshots:
     dependencies:
       ee-first: 1.1.1
 
+  on-headers@1.1.0: {}
+
   once@1.4.0:
     dependencies:
       wrappy: 1.0.2
@@ -1458,6 +1540,10 @@ snapshots:
       fn.name: 1.1.0
 
   parseurl@1.3.3: {}
+
+  passport-google-oauth20@2.0.0:
+    dependencies:
+      passport-oauth2: 1.8.0
 
   passport-oauth2@1.8.0:
     dependencies:
@@ -1491,6 +1577,8 @@ snapshots:
   qs@6.14.0:
     dependencies:
       side-channel: 1.1.0
+
+  random-bytes@1.0.0: {}
 
   range-parser@1.2.1: {}
 
@@ -1657,6 +1745,10 @@ snapshots:
       content-type: 1.0.5
       media-typer: 1.1.0
       mime-types: 3.0.1
+
+  uid-safe@2.1.5:
+    dependencies:
+      random-bytes: 1.0.0
 
   uid2@0.0.4: {}
 

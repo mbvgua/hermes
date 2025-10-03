@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { v4 as uid } from "uuid";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import path from "path";
@@ -13,6 +12,7 @@ import {
 import { validationHelper } from "../helpers/validator.helpers";
 import { logger } from "../../config/winston.config";
 import { IPayload, UserRoles } from "../models/users.models";
+import { generateRandomnId } from "../helpers/id.helper";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
@@ -22,7 +22,7 @@ export async function addProduct(request: Request, response: Response) {
    * adds new products into the system
    */
 
-  const id = uid();
+  const id = generateRandomnId();
   const { name, category, description, image, price } = request.body;
   try {
     // check for errors in request schema
@@ -412,6 +412,7 @@ export async function getProducts(request: Request, response: Response) {
 
 export async function deleteProduct(request: Request, response: Response) {
   /*
+   * TODO: complete this endpoint
    * soft delete a product from the db
    * user id gotten from token. if admin delete item
    */
@@ -419,7 +420,7 @@ export async function deleteProduct(request: Request, response: Response) {
   const product_id = request.query.id as string;
 
   try {
-    const token = request.headers["token"];
+    const token = request.headers["token"] as string;
     const decoded_token = jwt.verify(
       token,
       process.env.SECRET_KEY as string,

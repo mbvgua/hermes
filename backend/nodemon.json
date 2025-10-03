@@ -1,0 +1,11 @@
+{
+    "watch": [
+        "src"
+    ],
+    "ext": "js,json",
+    "ignore": [
+        ".env,.env-example,*.log"
+    ],
+    "_comment": "set verbose to true. essential for debugging",
+    "verbose": true
+}

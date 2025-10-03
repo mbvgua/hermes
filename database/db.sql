@@ -4,15 +4,15 @@ USE hermes;
 
 CREATE TABLE users (
     -- SERIAL DEFAULT VALUE equates to NOT NULL AUTO_INCREMENT UNIQUE
+    google_id VARCHAR(255) UNIQUE,
     id VARCHAR(255) PRIMARY KEY,
-    username VARCHAR(100) UNIQUE NOT NULL ,
-    email VARCHAR(100) UNIQUE NOT NULL ,
-    password VARCHAR(255) NOT NULL,
-    role ENUM("admin","customer") NOT NULL,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255),
+    role ENUM('customer','admin') NOT NULL,
     created_at DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     is_deleted BOOLEAN DEFAULT 0
 );
-
 
 CREATE TABLE user_details(
     -- SERIAL DEFAULT VALUE equates to NOT NULL AUTO_INCREMENT UNIQUE
@@ -37,7 +37,7 @@ CREATE TABLE user_details(
 CREATE TABLE products(
     -- SERIAL DEFAULT VALUE equates to NOT NULL AUTO_INCREMENT UNIQUE
     -- id INT PRIMARY KEY SERIAL DEFAULT VALUE,
-    id VARCHAR(25) PRIMARY KEY,
+    id VARCHAR(250) PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE,
     category ENUM("electronics","clothing","sports","stationery","food","toys") NOT NULL,
     description TEXT NOT NULL ,

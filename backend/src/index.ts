@@ -11,7 +11,8 @@ import productRouter from "./api/routes/products.routes";
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT
+const session_secret = process.env.SESSION_SECRET as string
 
 // application middleware
 app.use(express.json());
@@ -19,7 +20,7 @@ app.use(cors());
 
 // session for passport
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'your-secret-key',
+  secret: session_secret,
   resave: false,
   saveUninitialized: false,
 }));
@@ -32,7 +33,7 @@ app.use(passport.session());
 app.use("/v1/auth", authRouter);
 app.use("/v1/users", userRouter);
 app.use("/v1/products", productRouter);
-//app.use("/orders", orderRouter);
+//app.use("/v1/orders", orderRouter);
 
 // start server
 app.listen(port, () => {
