@@ -10,10 +10,36 @@ Simple ecommerce website, with some added perks.
 
 ## Features
 
-- Authentication with JWT(JsonWeb Tokens)
+- [ ] Full working e-commerce system(buy and sale of products, making orders, payments)
+- [x] State Management(Signals & RxJs)
+- [x] Authentication with JWT(JsonWeb Tokens)
+- [x] Session Management with Express Session
+- [x] Pagination of `GET` routes(limit-offset method)
+- [x] Internal app logging(with winston)
 - OAuth with PassportJs
-- State Management(Signals & RxJs)
-- Mpesa Api Integration(Daraja Api)
-- Rate Limiting with Express Rate Limit
-- Session Management with Express Session
-- Testing(unit,integration,e2e)
+    - [x] Google
+    - [ ] Twitter
+    - [ ] Github
+    - [ ] Facebook
+- [ ] Payment Gateway Integration(Daraja Api or Paystack)
+- [ ] Rate Limiting with Express Rate Limit
+- [ ] Testing with Jest(unit,integration,e2e)
+- Mysql internals:
+    - [ ] Triggers
+    - [x] Stored Procedures
+    - [ ] Views
+    - [x] Transactions
+- [ ] Container Orchestration with Docker & Docker Compose
+- [ ] Hosting on Digital Ocean
+
+## Setup
+
+To setup the project locally, follow the steps outlines in the `README.md` files in each section directory.
+
+> [!NOTE]
+>
+> Currently woking on how to build and setup the project with docker, will update the documentation accordingly when done
+
+## Contributors
+
+
