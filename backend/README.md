@@ -2,17 +2,6 @@
 
 The application backend has been built in [`NodeJs`](https://nodejs.org/en) and [`Express`](https://expressjs.com/) with [`Typescript`](https://www.typescriptlang.org/), to get started you need to have NodeJs and your preferred package manager of choice; I have used [`pnpm`](https://pnpm.io/).
 
-## Features
-
-Some worthwhile features I intend to implement here include:
-
-- [] Pagination of `GET` routes
-- [x] Logging with `winston`
-- [x] Authorization middleware with `jwt`
-- [ ] Rate-limiting with `express-rate-limit`
-- [ ] Mpesa Integration with `daraja api`
-- [ ] Testing with `jest`
-
 ## Setup
 
 1. Navigate to the project directory:
@@ -32,6 +21,7 @@ Some worthwhile features I intend to implement here include:
 1. Next you need to add your environemt variables to the [.env](./.env) file:
 
 ```bash
+    touch .env
     cp .env-example .env
 ```
 
