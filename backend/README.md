@@ -2,18 +2,6 @@
 
 The application backend has been built in [`NodeJs`](https://nodejs.org/en) and [`Express`](https://expressjs.com/) with [`Typescript`](https://www.typescriptlang.org/), to get started you need to have NodeJs and your preferred package manager of choice; I have used [`pnpm`](https://pnpm.io/).
 
-## Features
-
-Some worthwhile features I intend to implement here include:
-
-- [x] Pagination of `GET` routes
-- [x] Logging with `winston`
-- [x] Authorization middleware with `jwt`
-- [ ] Oauth with `passport.js`
-- [ ] Rate-limiting with `express-rate-limit`
-- [ ] Mpesa Integration with `daraja api`
-- [ ] Testing with `jest`
-
 ## Setup
 
 1. Navigate to the project directory:
@@ -22,7 +10,7 @@ Some worthwhile features I intend to implement here include:
     cd backend/
 ```
 
-1. Install all the necessary dependencies and once successful, start the server:
+2. Install all the necessary dependencies:
 
 ```bash
     pnpm install
@@ -30,9 +18,10 @@ Some worthwhile features I intend to implement here include:
     npm install
 ```
 
-1. Next you need to create then add your environemt variables to the [.env](./.env) file:
+1. Next you need to add your environemt variables to the [.env](./.env) file:
 
 ```bash
+    touch .env
     cp .env-example .env
 ```
 
@@ -46,6 +35,6 @@ Some worthwhile features I intend to implement here include:
 
 > [!NOTE]
 >
-> If you intend to work entirely with the backend, all the routes can be accessed in the [collections](./collections/) directory. All you need to have is an in-built rest-client; If you're in the Vim/Neovim ecosystem, `kulala.nvim` or `rest-client.nvim` are some popular choices.
+> If you intend to work entirely with the backend, all the routes can be accessed in the [collections](./collections/) directory. All you need to have is an in-built rest-client; If you're in the Vim/Neovim ecosystem, `kulala.nvim` or `rest-client.nvim` are some popular choices, otherwise `postman` should work just fine.
 >
-> You will need to have Typescript installed on your machine, since the application is built in Typescript, then compiled to Javascript.
+> You will need to have Typescript installed on your machine, since the application is built in Typescript, then compiled to Javascript. Ensure the command `$ tsc -v` works.

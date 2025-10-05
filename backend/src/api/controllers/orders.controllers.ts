@@ -120,7 +120,7 @@ export async function updateOrder(request:Request<{userId:string,orderId:string}
     
                 if(!order){
                     return response.status(401).json({error:`That order does not exist. Try again.`})
-                } else if (user.id === order.userId){
+                } else if (Number(user.id) === order.userId){
                     const orderDetailsJson = JSON.stringify(orderDetails)
                     await pool.query(
                         `UPDATE orders SET
@@ -175,7 +175,7 @@ export async function cancellOrder(request:Request<{userId:string,orderId:string
         // see if user matches order id
         if (!order){
             return response.status(401).json({error:`That order does not exist. Try again.`})
-        } else if(user.id === order.userId){
+        } else if(Number(user.id) === order.userId){
             // if yes delete
             await pool.query(
                 `UPDATE orders SET 

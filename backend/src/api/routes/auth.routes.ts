@@ -4,6 +4,10 @@ import { loginUser, registerUser } from "../controllers/auth.controllers";
 import jwt from "jsonwebtoken";
 import { IUsers } from "../models/users.models";
 
+import dotenv from "dotenv"
+import path from "path"
+
+dotenv.config({ path: path.resolve(process.cwd(), ".env") });
 const authRouter = express.Router();
 
 authRouter.post("/register", registerUser);
@@ -22,7 +26,8 @@ authRouter.get("/google/callback", passport.authenticate("google", { failureRedi
   };
   const token = jwt.sign(payload, process.env.SECRET_KEY as string, { expiresIn: "7 days" });
 
-  const frontendUrl = process.env.FRONTEND_URL || "http://localhost:4200";
+  // const frontendUrl = process.env.FRONTEND_URL 
+ const frontendUrl = process.env.FRONTEND_URL || "http://localhost:4200";
   res.redirect(`${frontendUrl}/dashboard?token=${token}`);
 });
 

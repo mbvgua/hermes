@@ -3,23 +3,24 @@ import dotenv from "dotenv";
 import cors from "cors";
 import session from "express-session";
 import passport from "./config/passport.config";
-import productRouter from "./api/routes/products.routes";
-import orderRouter from "./api/routes/orders.routes";
 import authRouter from "./api/routes/auth.routes";
 import userRouter from "./api/routes/users.routes";
+import productRouter from "./api/routes/products.routes";
+// import orderRouter from "./api/routes/orders.routes";
 
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT
+const session_secret = process.env.SESSION_SECRET as string
 
-// add body to requests
+// application middleware
 app.use(express.json());
 app.use(cors());
 
 // session for passport
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'your-secret-key',
+  secret: session_secret,
   resave: false,
   saveUninitialized: false,
 }));
@@ -31,8 +32,8 @@ app.use(passport.session());
 // application middleware
 app.use("/v1/auth", authRouter);
 app.use("/v1/users", userRouter);
-//app.use("/products", productRouter);
-//app.use("/orders", orderRouter);
+app.use("/v1/products", productRouter);
+//app.use("/v1/orders", orderRouter);
 
 // start server
 app.listen(port, () => {

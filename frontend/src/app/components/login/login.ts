@@ -32,6 +32,7 @@ export class Login implements OnInit {
   message = signal<string>('');
 
   onSubmit() {
+    // login user with email and password
     this.userService.loginUser(this.loginForm.value).subscribe(
       (response: UserResponse) => {
         this.ls.removeAllItems();
@@ -60,7 +61,7 @@ export class Login implements OnInit {
   }
 
   googleLogin() {
-    window.location.href = 'http://localhost:3000/v1/auth/google';
+    window.location.href = 'http://localhost:4000/v1/auth/google';
   }
 
   ngOnInit(): void {

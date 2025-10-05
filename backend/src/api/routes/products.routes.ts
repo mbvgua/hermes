@@ -1,12 +1,18 @@
-import express from 'express'
-import { addProduct, deleteProduct, getProductById, getProducts, updateProduct } from '../controllers/products.controllers'
+import express from "express";
+import {
+  addProduct,
+  getProductById,
+  getProducts,
+  getProductsByCategory,
+} from "../controllers/products.controllers";
 
-const productRouter = express.Router()
+const productRouter = express.Router();
 
-productRouter.post('/add/',addProduct)
-productRouter.get('/get/',getProducts)
-productRouter.get('/get-by/:id/',getProductById)
-productRouter.patch('/update/:id',updateProduct)
-productRouter.patch('/delete/:id',deleteProduct)
+productRouter.post("/add", addProduct);
+productRouter.get("/get-all", getProducts);
+productRouter.get("/get-by-category", getProductsByCategory);
+productRouter.get("/get-by-id/:id", getProductById);
+// productRouter.patch('/update/:id',updateProduct)
+// productRouter.patch('/delete/:id',deleteProduct)
 
-export default productRouter
+export default productRouter;

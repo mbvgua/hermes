@@ -3,13 +3,17 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { pool } from './db.config';
 import { IUsers, UserRoles } from '../api/models/users.models';
 import { logger } from './winston.config';
+import dotenv from "dotenv"
+import path from "path"
+
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL || 'http://localhost:3000/v1/auth/google/callback',
+      callbackURL: process.env.GOOGLE_CALLBACK_URL || 'http://localhost:4000/v1/auth/google/callback',
     },
     async (accessToken, refreshToken, profile, done) => {
       try {

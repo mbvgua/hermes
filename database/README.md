@@ -12,15 +12,12 @@ A relational database schema was used, i.e [`MySql`](https://www.mysql.com/). It
 To setup the database instantly with the use of a script, you will need to have [`Python`](https://www.python.org/downloads/) installed on your device. Then:
 
 ```bash
-    chmod +x setup
-    ./setup
+    python setup.py
 ```
 
 You will be prompted for your password, and if correct the database will automatically be created/deleted.
 
 > [!NOTE]
->
-> In subsequent builds, you will not have to run the `chmod` command as the file has now been made an executable. You can directly execute it.
 >
 > The recommended `python` version to have is `python 3.1*` and above. I built the script using `python 3.13` hence older versions of python might have some unforeseen edge cases.
 >
