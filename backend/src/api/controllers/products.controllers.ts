@@ -23,6 +23,7 @@ export async function addProduct(request: Request, response: Response) {
    */
 
   const id = generateRandomnId();
+    console.log(id)
   const { name, category, description, image, price } = request.body;
   try {
     // check for errors in request schema
@@ -31,6 +32,7 @@ export async function addProduct(request: Request, response: Response) {
       response,
       addProductSchema,
     );
+        console.log(is_valid_request)
 
     // if no error present
     if (is_valid_request) {
@@ -59,6 +61,7 @@ export async function addProduct(request: Request, response: Response) {
       });
 
       //return success response
+            console.log("ayeee")
       return response.status(201).json({
         code: 201,
         status: "success",

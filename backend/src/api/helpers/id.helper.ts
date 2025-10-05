@@ -8,5 +8,5 @@ export function generateRandomnId(){
     * auto-incrementing value
     */
     const buf = crypto.randomBytes(8)
-    return buf.readBigInt64BE()
+    return buf.readBigUInt64BE()
 }

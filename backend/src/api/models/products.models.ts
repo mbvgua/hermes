@@ -7,7 +7,7 @@ export enum ProductCategory {
   Toys = "toys",
 }
 export interface IProducts {
-  id: string;
+  id: BigInt;
   name: string;
   category: ProductCategory;
   description: string;

@@ -59,6 +59,10 @@ export class Register implements OnInit {
     this.registerForm.reset();
   }
 
+  googleLogin() {
+    window.location.href = 'http://localhost:4000/v1/oauth/google';
+  }
+
   ngOnInit(): void {
     this.registerForm = new FormGroup({
       username: new FormControl(null, [

@@ -4,7 +4,7 @@ USE hermes;
 
 CREATE TABLE users (
     -- SERIAL DEFAULT VALUE equates to NOT NULL AUTO_INCREMENT UNIQUE
-    id INT PRIMARY KEY SERIAL DEFAULT VALUE,
+    id BIGINT PRIMARY KEY SERIAL DEFAULT VALUE,
     -- used for storing uuid,google_id e.t.c
     google_id VARCHAR(255) UNIQUE,
     username VARCHAR(100) NOT NULL UNIQUE,
@@ -17,8 +17,8 @@ CREATE TABLE users (
 
 CREATE TABLE user_details(
     -- SERIAL DEFAULT VALUE equates to NOT NULL AUTO_INCREMENT UNIQUE
-    id INT PRIMARY KEY SERIAL DEFAULT VALUE,
-    user_id VARCHAR(255) NOT NULL,
+    id BIGINT PRIMARY KEY SERIAL DEFAULT VALUE,
+    user_id BIGINT NOT NULL,
     first_name VARCHAR(50),
     last_name VARCHAR(50),
     dob DATETIME,
@@ -38,7 +38,7 @@ CREATE TABLE user_details(
 CREATE TABLE products(
     -- SERIAL DEFAULT VALUE equates to NOT NULL AUTO_INCREMENT UNIQUE
     -- id INT PRIMARY KEY SERIAL DEFAULT VALUE,
-    id VARCHAR(250) PRIMARY KEY,
+    id BIGINT PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE,
     category ENUM("electronics","clothing","sports","stationery","food","toys") NOT NULL,
     description TEXT NOT NULL ,
@@ -50,8 +50,8 @@ CREATE TABLE products(
 
 
 CREATE TABLE orders (
-    id INT PRIMARY KEY SERIAL DEFAULT VALUE,
-    user_id VARCHAR(255),
+    id BIGINT PRIMARY KEY SERIAL DEFAULT VALUE,
+    user_id BIGINT,
     order_details JSON,
     total_price DECIMAL(10,2) NOT NULL,
     is_cancelled BOOLEAN DEFAULT 0 NOT NULL,
@@ -60,12 +60,12 @@ CREATE TABLE orders (
 
 
 CREATE TABLE payments (
-    id VARCHAR(255) PRIMARY KEY,
+    id BIGINT PRIMARY KEY,
     method ENUM("mpesa","paypal","credit card") NOT NULL,
     status ENUM("success","refunded","failed") NOT NULL,
     transaction_id VARCHAR(255),
-    user_id VARCHAR(255),
-    order_id INT,
+    user_id BIGINT,
+    order_id BIGINT,
     amount INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (order_id) REFERENCES orders(id)

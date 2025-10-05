@@ -4,8 +4,9 @@ USE hermes;
 
 CREATE TABLE users (
     -- SERIAL DEFAULT VALUE equates to NOT NULL AUTO_INCREMENT UNIQUE
+    id BIGINT PRIMARY KEY SERIAL DEFAULT VALUE,
+    -- used for storing uuid,google_id e.t.c
     google_id VARCHAR(255) UNIQUE,
-    id VARCHAR(255) PRIMARY KEY,
     username VARCHAR(100) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255),
@@ -16,8 +17,8 @@ CREATE TABLE users (
 
 CREATE TABLE user_details(
     -- SERIAL DEFAULT VALUE equates to NOT NULL AUTO_INCREMENT UNIQUE
-    id INT PRIMARY KEY SERIAL DEFAULT VALUE,
-    user_id VARCHAR(255) NOT NULL,
+    id BIGINT PRIMARY KEY SERIAL DEFAULT VALUE,
+    user_id BIGINT NOT NULL,
     first_name VARCHAR(50),
     last_name VARCHAR(50),
     dob DATETIME,
@@ -37,7 +38,7 @@ CREATE TABLE user_details(
 CREATE TABLE products(
     -- SERIAL DEFAULT VALUE equates to NOT NULL AUTO_INCREMENT UNIQUE
     -- id INT PRIMARY KEY SERIAL DEFAULT VALUE,
-    id VARCHAR(250) PRIMARY KEY,
+    id BIGINT PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE,
     category ENUM("electronics","clothing","sports","stationery","food","toys") NOT NULL,
     description TEXT NOT NULL ,
@@ -49,8 +50,8 @@ CREATE TABLE products(
 
 
 CREATE TABLE orders (
-    id INT PRIMARY KEY SERIAL DEFAULT VALUE,
-    user_id VARCHAR(255),
+    id BIGINT PRIMARY KEY SERIAL DEFAULT VALUE,
+    user_id BIGINT,
     order_details JSON,
     total_price DECIMAL(10,2) NOT NULL,
     is_cancelled BOOLEAN DEFAULT 0 NOT NULL,
@@ -59,12 +60,12 @@ CREATE TABLE orders (
 
 
 CREATE TABLE payments (
-    id VARCHAR(255) PRIMARY KEY,
+    id BIGINT PRIMARY KEY,
     method ENUM("mpesa","paypal","credit card") NOT NULL,
     status ENUM("success","refunded","failed") NOT NULL,
     transaction_id VARCHAR(255),
-    user_id VARCHAR(255),
-    order_id INT,
+    user_id BIGINT,
+    order_id BIGINT,
     amount INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (order_id) REFERENCES orders(id)
@@ -76,7 +77,7 @@ DELIMITER #
 -- START USERS SPs
 -- addUser
 CREATE PROCEDURE addUser(
-    IN u_id VARCHAR(255),
+    IN u_id BIGINT,
     IN u_username VARCHAR(100),
     IN u_email VARCHAR(100),
     IN u_password VARCHAR(255),
@@ -111,7 +112,7 @@ END#
 
 -- getUserById
 CREATE PROCEDURE getUserById(
-    IN u_id VARCHAR(255)
+    IN u_id BIGINT
 )
 BEGIN
     SELECT * FROM users
@@ -144,7 +145,7 @@ END#
 
 -- updateUser
 CREATE PROCEDURE updateUser(
-    IN u_id VARCHAR(255),
+    IN u_id BIGINT,
     IN u_username VARCHAR(100),
     IN u_email VARCHAR(100),
     IN u_password VARCHAR(255)
@@ -175,7 +176,7 @@ END#
 
 -- updatePassword
 CREATE PROCEDURE updatePassword(
-    IN u_id VARCHAR(255),
+    IN u_id BIGINT,
     IN u_password VARCHAR(255)
 )
 BEGIN
@@ -185,7 +186,7 @@ END#
 
 -- deleteUser
 CREATE PROCEDURE deleteUser(
-    IN u_id VARCHAR(255)
+    IN u_id BIGINT
 )
 BEGIN
     DECLARE existing_account INT DEFAULT 0;
@@ -217,7 +218,7 @@ END#
 
 -- addProduct
 CREATE PROCEDURE addProduct(
-    IN p_id VARCHAR(250),
+    IN p_id BIGINT,
     IN p_name VARCHAR(100),
     IN p_category ENUM("electronics","clothing","sports","stationery","food","toys"),
     IN p_description TEXT,
@@ -231,7 +232,7 @@ END#
 
 -- getProductById
 CREATE PROCEDURE getProductById(
-    IN p_id VARCHAR(250)
+    IN p_id BIGINT
 )
 BEGIN
     SELECT * FROM products 
@@ -255,7 +256,7 @@ END#
 
 -- updateProduct
 CREATE PROCEDURE updateProduct(
-    IN p_id VARCHAR(250),
+    IN p_id BIGINT,
     IN p_name VARCHAR(100),
     IN p_category ENUM("electronics","clothing","sports","stationery","food","toys"),
     IN p_description TEXT,
@@ -270,7 +271,7 @@ END#
 
 -- deleteProduct
 CREATE PROCEDURE deleteProduct(
-    IN p_id VARCHAR(250)
+    IN p_id BIGINT
 )
 BEGIN
     UPDATE products 

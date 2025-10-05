@@ -5,7 +5,7 @@ DELIMITER #
 -- START USERS SPs
 -- addUser
 CREATE PROCEDURE addUser(
-    IN u_id VARCHAR(255),
+    IN u_id BIGINT,
     IN u_username VARCHAR(100),
     IN u_email VARCHAR(100),
     IN u_password VARCHAR(255),
@@ -40,7 +40,7 @@ END#
 
 -- getUserById
 CREATE PROCEDURE getUserById(
-    IN u_id VARCHAR(255)
+    IN u_id BIGINT
 )
 BEGIN
     SELECT * FROM users
@@ -73,7 +73,7 @@ END#
 
 -- updateUser
 CREATE PROCEDURE updateUser(
-    IN u_id VARCHAR(255),
+    IN u_id BIGINT,
     IN u_username VARCHAR(100),
     IN u_email VARCHAR(100),
     IN u_password VARCHAR(255)
@@ -104,7 +104,7 @@ END#
 
 -- updatePassword
 CREATE PROCEDURE updatePassword(
-    IN u_id VARCHAR(255),
+    IN u_id BIGINT,
     IN u_password VARCHAR(255)
 )
 BEGIN
@@ -114,7 +114,7 @@ END#
 
 -- deleteUser
 CREATE PROCEDURE deleteUser(
-    IN u_id VARCHAR(255)
+    IN u_id BIGINT
 )
 BEGIN
     DECLARE existing_account INT DEFAULT 0;
@@ -146,7 +146,7 @@ END#
 
 -- addProduct
 CREATE PROCEDURE addProduct(
-    IN p_id VARCHAR(250),
+    IN p_id BIGINT,
     IN p_name VARCHAR(100),
     IN p_category ENUM("electronics","clothing","sports","stationery","food","toys"),
     IN p_description TEXT,
@@ -160,7 +160,7 @@ END#
 
 -- getProductById
 CREATE PROCEDURE getProductById(
-    IN p_id VARCHAR(250)
+    IN p_id BIGINT
 )
 BEGIN
     SELECT * FROM products 
@@ -184,7 +184,7 @@ END#
 
 -- updateProduct
 CREATE PROCEDURE updateProduct(
-    IN p_id VARCHAR(250),
+    IN p_id BIGINT,
     IN p_name VARCHAR(100),
     IN p_category ENUM("electronics","clothing","sports","stationery","food","toys"),
     IN p_description TEXT,
@@ -199,7 +199,7 @@ END#
 
 -- deleteProduct
 CREATE PROCEDURE deleteProduct(
-    IN p_id VARCHAR(250)
+    IN p_id BIGINT
 )
 BEGIN
     UPDATE products 
